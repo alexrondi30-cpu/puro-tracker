@@ -1,7 +1,14 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Puro Tracker</title>
 <style>
   html, body, #root { margin: 0; padding: 0; background: #0e0d0b; min-height: 100%; }
 </style>
+</head>
+<body>
 <div id="root"></div>
 <script>
 /**
@@ -314,7 +321,6 @@ const {
   useRef,
   useCallback
 } = React;
-
 /* ---------------------------------------------------------
    DATI SCHEDA — 5 giorni, upper body, multifrequenza
 --------------------------------------------------------- */
@@ -329,6 +335,7 @@ const DAYS = [{
     rest: 120,
     weight: true,
     muscle: "Dorso",
+    video: "fgcoj-vxSYw",
     desc: "In piedi, ginocchia leggermente piegate, busto piegato in avanti a circa 45° con la schiena dritta (non curva, non a terra). Un manubrio per mano, lascia le braccia pendere, poi tira i gomiti indietro portando i manubri verso i fianchi, scapole che si stringono. Scendi controllato, senza slancio."
   }, {
     id: "d1e2",
@@ -338,6 +345,7 @@ const DAYS = [{
     rest: 120,
     weight: true,
     muscle: "Petto",
+    video: "6mWAqa41eKI",
     desc: "Seduto sulla panca, schiena contro lo schienale, avambracci sui braccioli imbottiti. Spingi in avanti fino a unire i braccioli davanti al petto, torni controllato."
   }, {
     id: "d1e3",
@@ -347,6 +355,7 @@ const DAYS = [{
     rest: 90,
     weight: true,
     muscle: "Dorso",
+    video: "D39HlngiWac",
     desc: "Seduto sotto il cavo alto, ginocchia bloccate sotto l'imbottitura, presa larga sulla barra (più larga delle spalle), braccia tese sopra la testa. Tiri la barra verso il petto alto portando i gomiti in basso e indietro, senza inarcare la schiena. Risali controllato fino a braccia quasi tese."
   }, {
     id: "d1e4",
@@ -357,6 +366,7 @@ const DAYS = [{
     weight: true,
     finisher: true,
     muscle: "Addominali",
+    video: "exdFR8iFlA8",
     desc: "Seduto sulla panca della macchina, cavo in mano dietro la nuca. Curvi il busto in avanti portando i gomiti verso le ginocchia."
   }, {
     id: "d1e5",
@@ -367,6 +377,7 @@ const DAYS = [{
     weight: true,
     finisher: true,
     muscle: "Addominali",
+    video: "9RgiWLGSVzc",
     desc: "Sdraiato a terra, ginocchia piegate, tieni un manubrio con entrambe le mani contro il petto. Esegui il crunch classico, spingendo verso l'alto contro il peso."
   }, {
     id: "d1e6",
@@ -377,6 +388,7 @@ const DAYS = [{
     weight: true,
     finisher: true,
     muscle: "Avambracci",
+    video: "hrhucObQ-2k",
     desc: "Stringi a fondo corsa e rilasci controllato. Resistenza regolabile: registra il livello (kg) per seguirne la progressione."
   }, {
     id: "d1e7",
@@ -400,6 +412,7 @@ const DAYS = [{
     rest: 120,
     weight: true,
     muscle: "Spalle",
+    video: "vxMM2uEXRoI",
     desc: "Seduto, manubri all'altezza delle spalle, palmi in avanti. Spingi verso l'alto fino a braccia quasi tese."
   }, {
     id: "d2e2",
@@ -409,6 +422,7 @@ const DAYS = [{
     rest: 60,
     weight: true,
     muscle: "Spalle",
+    video: "gCNQ5fQiwNs",
     desc: "In piedi, un manubrio per mano lungo i fianchi, gomiti leggermente piegati. Sollevi le braccia lateralmente, guidando con i gomiti, fino all'altezza delle spalle. Se cede l'avambraccio prima delle spalle, scendi di peso."
   }, {
     id: "d2e3",
@@ -418,6 +432,7 @@ const DAYS = [{
     rest: 90,
     weight: true,
     muscle: "Bicipiti",
+    video: "QaXCjUMCp90",
     desc: "In piedi, manubri lungo i fianchi, palmi in avanti, gomiti fermi vicino al busto. Pieghi i gomiti portando i manubri verso le spalle, busto fermo senza slancio."
   }, {
     id: "d2e4",
@@ -427,6 +442,7 @@ const DAYS = [{
     rest: 60,
     weight: true,
     muscle: "Bicipiti",
+    video: "HJUmbHvmgx0",
     desc: "Come il curl in piedi ma un braccio alla volta, alternando, con presa neutra (palmi l'uno verso l'altro). Lavora anche il brachiale."
   }, {
     id: "d2e7",
@@ -450,6 +466,7 @@ const DAYS = [{
     rest: 120,
     weight: true,
     muscle: "Dorso",
+    video: "6k1SlAqJFak",
     desc: "Seduto sotto il cavo alto, ginocchia bloccate sotto l'imbottitura, mani vicine al centro della barra (presa stretta), braccia tese sopra la testa. Tiri la barra verso lo sterno con i gomiti che scendono vicino al busto, poi risali controllato."
   }, {
     id: "d3e2",
@@ -459,6 +476,7 @@ const DAYS = [{
     rest: 90,
     weight: true,
     muscle: "Dorso",
+    video: "-wVifByDoe4",
     desc: "Seduto davanti al cavo basso, piedi in appoggio sulla base, ginocchia leggermente piegate, busto verticale. Tiri la maniglia verso l'addome portando i gomiti indietro vicino ai fianchi, scapole che si stringono, poi torni controllato senza curvare la schiena in avanti."
   }, {
     id: "d3e3",
@@ -468,6 +486,7 @@ const DAYS = [{
     rest: 90,
     weight: true,
     muscle: "Tricipiti",
+    video: "Ig-wfb-Ps-8",
     desc: "Un manubrio con entrambe le mani dietro la nuca, gomiti fermi puntati al soffitto. Distendi le braccia in alto."
   }, {
     id: "d3e4",
@@ -477,6 +496,7 @@ const DAYS = [{
     rest: 60,
     weight: true,
     muscle: "Tricipiti",
+    video: "qk_saNmVpR4",
     desc: "Maniglia a V o singola, gomiti fermi vicino al busto. Spingi in basso usando solo i tricipiti."
   }, {
     id: "d3e5",
@@ -487,6 +507,7 @@ const DAYS = [{
     weight: true,
     finisher: true,
     muscle: "Lombari",
+    video: "yQK1khXw96c",
     desc: "A terra pancia in giù, tieni un manubrio leggero con entrambe le mani contro il petto (o dietro la nuca). Sollevi busto e gambe insieme, tieni un attimo, scendi controllato."
   }]
 }, {
@@ -500,16 +521,17 @@ const DAYS = [{
     rest: 120,
     weight: true,
     muscle: "Petto",
-    desc: "Stesso esercizio del Giorno 1: seduto sulla panca della macchina, schiena contro lo schienale, avambracci sui braccioli imbottiti. Spingi in avanti fino a unire i braccioli davanti al petto, torni controllato."
+    video: "6mWAqa41eKI",
+    desc: "Seduto sulla panca della macchina, schiena contro lo schienale, avambracci sui braccioli imbottiti. Spingi in avanti fino a unire i braccioli davanti al petto, torni controllato."
   }, {
     id: "d4e2",
-    name: "Pullover al cavo alto, braccia tese",
-    sets: 2,
-    reps: "12-15",
-    rest: 60,
+    name: "Floor press con manubri, presa stretta",
+    sets: 3,
+    reps: "8-10",
+    rest: 90,
     weight: true,
-    muscle: "Dorso",
-    desc: "In piedi, di fronte al cavo alto, un passo indietro dalla base. Afferra la barra/maniglia con le braccia quasi tese sopra la testa, un piccolo passo avanti per mettere in tensione il cavo. Con i gomiti leggermente piegati e fissi, porti le braccia verso il basso disegnando un arco fino a portarle lungo i fianchi, poi risali controllato lasciando che il cavo riporti su le braccia."
+    muscle: "Petto",
+    desc: "Sdraiato a terra, ginocchia piegate, gomiti vicini ai fianchi, un manubrio per mano all'altezza del petto con presa stretta. Spingi verso l'alto senza aprire i gomiti, i tricipiti a terra fanno da stop naturale a fine corsa. Torni giù controllato."
   }, {
     id: "d4e3",
     name: "Arnold press con manubri",
@@ -518,6 +540,7 @@ const DAYS = [{
     rest: 90,
     weight: true,
     muscle: "Spalle",
+    video: "oKh_mZTfsyc",
     desc: "Seduto, manubri all'altezza delle spalle con i palmi rivolti verso di te e i gomiti bassi davanti al petto (come a fine di un curl). Mentre spingi verso l'alto, ruota i polsi in modo che i palmi finiscano rivolti in avanti a braccia quasi tese in cima. Torna giù invertendo la rotazione, controllato."
   }, {
     id: "d4e4",
@@ -527,6 +550,7 @@ const DAYS = [{
     rest: 60,
     weight: true,
     muscle: "Spalle",
+    video: "--CaHn33JMA",
     desc: "In piedi (o seduto sul bordo di una panca), busto piegato in avanti a circa 90°, schiena dritta, un manubrio per mano che pende verso il pavimento sotto le spalle, gomiti leggermente piegati e fissi per tutto il movimento. Senza slancio, apri le braccia lateralmente disegnando un arco verso l'alto fino a quando sono parallele al pavimento, stringendo le scapole tra loro in cima. Scendi controllato."
   }, {
     id: "d4e5",
@@ -537,7 +561,8 @@ const DAYS = [{
     weight: true,
     finisher: true,
     muscle: "Addominali",
-    desc: "Stesso esercizio del Giorno 1: seduto sulla panca della macchina, cavo in mano dietro la nuca. Curvi il busto in avanti portando i gomiti verso le ginocchia. Con carico, così puoi seguirne la progressione."
+    video: "exdFR8iFlA8",
+    desc: "Seduto sulla panca della macchina, cavo in mano dietro la nuca. Curvi il busto in avanti portando i gomiti verso le ginocchia, poi torni su controllato senza mollare la tensione sul cavo."
   }, {
     id: "d4e6",
     name: "Flessione laterale cervicale con manubrio leggero",
@@ -560,6 +585,7 @@ const DAYS = [{
     rest: 90,
     weight: true,
     muscle: "Bicipiti",
+    video: "EhYc2ua3cW4",
     desc: "Seduto, schienale dritto, manubri lungo i fianchi con i palmi in avanti, gomiti fermi. Curl classico portando i manubri verso le spalle, busto fermo senza slancio."
   }, {
     id: "d5e2",
@@ -569,6 +595,7 @@ const DAYS = [{
     rest: 60,
     weight: true,
     muscle: "Bicipiti",
+    video: "zi_OiMHzge8",
     desc: "Come il curl normale ma palmi rivolti l'uno verso l'altro (presa neutra) per tutto il movimento."
   }, {
     id: "d5e3",
@@ -578,6 +605,7 @@ const DAYS = [{
     rest: 60,
     weight: true,
     muscle: "Tricipiti",
+    video: "fY0GtRAcRY4",
     desc: "Busto piegato in avanti a circa 90° (puoi appoggiare la mano libera su una sedia o sul ginocchio per stabilità), un manubrio nell'altra mano. Gomito piegato a 90° e fermo, alto e vicino al fianco, braccio superiore parallelo al pavimento. Distendi solo l'avambraccio all'indietro fino a braccio completamente teso, senza muovere il gomito, poi torna controllato."
   }, {
     id: "d5e4",
@@ -587,6 +615,7 @@ const DAYS = [{
     rest: 90,
     weight: true,
     muscle: "Tricipiti",
+    video: "jhSawAaNeow",
     desc: "Seduto o in piedi, un manubrio con un braccio sopra la testa, gomito fermo vicino all'orecchio senza aprirsi lateralmente. Pieghi il gomito portando il peso dietro la nuca, poi distendi tornando su."
   }, {
     id: "d5e5",
@@ -597,7 +626,8 @@ const DAYS = [{
     weight: true,
     finisher: true,
     muscle: "Avambracci",
-    desc: "Stessa logica del Giorno 1: aumenta la resistenza (kg) quando le ripetizioni diventano facili."
+    video: "hrhucObQ-2k",
+    desc: "Stringi a fondo corsa e rilasci controllato. Resistenza regolabile: aumenta il carico (kg) quando le ripetizioni diventano facili, così tieni traccia della progressione."
   }, {
     id: "d5e6",
     name: "Curl al polso, palmo verso il basso (seduto)",
@@ -607,6 +637,7 @@ const DAYS = [{
     weight: true,
     finisher: true,
     muscle: "Avambracci",
+    video: "AvzLsqgI6fo",
     desc: "Come il curl al polso di Giorno 2 ma palmo giù: lavora gli estensori invece dei flessori."
   }, {
     id: "d5e7",
@@ -617,7 +648,8 @@ const DAYS = [{
     weight: true,
     finisher: true,
     muscle: "Lombari",
-    desc: "Stesso esercizio del Giorno 3."
+    video: "yQK1khXw96c",
+    desc: "A terra pancia in giù, tieni un manubrio leggero con entrambe le mani contro il petto (o dietro la nuca). Sollevi busto e gambe insieme, tieni un attimo, scendi controllato."
   }]
 }];
 
@@ -1636,9 +1668,9 @@ function App() {
     if (!range) return false;
     const sets = getLastSessionSets(ex.id);
     if (!sets || sets.length < ex.sets) return false;
-    // se il RIR è stato registrato, richiede sforzo vicino al cedimento (RIR<=1) per suggerire l'aumento;
-    // se non registrato (dati vecchi), si basa solo sulle reps come prima
-    return sets.every(s => s.kg != null && s.reps != null && s.reps >= range.top && (s.rir == null || s.rir <= 1));
+    // il criterio è il tetto del range di reps: se lo raggiungi su tutte le serie, la volta dopo
+    // si suggerisce più peso, indipendentemente da quanto segnato sul RIR (che resta solo informativo)
+    return sets.every(s => s.kg != null && s.reps != null && s.reps >= range.top);
   };
 
   /* ---- avvio / chiusura sessione ---- */
@@ -1785,6 +1817,7 @@ function App() {
       "--a35": rgbaFromHex(accent, 0.35)
     }
   }, /*#__PURE__*/React.createElement("style", null, `
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;600;700&display=swap');
 
         * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
         .app {
@@ -1875,7 +1908,7 @@ function App() {
         }
 
         /* ---- buttons ---- */
-        .spacer { flex: 1; }
+        .spacer { flex: 1; max-height: 32px; }
         .cta {
           width: 100%; background: var(--accent); color: #17130f;
           font-weight: 700; font-size: 16px; letter-spacing: -0.01em;
@@ -2281,7 +2314,29 @@ function SessionScreen({
     onClick: () => setOpenDesc(o => !o)
   }, openDesc ? "▾" : "▸", " Come si esegue"), openDesc && /*#__PURE__*/React.createElement("div", {
     className: "ex-desc"
-  }, ex.desc), last != null && /*#__PURE__*/React.createElement("div", {
+  }, ex.desc), openDesc && ex.video && /*#__PURE__*/React.createElement("div", {
+    style: {
+      position: "relative",
+      paddingBottom: "56.25%",
+      height: 0,
+      marginTop: 12,
+      borderRadius: 12,
+      overflow: "hidden"
+    }
+  }, /*#__PURE__*/React.createElement("iframe", {
+    src: `https://www.youtube.com/embed/${ex.video}`,
+    title: `Video: ${ex.name}`,
+    style: {
+      position: "absolute",
+      top: 0,
+      left: 0,
+      width: "100%",
+      height: "100%",
+      border: "none"
+    },
+    allow: "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture",
+    allowFullScreen: true
+  })), last != null && /*#__PURE__*/React.createElement("div", {
     className: "lastkg"
   }, "Ultima volta: ", /*#__PURE__*/React.createElement("b", null, last, " kg")), suggestUp && !isDone && /*#__PURE__*/React.createElement("div", {
     className: "prog-badge"
@@ -2479,7 +2534,7 @@ function SummaryScreen({
   }, "Sono passate ", sessionsSinceBackup, " sedute dall'ultimo backup — meglio salvarne uno ora, così non rischi di perdere lo storico."), /*#__PURE__*/React.createElement("button", {
     className: "set-btn",
     onClick: handleExport
-  }, "⬇️ Esporta backup ora")), backupDone && /*#__PURE__*/React.createElement("div", {
+  }, "💾 Salva progressi ora")), backupDone && /*#__PURE__*/React.createElement("div", {
     className: "card",
     style: {
       marginTop: 18
@@ -3002,13 +3057,13 @@ function SettingsScreen({
       marginBottom: 10
     },
     onClick: () => exportBackup(sessionCount)
-  }, "⬇️ Esporta backup"), /*#__PURE__*/React.createElement("button", {
+  }, "💾 Salva progressi"), /*#__PURE__*/React.createElement("button", {
     className: "nav-btn",
     style: {
       width: "100%"
     },
     onClick: handleImportClick
-  }, "⬆️ Importa backup"), /*#__PURE__*/React.createElement("input", {
+  }, "📥 Recupera progressi"), /*#__PURE__*/React.createElement("input", {
     ref: fileInputRef,
     type: "file",
     accept: "application/json",
@@ -3170,3 +3225,5 @@ function Sparkline({
 }
 ReactDOM.createRoot(document.getElementById("root")).render(/*#__PURE__*/React.createElement(App, null));
 </script>
+</body>
+</html>
