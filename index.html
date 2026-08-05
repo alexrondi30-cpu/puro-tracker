@@ -13,9 +13,38 @@
 <meta name="theme-color" content="#0e0d0b">
 <style>
   html, body, #root { margin: 0; padding: 0; background: #0e0d0b; min-height: 100%; }
+  #boot-splash {
+    position: fixed; inset: 0; z-index: 9999;
+    background: radial-gradient(circle at 50% 38%, #201a16 0%, #0e0d0b 70%);
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    transition: opacity .5s ease, visibility 0s linear .5s;
+  }
+  #boot-splash.hide { opacity: 0; visibility: hidden; pointer-events: none; }
+  #boot-splash img {
+    width: min(46vw, 230px); height: min(46vw, 230px);
+    border-radius: 28px; box-shadow: 0 0 60px 10px rgba(228,54,43,0.35), 0 8px 30px rgba(0,0,0,0.6);
+    animation: bootPulse 1.8s ease-in-out infinite;
+  }
+  #boot-splash .boot-name {
+    margin-top: 22px; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    font-weight: 800; letter-spacing: 3px; font-size: 22px; color: #f4ede8;
+    text-transform: uppercase;
+  }
+  #boot-splash .boot-sub {
+    margin-top: 6px; font-size: 12px; letter-spacing: 2px; color: #8a7f77; text-transform: uppercase;
+  }
+  @keyframes bootPulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.045); }
+  }
 </style>
 </head>
 <body>
+<div id="boot-splash">
+  <img src="icon-512.png" alt="">
+  <div class="boot-name">Steroids</div>
+  <div class="boot-sub">Training Log</div>
+</div>
 <div id="root"></div>
 <script>
 /**
@@ -2177,7 +2206,7 @@ function HomeScreen({
   const nSessions = dates.length;
   return /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("div", {
     className: "kicker"
-  }, "Puro · Training Log"), /*#__PURE__*/React.createElement("h1", {
+  }, "Steroids · Training Log"), /*#__PURE__*/React.createElement("h1", {
     className: "h-title"
   }, "Scheda", /*#__PURE__*/React.createElement("br", null), "Multifrequenza"), /*#__PURE__*/React.createElement("div", {
     className: "h-sub"
@@ -3231,6 +3260,10 @@ function Sparkline({
   }));
 }
 ReactDOM.createRoot(document.getElementById("root")).render(/*#__PURE__*/React.createElement(App, null));
+requestAnimationFrame(() => requestAnimationFrame(() => {
+  const s = document.getElementById("boot-splash");
+  if (s) { s.classList.add("hide"); setTimeout(() => s.remove(), 600); }
+}));
 </script>
 </body>
 </html>
