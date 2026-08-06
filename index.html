@@ -4,9 +4,9 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Steroids</title>
-<link rel="manifest" href="manifest.json?v=1785949098459">
-<link rel="icon" href="icon-192.png?v=1785949098459" type="image/png">
-<link rel="apple-touch-icon" href="apple-touch-icon.png?v=1785949098459">
+<link rel="manifest" href="manifest.json?v=1786034550091">
+<link rel="icon" href="icon-192.png?v=1786034550091" type="image/png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png?v=1786034550091">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Steroids">
@@ -41,7 +41,7 @@
 </head>
 <body>
 <div id="boot-splash">
-  <img src="icon-512.png?v=1785949098459" alt="">
+  <img src="icon-512.png?v=1786034550091" alt="">
   <div class="boot-name">Steroids</div>
   <div class="boot-sub">Training Log</div>
 </div>
@@ -372,6 +372,7 @@ const DAYS = [{
     weight: true,
     muscle: "Dorso",
     video: "fgcoj-vxSYw",
+    equip: ["manubri"],
     desc: "In piedi, ginocchia leggermente piegate, busto piegato in avanti a circa 45° con la schiena dritta (non curva, non a terra). Un manubrio per mano, lascia le braccia pendere, poi tira i gomiti indietro portando i manubri verso i fianchi, scapole che si stringono. Scendi controllato, senza slancio."
   }, {
     id: "d1e2",
@@ -382,6 +383,7 @@ const DAYS = [{
     weight: true,
     muscle: "Petto",
     video: "6mWAqa41eKI",
+    equip: ["macchina"],
     desc: "Seduto sulla panca, schiena contro lo schienale, avambracci sui braccioli imbottiti. Spingi in avanti fino a unire i braccioli davanti al petto, torni controllato."
   }, {
     id: "d1e3",
@@ -392,6 +394,7 @@ const DAYS = [{
     weight: true,
     muscle: "Dorso",
     video: "D39HlngiWac",
+    equip: ["cavo"],
     desc: "Seduto sotto il cavo alto, ginocchia bloccate sotto l'imbottitura, presa larga sulla barra (più larga delle spalle), braccia tese sopra la testa. Tiri la barra verso il petto alto portando i gomiti in basso e indietro, senza inarcare la schiena. Risali controllato fino a braccia quasi tese."
   }, {
     id: "d1e4",
@@ -403,6 +406,7 @@ const DAYS = [{
     finisher: true,
     muscle: "Addominali",
     video: "exdFR8iFlA8",
+    equip: ["cavo"],
     desc: "Seduto sulla panca della macchina, cavo in mano dietro la nuca. Curvi il busto in avanti portando i gomiti verso le ginocchia."
   }, {
     id: "d1e5",
@@ -414,6 +418,7 @@ const DAYS = [{
     finisher: true,
     muscle: "Addominali",
     video: "9RgiWLGSVzc",
+    equip: ["manubri"],
     desc: "Sdraiato a terra, ginocchia piegate, tieni un manubrio con entrambe le mani contro il petto. Esegui il crunch classico, spingendo verso l'alto contro il peso."
   }, {
     id: "d1e6",
@@ -425,6 +430,7 @@ const DAYS = [{
     finisher: true,
     muscle: "Avambracci",
     video: "hrhucObQ-2k",
+    equip: ["molla"],
     desc: "Stringi a fondo corsa e rilasci controllato. Resistenza regolabile: registra il livello (kg) per seguirne la progressione."
   }, {
     id: "d1e7",
@@ -435,6 +441,7 @@ const DAYS = [{
     weight: true,
     finisher: true,
     muscle: "Avambracci",
+    equip: ["manubri"],
     desc: "Avambraccio sulla coscia, polso oltre il bordo, palmo su. Muovi solo il polso verso l'alto."
   }]
 }, {
@@ -448,7 +455,8 @@ const DAYS = [{
     rest: 120,
     weight: true,
     muscle: "Spalle",
-    video: "vxMM2uEXRoI",
+    video: "TvT9hrqdSIw",
+    equip: ["manubri"],
     desc: "Seduto, manubri all'altezza delle spalle, palmi in avanti. Spingi verso l'alto fino a braccia quasi tese."
   }, {
     id: "d2e2",
@@ -459,6 +467,7 @@ const DAYS = [{
     weight: true,
     muscle: "Spalle",
     video: "gCNQ5fQiwNs",
+    equip: ["manubri"],
     desc: "In piedi, un manubrio per mano lungo i fianchi, gomiti leggermente piegati. Sollevi le braccia lateralmente, guidando con i gomiti, fino all'altezza delle spalle. Se cede l'avambraccio prima delle spalle, scendi di peso."
   }, {
     id: "d2e3",
@@ -469,6 +478,7 @@ const DAYS = [{
     weight: true,
     muscle: "Bicipiti",
     video: "QaXCjUMCp90",
+    equip: ["manubri"],
     desc: "In piedi, manubri lungo i fianchi, palmi in avanti, gomiti fermi vicino al busto. Pieghi i gomiti portando i manubri verso le spalle, busto fermo senza slancio."
   }, {
     id: "d2e4",
@@ -479,6 +489,7 @@ const DAYS = [{
     weight: true,
     muscle: "Bicipiti",
     video: "HJUmbHvmgx0",
+    equip: ["manubri"],
     desc: "Come il curl in piedi ma un braccio alla volta, alternando, con presa neutra (palmi l'uno verso l'altro). Lavora anche il brachiale."
   }, {
     id: "d2e7",
@@ -489,6 +500,7 @@ const DAYS = [{
     weight: true,
     finisher: true,
     muscle: "Collo",
+    equip: ["manubri"],
     desc: "Supino, manubrio leggero (parti da 1-2kg) contro la fronte con entrambe le mani, fletti il collo verso il petto. Poi prono, manubrio contro la nuca, sollevi la testa: estensione. Lento, mai a scatto."
   }]
 }, {
@@ -503,6 +515,7 @@ const DAYS = [{
     weight: true,
     muscle: "Dorso",
     video: "6k1SlAqJFak",
+    equip: ["cavo"],
     desc: "Seduto sotto il cavo alto, ginocchia bloccate sotto l'imbottitura, mani vicine al centro della barra (presa stretta), braccia tese sopra la testa. Tiri la barra verso lo sterno con i gomiti che scendono vicino al busto, poi risali controllato."
   }, {
     id: "d3e2",
@@ -513,6 +526,7 @@ const DAYS = [{
     weight: true,
     muscle: "Dorso",
     video: "-wVifByDoe4",
+    equip: ["cavo"],
     desc: "Seduto davanti al cavo basso, piedi in appoggio sulla base, ginocchia leggermente piegate, busto verticale. Tiri la maniglia verso l'addome portando i gomiti indietro vicino ai fianchi, scapole che si stringono, poi torni controllato senza curvare la schiena in avanti."
   }, {
     id: "d3e3",
@@ -523,6 +537,7 @@ const DAYS = [{
     weight: true,
     muscle: "Tricipiti",
     video: "Ig-wfb-Ps-8",
+    equip: ["manubri"],
     desc: "Un manubrio con entrambe le mani dietro la nuca, gomiti fermi puntati al soffitto. Distendi le braccia in alto."
   }, {
     id: "d3e4",
@@ -533,6 +548,7 @@ const DAYS = [{
     weight: true,
     muscle: "Tricipiti",
     video: "qk_saNmVpR4",
+    equip: ["cavo"],
     desc: "Maniglia a V o singola, gomiti fermi vicino al busto. Spingi in basso usando solo i tricipiti."
   }, {
     id: "d3e5",
@@ -544,6 +560,7 @@ const DAYS = [{
     finisher: true,
     muscle: "Lombari",
     video: "yQK1khXw96c",
+    equip: ["manubri"],
     desc: "A terra pancia in giù, tieni un manubrio leggero con entrambe le mani contro il petto (o dietro la nuca). Sollevi busto e gambe insieme, tieni un attimo, scendi controllato."
   }]
 }, {
@@ -558,6 +575,7 @@ const DAYS = [{
     weight: true,
     muscle: "Petto",
     video: "6mWAqa41eKI",
+    equip: ["macchina"],
     desc: "Seduto sulla panca della macchina, schiena contro lo schienale, avambracci sui braccioli imbottiti. Spingi in avanti fino a unire i braccioli davanti al petto, torni controllato."
   }, {
     id: "d4e2",
@@ -567,6 +585,7 @@ const DAYS = [{
     rest: 90,
     weight: true,
     muscle: "Petto",
+    equip: ["manubri"],
     desc: "Sdraiato a terra, ginocchia piegate, gomiti vicini ai fianchi, un manubrio per mano all'altezza del petto con presa stretta. Spingi verso l'alto senza aprire i gomiti, i tricipiti a terra fanno da stop naturale a fine corsa. Torni giù controllato."
   }, {
     id: "d4e3",
@@ -577,6 +596,7 @@ const DAYS = [{
     weight: true,
     muscle: "Spalle",
     video: "oKh_mZTfsyc",
+    equip: ["manubri"],
     desc: "Seduto, manubri all'altezza delle spalle con i palmi rivolti verso di te e i gomiti bassi davanti al petto (come a fine di un curl). Mentre spingi verso l'alto, ruota i polsi in modo che i palmi finiscano rivolti in avanti a braccia quasi tese in cima. Torna giù invertendo la rotazione, controllato."
   }, {
     id: "d4e4",
@@ -587,6 +607,7 @@ const DAYS = [{
     weight: true,
     muscle: "Spalle",
     video: "--CaHn33JMA",
+    equip: ["manubri"],
     desc: "In piedi (o seduto sul bordo di una panca), busto piegato in avanti a circa 90°, schiena dritta, un manubrio per mano che pende verso il pavimento sotto le spalle, gomiti leggermente piegati e fissi per tutto il movimento. Senza slancio, apri le braccia lateralmente disegnando un arco verso l'alto fino a quando sono parallele al pavimento, stringendo le scapole tra loro in cima. Scendi controllato."
   }, {
     id: "d4e5",
@@ -598,6 +619,7 @@ const DAYS = [{
     finisher: true,
     muscle: "Addominali",
     video: "exdFR8iFlA8",
+    equip: ["cavo"],
     desc: "Seduto sulla panca della macchina, cavo in mano dietro la nuca. Curvi il busto in avanti portando i gomiti verso le ginocchia, poi torni su controllato senza mollare la tensione sul cavo."
   }, {
     id: "d4e6",
@@ -608,6 +630,7 @@ const DAYS = [{
     weight: true,
     finisher: true,
     muscle: "Collo",
+    equip: ["manubri"],
     desc: "Sdraiato su un fianco, manubrio leggero contro il lato della testa, sollevi la testa lateralmente verso la spalla. Cambi lato. Lento, mai a scatto."
   }]
 }, {
@@ -621,7 +644,8 @@ const DAYS = [{
     rest: 90,
     weight: true,
     muscle: "Bicipiti",
-    video: "EhYc2ua3cW4",
+    video: "3eDvOm1d5x0",
+    equip: ["manubri", "panca"],
     desc: "Seduto, schienale dritto, manubri lungo i fianchi con i palmi in avanti, gomiti fermi. Curl classico portando i manubri verso le spalle, busto fermo senza slancio."
   }, {
     id: "d5e2",
@@ -632,6 +656,7 @@ const DAYS = [{
     weight: true,
     muscle: "Bicipiti",
     video: "zi_OiMHzge8",
+    equip: ["manubri"],
     desc: "Come il curl normale ma palmi rivolti l'uno verso l'altro (presa neutra) per tutto il movimento."
   }, {
     id: "d5e3",
@@ -642,6 +667,7 @@ const DAYS = [{
     weight: true,
     muscle: "Tricipiti",
     video: "fY0GtRAcRY4",
+    equip: ["manubri"],
     desc: "Busto piegato in avanti a circa 90° (puoi appoggiare la mano libera su una sedia o sul ginocchio per stabilità), un manubrio nell'altra mano. Gomito piegato a 90° e fermo, alto e vicino al fianco, braccio superiore parallelo al pavimento. Distendi solo l'avambraccio all'indietro fino a braccio completamente teso, senza muovere il gomito, poi torna controllato."
   }, {
     id: "d5e4",
@@ -652,6 +678,7 @@ const DAYS = [{
     weight: true,
     muscle: "Tricipiti",
     video: "jhSawAaNeow",
+    equip: ["manubri"],
     desc: "Seduto o in piedi, un manubrio con un braccio sopra la testa, gomito fermo vicino all'orecchio senza aprirsi lateralmente. Pieghi il gomito portando il peso dietro la nuca, poi distendi tornando su."
   }, {
     id: "d5e5",
@@ -663,6 +690,7 @@ const DAYS = [{
     finisher: true,
     muscle: "Avambracci",
     video: "hrhucObQ-2k",
+    equip: ["molla"],
     desc: "Stringi a fondo corsa e rilasci controllato. Resistenza regolabile: aumenta il carico (kg) quando le ripetizioni diventano facili, così tieni traccia della progressione."
   }, {
     id: "d5e6",
@@ -673,7 +701,7 @@ const DAYS = [{
     weight: true,
     finisher: true,
     muscle: "Avambracci",
-    video: "AvzLsqgI6fo",
+    equip: ["manubri"],
     desc: "Come il curl al polso di Giorno 2 ma palmo giù: lavora gli estensori invece dei flessori."
   }, {
     id: "d5e7",
@@ -685,12 +713,13 @@ const DAYS = [{
     finisher: true,
     muscle: "Lombari",
     video: "yQK1khXw96c",
+    equip: ["manubri"],
     desc: "A terra pancia in giù, tieni un manubrio leggero con entrambe le mani contro il petto (o dietro la nuca). Sollevi busto e gambe insieme, tieni un attimo, scendi controllato."
   }]
 }];
 
 /* ---------------------------------------------------------
-   LIBRERIA — 22 esercizi extra, richiamabili dalla schermata
+   LIBRERIA — 32 esercizi extra, richiamabili dalla schermata
    Libreria/Editor per sostituire uno slot della scheda.
    Nessuno di questi è nella scheda di default.
 --------------------------------------------------------- */
@@ -702,6 +731,7 @@ const LIBRARY = [{
   reps: "12-15",
   rest: 60,
   weight: true,
+  equip: ["cavo"],
   desc: "In piedi tra due pulegge basse, un passo avanti, piedi piantati per stabilità. Porti le maniglie ad incrociarsi davanti al petto con un ampio arco, gomiti leggermente piegati e fissi."
 }, {
   id: "lib2",
@@ -711,6 +741,7 @@ const LIBRARY = [{
   reps: "8-10",
   rest: 90,
   weight: true,
+  equip: ["manubri"],
   desc: "Sdraiato a terra, gomiti vicini ai fianchi, manubri all'altezza del petto con presa stretta. Spingi verso l'alto senza aprire i gomiti: lavora molto anche il tricipite."
 }, {
   id: "lib5",
@@ -720,6 +751,7 @@ const LIBRARY = [{
   reps: "12-15",
   rest: 60,
   weight: true,
+  equip: ["manubri"],
   desc: "Sdraiato a terra, un manubrio tenuto con entrambe le mani sopra il petto. Porti il manubrio indietro oltre la testa mantenendo i gomiti leggermente piegati, poi torni su."
 }, {
   id: "lib6",
@@ -729,6 +761,7 @@ const LIBRARY = [{
   reps: "10-12",
   rest: 90,
   weight: true,
+  equip: ["cavo"],
   desc: "Seduto a terra come il rematore classico, ma con presa supina (palmi verso l'alto) sulla maniglia. Tiri verso l'addome portando i gomiti vicino ai fianchi: coinvolge di più i bicipiti insieme al dorso."
 }, {
   id: "lib7",
@@ -738,6 +771,7 @@ const LIBRARY = [{
   reps: "12-15",
   rest: 60,
   weight: true,
+  equip: ["cavo"],
   desc: "In piedi davanti al cavo alto con corda, tiri verso il viso separando le mani a fine corsa, gomiti alti. Ottimo per la parte alta della schiena e la postura."
 }, {
   id: "lib8",
@@ -747,6 +781,7 @@ const LIBRARY = [{
   reps: "10-12",
   rest: 90,
   weight: true,
+  equip: ["cavo"],
   desc: "Come la lat machine classica ma con le mani rivolte l'una verso l'altra sulla maniglia (se disponibile), tirando verso il petto alto."
 }, {
   id: "lib9",
@@ -756,6 +791,7 @@ const LIBRARY = [{
   reps: "12-15",
   rest: 60,
   weight: true,
+  equip: ["manubri"],
   desc: "In piedi, manubri davanti alle cosce. Sollevi un braccio alla volta (o insieme) fino all'altezza delle spalle, senza slancio, poi scendi controllato."
 }, {
   id: "lib10",
@@ -765,6 +801,7 @@ const LIBRARY = [{
   reps: "10-12",
   rest: 90,
   weight: true,
+  equip: ["cavo"],
   desc: "In piedi davanti al cavo basso, presa stretta sulla barra. Tiri verso l'alto lungo il corpo fino al petto, gomiti che guidano il movimento verso l'esterno."
 }, {
   id: "lib11",
@@ -774,6 +811,7 @@ const LIBRARY = [{
   reps: "12-15",
   rest: 60,
   weight: true,
+  equip: ["manubri"],
   desc: "Busto piegato in avanti a 45°, manubri leggeri. Sollevi le braccia disegnando una Y sopra la testa, pollici verso l'alto, poi scendi controllato."
 }, {
   id: "lib12",
@@ -783,6 +821,7 @@ const LIBRARY = [{
   reps: "10-12/lato",
   rest: 60,
   weight: true,
+  equip: ["cavo"],
   desc: "In piedi davanti al cavo basso, piedi piantati. Spingi la maniglia in avanti e in alto con un braccio, busto stabile senza ruotare, poi cambi lato."
 }, {
   id: "lib13",
@@ -792,6 +831,7 @@ const LIBRARY = [{
   reps: "10-12",
   rest: 60,
   weight: true,
+  equip: ["manubri", "panca"],
   desc: "Sdraiato su panca inclinata a 45-60°, braccia che pendono lungo i fianchi, presa neutra. Curl con maggiore stiramento iniziale del bicipite."
 }, {
   id: "lib14",
@@ -801,6 +841,7 @@ const LIBRARY = [{
   reps: "21 (7+7+7)",
   rest: 90,
   weight: true,
+  equip: ["manubri"],
   desc: "7 ripetizioni parziali dal basso a metà corsa, 7 ripetizioni parziali da metà a fine corsa, poi 7 ripetizioni complete. Tutto senza riposare tra i blocchi."
 }, {
   id: "lib15",
@@ -810,6 +851,7 @@ const LIBRARY = [{
   reps: "10-12/braccio",
   rest: 60,
   weight: true,
+  equip: ["manubri"],
   desc: "Seduto, gomito appoggiato all'interno della coscia dello stesso lato, braccio teso verso il basso. Curl isolato un braccio alla volta, busto fermo."
 }, {
   id: "lib16",
@@ -819,6 +861,7 @@ const LIBRARY = [{
   reps: "10-12",
   rest: 90,
   weight: true,
+  equip: ["manubri"],
   desc: "Seduto, un manubrio tenuto con entrambe le mani dietro la nuca, gomiti fermi e vicini alla testa. Distendi le braccia verso l'alto, busto verticale."
 }, {
   id: "lib17",
@@ -828,6 +871,7 @@ const LIBRARY = [{
   reps: "12-15",
   rest: 60,
   weight: true,
+  equip: ["cavo"],
   desc: "Schiena al cavo alto, corda tenuta con entrambe le mani dietro la testa, gomiti fermi puntati in avanti. Distendi le braccia in alto, gomiti fissi."
 }, {
   id: "lib18",
@@ -837,6 +881,7 @@ const LIBRARY = [{
   reps: "10-12",
   rest: 60,
   weight: true,
+  equip: ["manubri"],
   desc: "Busto piegato in avanti, un manubrio per mano, gomiti fermi e sollevati vicino ai fianchi. Distendi entrambi gli avambracci all'indietro insieme."
 }, {
   id: "lib19",
@@ -846,6 +891,7 @@ const LIBRARY = [{
   reps: "12-15",
   rest: 60,
   weight: true,
+  equip: ["cavo"],
   desc: "Come il push down classico ma con i palmi rivolti verso l'alto sulla barra. Gomiti fermi vicino al busto, spingi in basso."
 }, {
   id: "lib26",
@@ -855,6 +901,7 @@ const LIBRARY = [{
   reps: "10-12/lato",
   rest: 30,
   weight: true,
+  equip: ["manubri"],
   desc: "Sdraiato su un fianco su letto o tappetino, manubrio leggero contro la tempia. Ruoti la testa verso il soffitto e torni, lento e controllato. Cambi lato."
 }, {
   id: "lib27",
@@ -864,6 +911,7 @@ const LIBRARY = [{
   reps: "15-20/braccio",
   rest: 45,
   weight: true,
+  equip: ["manubri"],
   desc: "Seduto, avambraccio appoggiato sulla coscia, gomito a 90°, manubrio in mano verticale. Ruoti il polso portando il manubrio da un lato all'altro, come a girare una chiave."
 }, {
   id: "lib28",
@@ -873,6 +921,7 @@ const LIBRARY = [{
   reps: "30-40 sec",
   rest: 60,
   weight: true,
+  equip: ["manubri"],
   desc: "Un manubrio pesante per mano, cammini a passo normale mantenendo spalle basse e busto dritto, senza far dondolare i pesi. Ottimo anche per presa e core."
 }, {
   id: "lib29",
@@ -882,6 +931,7 @@ const LIBRARY = [{
   reps: "12-15",
   rest: 45,
   weight: true,
+  equip: ["manubri"],
   desc: "In piedi, manubri con palmi rivolti verso il basso (presa prona). Curl classico ma lavora molto di più avambraccio ed estensori del polso."
 }, {
   id: "lib30",
@@ -891,7 +941,110 @@ const LIBRARY = [{
   reps: "max secondi",
   rest: 60,
   weight: true,
+  equip: ["manubri"],
   desc: "Tieni in mano un manubrio pesante lungo il fianco il più a lungo possibile senza farlo scivolare, poi cambi mano. Il carico giusto è quello che regge 20-40 secondi."
+}, /* -------- esercizi con panca + manubri -------- */
+{
+  id: "lib31",
+  name: "Panca piana con manubri",
+  muscle: "Petto",
+  sets: 3,
+  reps: "8-10",
+  rest: 120,
+  weight: true,
+  equip: ["manubri", "panca"],
+  desc: "Sdraiato sulla panca piana, piedi ben piantati a terra, un manubrio per mano all'altezza del petto con i gomiti aperti a circa 45° dal busto. Spingi i manubri verso l'alto fino quasi a toccarli sopra il petto, poi scendi controllato fino a sentire un leggero stiramento sul petto."
+}, {
+  id: "lib32",
+  name: "Panca inclinata con manubri",
+  muscle: "Petto",
+  sets: 3,
+  reps: "8-10",
+  rest: 120,
+  weight: true,
+  equip: ["manubri", "panca"],
+  desc: "Panca inclinata a 30-45°, un manubrio per mano all'altezza del petto alto, gomiti a circa 45° dal busto. Spingi verso l'alto e leggermente indietro, senza far sbattere i manubri in cima, poi scendi controllato. Lavora di più la parte alta del pettorale rispetto alla panca piana."
+}, {
+  id: "lib33",
+  name: "Croci su panca piana con manubri",
+  muscle: "Petto",
+  sets: 2,
+  reps: "12-15",
+  rest: 60,
+  weight: true,
+  equip: ["manubri", "panca"],
+  desc: "Sdraiato sulla panca piana, manubri sopra il petto con i palmi rivolti l'uno verso l'altro, gomiti leggermente piegati e fissi per tutto il movimento. Apri le braccia lateralmente disegnando un arco fino a sentire lo stiramento sul petto, poi richiudi senza far scontrare i pesi in cima."
+}, {
+  id: "lib34",
+  name: "Croci su panca inclinata con manubri",
+  muscle: "Petto",
+  sets: 2,
+  reps: "12-15",
+  rest: 60,
+  weight: true,
+  equip: ["manubri", "panca"],
+  desc: "Come le croci su panca piana ma con la panca inclinata a 30-45°: stesso movimento ad arco con gomiti fissi, ma lo stiramento si sposta sulla parte alta del pettorale."
+}, {
+  id: "lib35",
+  name: "Pullover su panca con manubrio",
+  muscle: "Dorso",
+  sets: 2,
+  reps: "12-15",
+  rest: 60,
+  weight: true,
+  equip: ["manubri", "panca"],
+  desc: "Sdraiato di traverso sulla panca piana, solo le spalle appoggiate, bacino basso e piedi a terra per stabilità. Un manubrio tenuto con entrambe le mani sopra il petto, gomiti leggermente piegati e fissi. Porti il manubrio indietro oltre la testa in un arco ampio finché senti lo stiramento sul dorso/gran dorsale, poi torni su."
+}, {
+  id: "lib36",
+  name: "Rematore a un braccio su panca",
+  muscle: "Dorso",
+  sets: 3,
+  reps: "8-10/braccio",
+  rest: 90,
+  weight: true,
+  equip: ["manubri", "panca"],
+  desc: "Un ginocchio e la mano dello stesso lato appoggiati sulla panca, schiena parallela al pavimento e dritta, l'altro piede a terra. Manubrio nella mano libera, braccio disteso verso il basso. Tiri il gomito indietro e in alto vicino al fianco, scapola che si stringe, poi scendi controllato senza ruotare il busto."
+}, {
+  id: "lib37",
+  name: "Shoulder press seduto su panca con manubri",
+  muscle: "Spalle",
+  sets: 3,
+  reps: "8-10",
+  rest: 120,
+  weight: true,
+  equip: ["manubri", "panca"],
+  desc: "Seduto sulla panca con schienale verticale, manubri all'altezza delle spalle con i palmi in avanti. Spingi verso l'alto fino a braccia quasi tese senza inarcare la schiena contro lo schienale, poi scendi controllato."
+}, {
+  id: "lib38",
+  name: "French press su panca (skull crusher con manubri)",
+  muscle: "Tricipiti",
+  sets: 3,
+  reps: "8-10",
+  rest: 90,
+  weight: true,
+  equip: ["manubri", "panca"],
+  desc: "Sdraiato sulla panca piana, un manubrio per mano tenuto sopra il petto con le braccia tese, gomiti fermi puntati al soffitto. Pieghi solo i gomiti portando i manubri verso le tempie/dietro la testa, poi distendi tornando su senza muovere i gomiti lateralmente."
+}, {
+  id: "lib39",
+  name: "Crunch su panca con manubrio",
+  muscle: "Addominali",
+  sets: 3,
+  reps: "15-20",
+  rest: 45,
+  weight: true,
+  finisher: true,
+  equip: ["manubri", "panca"],
+  desc: "Sdraiato sulla panca piana (o con i piedi agganciati/appoggiati a un'estremità), un manubrio tenuto con entrambe le mani contro il petto. Esegui il crunch classico, sali contraendo l'addome, scendi controllato senza sbattere la schiena sulla panca."
+}, {
+  id: "lib40",
+  name: "Spider curl su panca inclinata",
+  muscle: "Bicipiti",
+  sets: 2,
+  reps: "10-12",
+  rest: 60,
+  weight: true,
+  equip: ["manubri", "panca"],
+  desc: "Petto e stomaco appoggiati sul lato inclinato della panca (schienale a 45-60°, tu affacciato dall'altra parte), braccia che pendono verso il basso, un manubrio per mano. Curl isolato senza poter usare slancio del busto, massima contrazione in cima, scendi controllato."
 }];
 const STORAGE_KEY = "puro-tracker-log";
 const PR_STORAGE_KEY = "puro-tracker-prs";
@@ -899,6 +1052,60 @@ const OVERRIDES_KEY = "puro-day-overrides";
 const ROTATION_KEY = "puro-last-rotation";
 const SESSION_STATE_KEY = "puro-session-inprogress";
 const LAST_BACKUP_COUNT_KEY = "puro-last-backup-session-count";
+const LIKES_KEY = "puro-exercise-likes";
+const ROTATION_ENABLED_KEY = "puro-rotation-enabled";
+const ROTATION_INTERVAL_KEY = "puro-rotation-interval-days";
+function loadLikes() {
+  try {
+    const raw = localStorage.getItem(LIKES_KEY);
+    if (raw) return JSON.parse(raw);
+  } catch (e) {/* nessuna preferenza ancora, ok */}
+  return {};
+}
+function saveLikes(likes) {
+  try {
+    localStorage.setItem(LIKES_KEY, JSON.stringify(likes));
+  } catch (e) {/* riprova al prossimo salvataggio */}
+}
+function isRotationEnabled() {
+  try {
+    return localStorage.getItem(ROTATION_ENABLED_KEY) !== "off";
+  } catch (e) {
+    return true;
+  }
+}
+function getRotationIntervalDays() {
+  try {
+    const v = parseInt(localStorage.getItem(ROTATION_INTERVAL_KEY), 10);
+    if (v && v > 0) return v;
+  } catch (e) {/* usa il default */}
+  return 30;
+}
+const EQUIPMENT_KEY = "puro-equipment";
+const ALL_EQUIPMENT = ["manubri", "panca", "macchina", "cavo", "molla"];
+const EQUIPMENT_LABELS = {
+  manubri: "Manubri",
+  panca: "Panca",
+  macchina: "Macchine (chest press, ecc.)",
+  cavo: "Cavi / lat machine / pulley",
+  molla: "Molla avambracci"
+};
+function loadEquipment() {
+  try {
+    const raw = localStorage.getItem(EQUIPMENT_KEY);
+    if (raw) return JSON.parse(raw);
+  } catch (e) {/* prima volta, ok */}
+  return ALL_EQUIPMENT.slice(); // default: tutto disponibile
+}
+function saveEquipment(list) {
+  try {
+    localStorage.setItem(EQUIPMENT_KEY, JSON.stringify(list));
+  } catch (e) {}
+}
+function exerciseUsable(ex, equipment) {
+  if (!ex.equip || ex.equip.length === 0) return true;
+  return ex.equip.every(e => equipment.includes(e));
+}
 
 /* ---------------------------------------------------------
    POOL esercizi (scheda + libreria) e gestione slot/override
@@ -975,6 +1182,10 @@ function allUsedExIds(overrides) {
 /* ---- rotazione automatica mensile: sostituisce 1 esercizio al mese
    con uno della libreria dello stesso gruppo muscolare ---- */
 function maybeRotate(overrides) {
+  if (!isRotationEnabled()) return {
+    overrides,
+    note: null
+  };
   let lastDate = null;
   try {
     lastDate = localStorage.getItem(ROTATION_KEY);
@@ -989,11 +1200,13 @@ function maybeRotate(overrides) {
       note: null
     };
   }
-  if (daysBetween(lastDate, today) < 30) return {
+  if (daysBetween(lastDate, today) < getRotationIntervalDays()) return {
     overrides,
     note: null
   };
   const used = allUsedExIds(overrides);
+  const likes = loadLikes();
+  const equipment = loadEquipment();
   const slotsPool = [];
   DAYS.forEach(d => {
     getDaySlots(d, overrides).forEach((slot, i) => slotsPool.push({
@@ -1014,7 +1227,7 @@ function maybeRotate(overrides) {
   } of slotsPool) {
     const oldEx = POOL[slot.exId];
     if (!oldEx || !oldEx.muscle) continue;
-    const candidates = LIBRARY.filter(l => l.muscle === oldEx.muscle && !used.has(l.id));
+    const candidates = LIBRARY.filter(l => l.muscle === oldEx.muscle && !used.has(l.id) && likes[l.id] !== "dislike" && exerciseUsable(l, equipment));
     if (candidates.length === 0) continue;
     const chosen = candidates[Math.floor(Math.random() * candidates.length)];
     const nextOverrides = setSlotExercise(overrides, dayId, slotIdx, chosen.id);
@@ -1229,7 +1442,11 @@ function exportBackup(sessionCount) {
     prLog: localStorage.getItem(PR_STORAGE_KEY),
     overrides: localStorage.getItem(OVERRIDES_KEY),
     rotation: localStorage.getItem(ROTATION_KEY),
-    accent: localStorage.getItem(ACCENT_KEY)
+    accent: localStorage.getItem(ACCENT_KEY),
+    likes: localStorage.getItem(LIKES_KEY),
+    rotationEnabled: localStorage.getItem(ROTATION_ENABLED_KEY),
+    rotationInterval: localStorage.getItem(ROTATION_INTERVAL_KEY),
+    equipment: localStorage.getItem(EQUIPMENT_KEY)
   };
   const blob = new Blob([JSON.stringify(bundle)], {
     type: "application/json"
@@ -1266,6 +1483,10 @@ function importBackup(file, onDone) {
       if (bundle.overrides != null) localStorage.setItem(OVERRIDES_KEY, bundle.overrides);
       if (bundle.rotation != null) localStorage.setItem(ROTATION_KEY, bundle.rotation);
       if (bundle.accent != null) localStorage.setItem(ACCENT_KEY, bundle.accent);
+      if (bundle.likes != null) localStorage.setItem(LIKES_KEY, bundle.likes);
+      if (bundle.rotationEnabled != null) localStorage.setItem(ROTATION_ENABLED_KEY, bundle.rotationEnabled);
+      if (bundle.rotationInterval != null) localStorage.setItem(ROTATION_INTERVAL_KEY, bundle.rotationInterval);
+      if (bundle.equipment != null) localStorage.setItem(EQUIPMENT_KEY, bundle.equipment);
       onDone(null, bundle);
     } catch (err) {
       onDone(err, null);
@@ -2897,12 +3118,27 @@ function LibraryScreen({
   const [dayIdx, setDayIdx] = useState(0);
   const [editingSlot, setEditingSlot] = useState(null); // { slotIdx, muscle } | null
   const [openDesc, setOpenDesc] = useState({});
+  const [likes, setLikes] = useState(loadLikes);
+  const [equipment] = useState(loadEquipment);
   const day = days[dayIdx];
   const defaultDay = DAYS[dayIdx];
+  const toggleLike = (exId, value) => {
+    setLikes(prev => {
+      const next = {
+        ...prev
+      };
+      if (next[exId] === value) delete next[exId]; // ri-clicca per togliere
+      else next[exId] = value;
+      saveLikes(next);
+      return next;
+    });
+  };
   if (editingSlot != null) {
     const usedIds = new Set();
     days.forEach(d => d.exercises.forEach(e => usedIds.add(e.id)));
-    const candidates = LIBRARY.filter(l => l.muscle === editingSlot.muscle);
+    const allCandidates = LIBRARY.filter(l => l.muscle === editingSlot.muscle);
+    const candidates = allCandidates.filter(l => exerciseUsable(l, equipment));
+    const hiddenCount = allCandidates.length - candidates.length;
     return /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("div", {
       className: "sess-top"
     }, /*#__PURE__*/React.createElement("button", {
@@ -2917,8 +3153,10 @@ function LibraryScreen({
       style: {
         marginBottom: 14
       }
-    }, "Scegli un esercizio della libreria per lo stesso gruppo muscolare."), candidates.map(c => {
+    }, "Scegli un esercizio della libreria per lo stesso gruppo muscolare. Segna 👎 quelli che non ti piacciono: verranno esclusi dalla rotazione automatica.", hiddenCount > 0 && /*#__PURE__*/React.createElement(React.Fragment, null, " ", hiddenCount, " nascosti perché servono attrezzatura che non hai selezionato in Impostazioni.")), candidates.map(c => {
       const inUse = usedIds.has(c.id) && c.id !== editingSlot.currentId;
+      const liked = likes[c.id] === "like";
+      const disliked = likes[c.id] === "dislike";
       return /*#__PURE__*/React.createElement("div", {
         key: c.id,
         className: "card",
@@ -2944,12 +3182,37 @@ function LibraryScreen({
         style: {
           marginLeft: 6
         }
-      }, "già in uso"))), openDesc[c.id] && /*#__PURE__*/React.createElement("div", {
+      }, "già in uso"), disliked && /*#__PURE__*/React.createElement("span", {
+        className: "suggested-tag",
+        style: {
+          marginLeft: 6
+        }
+      }, "escluso dalla rotazione"))), openDesc[c.id] && /*#__PURE__*/React.createElement("div", {
         className: "ex-desc",
         style: {
           marginBottom: 10
         }
-      }, c.desc), /*#__PURE__*/React.createElement("button", {
+      }, c.desc), /*#__PURE__*/React.createElement("div", {
+        style: {
+          display: "flex",
+          gap: 8,
+          marginBottom: 8
+        }
+      }, /*#__PURE__*/React.createElement("button", {
+        className: "nav-btn",
+        style: {
+          flex: 1,
+          opacity: liked ? 1 : 0.55
+        },
+        onClick: () => toggleLike(c.id, "like")
+      }, "👍 Mi piace"), /*#__PURE__*/React.createElement("button", {
+        className: "nav-btn",
+        style: {
+          flex: 1,
+          opacity: disliked ? 1 : 0.55
+        },
+        onClick: () => toggleLike(c.id, "dislike")
+      }, "👎 Non mi piace")), /*#__PURE__*/React.createElement("button", {
         className: "set-btn",
         disabled: inUse,
         onClick: () => {
@@ -2973,7 +3236,7 @@ function LibraryScreen({
     style: {
       marginBottom: 16
     }
-  }, "22 esercizi extra, con descrizione, per cambiare varietà. Ogni mese uno slot viene ruotato in automatico da solo; qui puoi anche farlo a mano."), /*#__PURE__*/React.createElement("div", {
+  }, "32 esercizi extra, con descrizione, per cambiare varietà. Uno slot viene ruotato in automatico ogni tanto (calibrabile in Impostazioni); qui puoi anche farlo a mano."), /*#__PURE__*/React.createElement("div", {
     className: "day-tabs-lib"
   }, days.map((d, i) => /*#__PURE__*/React.createElement("button", {
     key: d.id,
@@ -3068,6 +3331,34 @@ function SettingsScreen({
     if (file) onImportBackup(file);
     e.target.value = "";
   };
+  const [rotationEnabled, setRotationEnabled] = useState(isRotationEnabled);
+  const [rotationInterval, setRotationInterval] = useState(getRotationIntervalDays);
+  const [equipment, setEquipment] = useState(loadEquipment);
+  const toggleEquip = key => {
+    setEquipment(prev => {
+      const has = prev.includes(key);
+      const next = has ? prev.filter(e => e !== key) : [...prev, key];
+      saveEquipment(next);
+      return next;
+    });
+  };
+  const setEquipPreset = list => {
+    setEquipment(list);
+    saveEquipment(list);
+  };
+  const toggleRotation = () => {
+    const next = !rotationEnabled;
+    setRotationEnabled(next);
+    try {
+      localStorage.setItem(ROTATION_ENABLED_KEY, next ? "on" : "off");
+    } catch (e) {}
+  };
+  const changeInterval = days => {
+    setRotationInterval(days);
+    try {
+      localStorage.setItem(ROTATION_INTERVAL_KEY, String(days));
+    } catch (e) {}
+  };
   return /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("div", {
     className: "sess-top"
   }, /*#__PURE__*/React.createElement("button", {
@@ -3108,6 +3399,100 @@ function SettingsScreen({
     },
     onChange: handleFileChange
   })), /*#__PURE__*/React.createElement("div", {
+    className: "section-lbl"
+  }, "La tua attrezzatura"), /*#__PURE__*/React.createElement("div", {
+    className: "card",
+    style: {
+      marginBottom: 18
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "h-sub",
+    style: {
+      marginBottom: 14
+    }
+  }, "Solo gli esercizi della libreria compatibili con quello che hai selezionato ti verranno proposti (nel cambio slot e nella rotazione automatica). Gli esercizi già presenti nella tua scheda non vengono toccati."), /*#__PURE__*/React.createElement("div", {
+    style: {
+      display: "flex",
+      gap: 8,
+      marginBottom: 14,
+      flexWrap: "wrap"
+    }
+  }, /*#__PURE__*/React.createElement("button", {
+    className: "nav-btn",
+    style: {
+      flex: 1
+    },
+    onClick: () => setEquipPreset(["manubri"])
+  }, "Solo manubri"), /*#__PURE__*/React.createElement("button", {
+    className: "nav-btn",
+    style: {
+      flex: 1
+    },
+    onClick: () => setEquipPreset(["manubri", "panca"])
+  }, "Manubri + panca"), /*#__PURE__*/React.createElement("button", {
+    className: "nav-btn",
+    style: {
+      flex: 1
+    },
+    onClick: () => setEquipPreset(ALL_EQUIPMENT.slice())
+  }, "Palestra completa")), ALL_EQUIPMENT.map(key => /*#__PURE__*/React.createElement("div", {
+    key: key,
+    className: "row",
+    style: {
+      marginBottom: 8
+    }
+  }, /*#__PURE__*/React.createElement("span", {
+    className: "row-name"
+  }, EQUIPMENT_LABELS[key]), /*#__PURE__*/React.createElement("button", {
+    className: "nav-btn" + (equipment.includes(key) ? " primary" : ""),
+    style: {
+      padding: "7px 14px"
+    },
+    onClick: () => toggleEquip(key)
+  }, equipment.includes(key) ? "Sì" : "No")))), /*#__PURE__*/React.createElement("div", {
+    className: "section-lbl"
+  }, "Rotazione libreria"), /*#__PURE__*/React.createElement("div", {
+    className: "card",
+    style: {
+      marginBottom: 18
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "h-sub",
+    style: {
+      marginBottom: 14
+    }
+  }, "Ogni tot giorni, un esercizio a caso viene sostituito con uno della libreria dello stesso gruppo muscolare (esclusi quelli segnati 👎 nella Libreria). Puoi disattivarla o cambiare l'intervallo."), /*#__PURE__*/React.createElement("div", {
+    className: "row",
+    style: {
+      marginBottom: rotationEnabled ? 14 : 0
+    }
+  }, /*#__PURE__*/React.createElement("span", {
+    className: "row-name"
+  }, "Rotazione automatica"), /*#__PURE__*/React.createElement("button", {
+    className: "nav-btn" + (rotationEnabled ? " primary" : ""),
+    style: {
+      padding: "8px 16px"
+    },
+    onClick: toggleRotation
+  }, rotationEnabled ? "Attiva" : "Disattivata")), rotationEnabled && /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("div", {
+    className: "field-lbl",
+    style: {
+      marginBottom: 7
+    }
+  }, "Ogni quanti giorni"), /*#__PURE__*/React.createElement("div", {
+    style: {
+      display: "flex",
+      gap: 8
+    }
+  }, [14, 30, 60, 90].map(d => /*#__PURE__*/React.createElement("button", {
+    key: d,
+    className: "nav-btn" + (rotationInterval === d ? " primary" : ""),
+    style: {
+      flex: 1,
+      padding: "9px 4px"
+    },
+    onClick: () => changeInterval(d)
+  }, d, "g"))))), /*#__PURE__*/React.createElement("div", {
     className: "h-sub",
     style: {
       marginBottom: 18
