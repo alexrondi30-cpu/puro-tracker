@@ -2,52 +2,310 @@
 <html lang="it">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Steroids</title>
-<link rel="manifest" href="manifest.json?v=1786034550091">
-<link rel="icon" href="icon-192.png?v=1786034550091" type="image/png">
-<link rel="apple-touch-icon" href="apple-touch-icon.png?v=1786034550091">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+<title>PokéWallet</title>
+<meta name="theme-color" content="#111318">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="apple-mobile-web-app-title" content="Steroids">
-<meta name="theme-color" content="#0e0d0b">
+<meta name="apple-mobile-web-app-title" content="PokéWallet">
+<link rel="manifest" href="manifest.json?v=1786044598344">
+<link rel="apple-touch-icon" href="apple-touch-icon.png?v=1786044598344">
+<link rel="icon" href="icon-192.png?v=1786044598344">
 <style>
-  html, body, #root { margin: 0; padding: 0; background: #0e0d0b; min-height: 100%; }
-  #boot-splash {
-    position: fixed; inset: 0; z-index: 9999;
-    background: radial-gradient(circle at 50% 38%, #201a16 0%, #0e0d0b 70%);
-    display: flex; flex-direction: column; align-items: center; justify-content: center;
-    transition: opacity .5s ease, visibility 0s linear .5s;
-  }
-  #boot-splash.hide { opacity: 0; visibility: hidden; pointer-events: none; }
-  #boot-splash img {
-    width: min(46vw, 230px); height: min(46vw, 230px);
-    border-radius: 28px; box-shadow: 0 0 60px 10px rgba(228,54,43,0.35), 0 8px 30px rgba(0,0,0,0.6);
-    animation: bootPulse 1.8s ease-in-out infinite;
-  }
-  #boot-splash .boot-name {
-    margin-top: 22px; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-    font-weight: 800; letter-spacing: 3px; font-size: 22px; color: #f4ede8;
-    text-transform: uppercase;
-  }
-  #boot-splash .boot-sub {
-    margin-top: 6px; font-size: 12px; letter-spacing: 2px; color: #8a7f77; text-transform: uppercase;
-  }
-  @keyframes bootPulse {
-    0%, 100% { transform: scale(1); }
-    50% { transform: scale(1.045); }
-  }
+:root {
+  --accent: #ffcb05;
+  --bg: #111318;
+  --bg-card: #1b1e26;
+  --bg-card-2: #22262f;
+  --text: #f2f3f5;
+  --text-dim: #9aa0ab;
+  --border: #2a2e38;
+  --up: #2ecc71;
+  --down: #ff5c5c;
+  --danger: #ff5c5c;
+}
+
+* { box-sizing: border-box; }
+
+html, body {
+  margin: 0;
+  padding: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  -webkit-tap-highlight-color: transparent;
+  overscroll-behavior-y: contain;
+}
+
+#root { min-height: 100vh; }
+
+.app-root {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.app-header {
+  padding: 16px 16px 8px;
+  position: sticky;
+  top: 0;
+  background: var(--bg);
+  z-index: 5;
+}
+.app-header h1 {
+  margin: 0;
+  font-size: 20px;
+  color: var(--accent);
+}
+
+.app-main {
+  flex: 1;
+  padding: 8px 16px 90px;
+  overflow-y: auto;
+}
+
+.screen { display: flex; flex-direction: column; gap: 10px; }
+
+.bottom-nav {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  background: var(--bg-card);
+  border-top: 1px solid var(--border);
+  padding: 6px 4px calc(6px + env(safe-area-inset-bottom));
+  z-index: 10;
+}
+.nav-btn {
+  flex: 1;
+  background: none;
+  border: none;
+  color: var(--text-dim);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  padding: 6px 2px;
+  font-size: 10px;
+  border-radius: 10px;
+}
+.nav-btn.active { color: var(--accent); }
+.nav-icon { font-size: 18px; }
+
+.summary-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin: 8px 0;
+}
+.summary-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 12px;
+}
+.summary-label { font-size: 12px; color: var(--text-dim); }
+.summary-value { font-size: 20px; font-weight: 700; margin-top: 2px; }
+.summary-value.up, .value-delta.up { color: var(--up); }
+.summary-value.down, .value-delta.down { color: var(--down); }
+
+.stock-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+  margin-bottom: 4px;
+}
+.stock-grid .summary-card { padding: 10px 8px; }
+.stock-grid .summary-value { font-size: 17px; }
+
+.card-row-status {
+  display: inline-block;
+  margin-top: 3px;
+  font-size: 11px;
+  color: var(--accent);
+  border: 1px solid var(--accent);
+  border-radius: 6px;
+  padding: 1px 6px;
+}
+
+.flip-status-select { margin-top: 6px; width: auto; padding: 4px 8px; font-size: 12px; }
+
+.alert-title { color: var(--down); }
+.alert-row {
+  border: 1px solid var(--down);
+  border-radius: 14px;
+  box-shadow: 0 0 0 1px rgba(255,92,92,0.15);
+}
+.alert-row .card-row { border-color: transparent; }
+
+.section-title {
+  font-size: 14px;
+  color: var(--text-dim);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  margin: 14px 0 4px;
+}
+
+.card-list { display: flex; flex-direction: column; gap: 8px; }
+
+.card-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 8px 10px;
+  cursor: pointer;
+}
+.card-row-thumb {
+  width: 44px; height: 60px;
+  border-radius: 6px;
+  overflow: hidden;
+  flex-shrink: 0;
+  background: var(--bg-card-2);
+  display: flex; align-items: center; justify-content: center;
+}
+.card-row-thumb img { width: 100%; height: 100%; object-fit: cover; }
+.thumb-placeholder { color: var(--text-dim); font-size: 12px; }
+.thumb-placeholder.large { width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; }
+
+.card-row-info { flex: 1; min-width: 0; }
+.card-row-name { font-weight: 600; font-size: 15px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.card-row-meta { font-size: 12px; color: var(--text-dim); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+.card-row-value { text-align: right; flex-shrink: 0; }
+.value-amount { font-weight: 700; }
+.value-delta { font-size: 12px; }
+
+.empty-state {
+  color: var(--text-dim);
+  text-align: center;
+  padding: 30px 10px;
+  font-size: 14px;
+}
+
+.search-row { display: flex; gap: 8px; align-items: center; }
+
+.text-input {
+  width: 100%;
+  background: var(--bg-card-2);
+  border: 1px solid var(--border);
+  color: var(--text);
+  border-radius: 10px;
+  padding: 10px 12px;
+  font-size: 15px;
+}
+textarea.text-input { resize: vertical; font-family: inherit; }
+
+.btn-primary, .btn-secondary, .btn-danger {
+  border: none;
+  border-radius: 10px;
+  padding: 10px 16px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+}
+.btn-primary { background: var(--accent); color: #111318; }
+.btn-secondary { background: var(--bg-card-2); color: var(--text); border: 1px solid var(--border); }
+.btn-danger { background: transparent; color: var(--danger); border: 1px solid var(--danger); }
+.btn-link { background: none; border: none; color: var(--accent); padding: 4px 0; text-align: left; font-size: 14px; }
+.btn-icon { background: none; border: none; color: var(--text-dim); font-size: 14px; padding: 2px 6px; }
+.full-width { width: 100%; }
+
+.form-group { display: flex; flex-direction: column; gap: 4px; margin-bottom: 8px; }
+.form-group label { font-size: 12px; color: var(--text-dim); }
+.form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.form-actions { display: flex; gap: 8px; justify-content: flex-end; margin-top: 8px; }
+.checkbox-label { display: flex; align-items: center; gap: 8px; font-size: 14px; }
+
+.image-picker {
+  width: 120px; height: 160px;
+  border: 1px dashed var(--border);
+  border-radius: 10px;
+  display: flex; align-items: center; justify-content: center;
+  overflow: hidden;
+  cursor: pointer;
+  background: var(--bg-card-2);
+}
+.image-picker img { width: 100%; height: 100%; object-fit: cover; }
+
+.detail-header { display: flex; gap: 12px; align-items: flex-start; }
+.detail-image {
+  width: 90px; height: 120px;
+  border-radius: 10px;
+  overflow: hidden;
+  background: var(--bg-card-2);
+  flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center;
+}
+.detail-image img { width: 100%; height: 100%; object-fit: cover; }
+.detail-header h2 { margin: 0 0 4px; font-size: 18px; }
+.hint { font-size: 12px; color: var(--text-dim); }
+.sold-badge { margin-top: 6px; font-size: 12px; color: var(--up); }
+
+.history-list, .restoration-box { display: flex; flex-direction: column; gap: 6px; }
+.history-row {
+  display: grid; grid-template-columns: 1fr auto auto; gap: 10px;
+  background: var(--bg-card); border: 1px solid var(--border); border-radius: 10px;
+  padding: 8px 10px; font-size: 13px;
+}
+
+.task-row { display: flex; align-items: center; justify-content: space-between; }
+.done-text { text-decoration: line-through; color: var(--text-dim); }
+
+.accent-row { display: flex; gap: 10px; align-items: center; margin-bottom: 10px; }
+.accent-dot { width: 30px; height: 30px; border-radius: 50%; border: 2px solid transparent; cursor: pointer; }
+.accent-dot.selected { border-color: var(--text); }
+
+.modal-overlay {
+  position: fixed; inset: 0;
+  background: rgba(0,0,0,0.6);
+  display: flex; align-items: flex-end;
+  z-index: 50;
+}
+.modal {
+  background: var(--bg-card);
+  border-radius: 18px 18px 0 0;
+  padding: 18px;
+  width: 100%;
+  max-height: 85vh;
+  overflow-y: auto;
+}
+.modal h3 { margin-top: 0; }
+
+.result-list { display: flex; flex-direction: column; gap: 6px; max-height: 240px; overflow-y: auto; }
+.result-row { display: flex; align-items: center; gap: 8px; padding: 6px; border-radius: 8px; cursor: pointer; background: var(--bg-card-2); }
+.result-row img { width: 30px; height: 42px; object-fit: cover; border-radius: 4px; }
+.picked-box { background: var(--bg-card-2); border-radius: 10px; padding: 10px; margin-top: 8px; }
+
+.error-text { color: var(--down); font-size: 13px; }
+
+#boot-splash {
+  position: fixed; inset: 0;
+  background: var(--bg);
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  gap: 14px;
+  z-index: 999;
+  transition: opacity 0.4s ease;
+}
+.boot-icon { width: 96px; height: 96px; border-radius: 24px; animation: pulse 1.6s ease-in-out infinite; }
+.boot-title { color: var(--accent); font-weight: 700; font-size: 18px; }
+@keyframes pulse {
+  0%, 100% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.06); opacity: 0.85; }
+}
+
 </style>
 </head>
 <body>
 <div id="boot-splash">
-  <img src="icon-512.png?v=1786034550091" alt="">
-  <div class="boot-name">Steroids</div>
-  <div class="boot-sub">Training Log</div>
+  <img src="icon-192.png?v=1786044598344" alt="" class="boot-icon">
+  <div class="boot-title">PokéWallet</div>
 </div>
 <div id="root"></div>
-<script>
-/**
+<script>/**
  * @license React
  * react.production.min.js
  *
@@ -78,10 +336,8 @@ render:a}};c.isValidElement=M;c.lazy=function(a){return{$$typeof:Aa,_payload:{_s
 c.useEffect=function(a,b){return g.current.useEffect(a,b)};c.useId=function(){return g.current.useId()};c.useImperativeHandle=function(a,b,c){return g.current.useImperativeHandle(a,b,c)};c.useInsertionEffect=function(a,b){return g.current.useInsertionEffect(a,b)};c.useLayoutEffect=function(a,b){return g.current.useLayoutEffect(a,b)};c.useMemo=function(a,b){return g.current.useMemo(a,b)};c.useReducer=function(a,b,c){return g.current.useReducer(a,b,c)};c.useRef=function(a){return g.current.useRef(a)};
 c.useState=function(a){return g.current.useState(a)};c.useSyncExternalStore=function(a,b,c){return g.current.useSyncExternalStore(a,b,c)};c.useTransition=function(){return g.current.useTransition()};c.version="18.3.1"});
 })();
-
 </script>
-<script>
-/**
+<script>/**
  * @license React
  * react-dom.production.min.js
  *
@@ -348,3307 +604,1224 @@ c,!1,d,e);a[Ja]=b.current;sc(8===a.nodeType?a.parentNode:a);return new Xf(b)};Q.
 var d=null!=c&&c.hydratedSources||null,e=!1,f="",g=aj;null!==c&&void 0!==c&&(!0===c.unstable_strictMode&&(e=!0),void 0!==c.identifierPrefix&&(f=c.identifierPrefix),void 0!==c.onRecoverableError&&(g=c.onRecoverableError));b=Wi(b,null,a,1,null!=c?c:null,e,!1,f,g);a[Ja]=b.current;sc(a);if(d)for(a=0;a<d.length;a++)c=d[a],e=c._getVersion,e=e(c._source),null==b.mutableSourceEagerHydrationData?b.mutableSourceEagerHydrationData=[c,e]:b.mutableSourceEagerHydrationData.push(c,e);return new Ud(b)};Q.render=
 function(a,b,c){if(!Vd(b))throw Error(m(200));return Wd(null,a,b,!1,c)};Q.unmountComponentAtNode=function(a){if(!Vd(a))throw Error(m(40));return a._reactRootContainer?(yb(function(){Wd(null,null,a,!1,function(){a._reactRootContainer=null;a[Ja]=null})}),!0):!1};Q.unstable_batchedUpdates=Tf;Q.unstable_renderSubtreeIntoContainer=function(a,b,c,d){if(!Vd(c))throw Error(m(200));if(null==a||void 0===a._reactInternals)throw Error(m(38));return Wd(a,b,c,!1,d)};Q.version="18.3.1-next-f1338f8080-20240426"});
 })();
-
 </script>
 <script>
 const {
   useState,
   useEffect,
-  useRef,
-  useCallback
+  useMemo,
+  useRef
 } = React;
-/* ---------------------------------------------------------
-   DATI SCHEDA — 5 giorni, upper body, multifrequenza
---------------------------------------------------------- */
-const DAYS = [{
-  id: 1,
-  title: "Petto + Dorso",
-  exercises: [{
-    id: "d1e1",
-    name: "Rematore con manubri, busto piegato in avanti",
-    sets: 3,
-    reps: "8-10",
-    rest: 120,
-    weight: true,
-    muscle: "Dorso",
-    video: "fgcoj-vxSYw",
-    equip: ["manubri"],
-    desc: "In piedi, ginocchia leggermente piegate, busto piegato in avanti a circa 45° con la schiena dritta (non curva, non a terra). Un manubrio per mano, lascia le braccia pendere, poi tira i gomiti indietro portando i manubri verso i fianchi, scapole che si stringono. Scendi controllato, senza slancio."
-  }, {
-    id: "d1e2",
-    name: "Chest press alla macchina",
-    sets: 3,
-    reps: "8-10",
-    rest: 120,
-    weight: true,
-    muscle: "Petto",
-    video: "6mWAqa41eKI",
-    equip: ["macchina"],
-    desc: "Seduto sulla panca, schiena contro lo schienale, avambracci sui braccioli imbottiti. Spingi in avanti fino a unire i braccioli davanti al petto, torni controllato."
-  }, {
-    id: "d1e3",
-    name: "Lat machine presa larga",
-    sets: 2,
-    reps: "10-12",
-    rest: 90,
-    weight: true,
-    muscle: "Dorso",
-    video: "D39HlngiWac",
-    equip: ["cavo"],
-    desc: "Seduto sotto il cavo alto, ginocchia bloccate sotto l'imbottitura, presa larga sulla barra (più larga delle spalle), braccia tese sopra la testa. Tiri la barra verso il petto alto portando i gomiti in basso e indietro, senza inarcare la schiena. Risali controllato fino a braccia quasi tese."
-  }, {
-    id: "d1e4",
-    name: "Crunch al cavo, seduto",
-    sets: 3,
-    reps: "15-20",
-    rest: 45,
-    weight: true,
-    finisher: true,
-    muscle: "Addominali",
-    video: "exdFR8iFlA8",
-    equip: ["cavo"],
-    desc: "Seduto sulla panca della macchina, cavo in mano dietro la nuca. Curvi il busto in avanti portando i gomiti verso le ginocchia."
-  }, {
-    id: "d1e5",
-    name: "Crunch con manubrio sul petto",
-    sets: 3,
-    reps: "15-20",
-    rest: 45,
-    weight: true,
-    finisher: true,
-    muscle: "Addominali",
-    video: "9RgiWLGSVzc",
-    equip: ["manubri"],
-    desc: "Sdraiato a terra, ginocchia piegate, tieni un manubrio con entrambe le mani contro il petto. Esegui il crunch classico, spingendo verso l'alto contro il peso."
-  }, {
-    id: "d1e6",
-    name: "Molla avambracci",
-    sets: 3,
-    reps: "30 strizzate/mano",
-    rest: 30,
-    weight: true,
-    finisher: true,
-    muscle: "Avambracci",
-    video: "hrhucObQ-2k",
-    equip: ["molla"],
-    desc: "Stringi a fondo corsa e rilasci controllato. Resistenza regolabile: registra il livello (kg) per seguirne la progressione."
-  }, {
-    id: "d1e7",
-    name: "Curl al polso con manubrio (seduto)",
-    sets: 2,
-    reps: "15-20",
-    rest: 45,
-    weight: true,
-    finisher: true,
-    muscle: "Avambracci",
-    equip: ["manubri"],
-    desc: "Avambraccio sulla coscia, polso oltre il bordo, palmo su. Muovi solo il polso verso l'alto."
-  }]
-}, {
-  id: 2,
-  title: "Spalle + Bicipiti",
-  exercises: [{
-    id: "d2e1",
-    name: "Military press con manubri (seduto)",
-    sets: 3,
-    reps: "8-10",
-    rest: 120,
-    weight: true,
-    muscle: "Spalle",
-    video: "TvT9hrqdSIw",
-    equip: ["manubri"],
-    desc: "Seduto, manubri all'altezza delle spalle, palmi in avanti. Spingi verso l'alto fino a braccia quasi tese."
-  }, {
-    id: "d2e2",
-    name: "Alzate laterali manubri",
-    sets: 3,
-    reps: "12-15",
-    rest: 60,
-    weight: true,
-    muscle: "Spalle",
-    video: "gCNQ5fQiwNs",
-    equip: ["manubri"],
-    desc: "In piedi, un manubrio per mano lungo i fianchi, gomiti leggermente piegati. Sollevi le braccia lateralmente, guidando con i gomiti, fino all'altezza delle spalle. Se cede l'avambraccio prima delle spalle, scendi di peso."
-  }, {
-    id: "d2e3",
-    name: "Curl manubri in piedi",
-    sets: 3,
-    reps: "8-10",
-    rest: 90,
-    weight: true,
-    muscle: "Bicipiti",
-    video: "QaXCjUMCp90",
-    equip: ["manubri"],
-    desc: "In piedi, manubri lungo i fianchi, palmi in avanti, gomiti fermi vicino al busto. Pieghi i gomiti portando i manubri verso le spalle, busto fermo senza slancio."
-  }, {
-    id: "d2e4",
-    name: "Hammer curl alternato manubri",
-    sets: 2,
-    reps: "12-15",
-    rest: 60,
-    weight: true,
-    muscle: "Bicipiti",
-    video: "HJUmbHvmgx0",
-    equip: ["manubri"],
-    desc: "Come il curl in piedi ma un braccio alla volta, alternando, con presa neutra (palmi l'uno verso l'altro). Lavora anche il brachiale."
-  }, {
-    id: "d2e7",
-    name: "Flesso-estensione cervicale con manubrio leggero",
-    sets: 2,
-    reps: "10-12/direz.",
-    rest: 30,
-    weight: true,
-    finisher: true,
-    muscle: "Collo",
-    equip: ["manubri"],
-    desc: "Supino, manubrio leggero (parti da 1-2kg) contro la fronte con entrambe le mani, fletti il collo verso il petto. Poi prono, manubrio contro la nuca, sollevi la testa: estensione. Lento, mai a scatto."
-  }]
-}, {
-  id: 3,
-  title: "Dorso + Tricipiti",
-  exercises: [{
-    id: "d3e1",
-    name: "Lat machine presa stretta",
-    sets: 3,
-    reps: "8-10",
-    rest: 120,
-    weight: true,
-    muscle: "Dorso",
-    video: "6k1SlAqJFak",
-    equip: ["cavo"],
-    desc: "Seduto sotto il cavo alto, ginocchia bloccate sotto l'imbottitura, mani vicine al centro della barra (presa stretta), braccia tese sopra la testa. Tiri la barra verso lo sterno con i gomiti che scendono vicino al busto, poi risali controllato."
-  }, {
-    id: "d3e2",
-    name: "Pulley basso / rematore al cavo",
-    sets: 3,
-    reps: "10-12",
-    rest: 90,
-    weight: true,
-    muscle: "Dorso",
-    video: "-wVifByDoe4",
-    equip: ["cavo"],
-    desc: "Seduto davanti al cavo basso, piedi in appoggio sulla base, ginocchia leggermente piegate, busto verticale. Tiri la maniglia verso l'addome portando i gomiti indietro vicino ai fianchi, scapole che si stringono, poi torni controllato senza curvare la schiena in avanti."
-  }, {
-    id: "d3e3",
-    name: "French press manubrio sopra la testa",
-    sets: 3,
-    reps: "8-10",
-    rest: 90,
-    weight: true,
-    muscle: "Tricipiti",
-    video: "Ig-wfb-Ps-8",
-    equip: ["manubri"],
-    desc: "Un manubrio con entrambe le mani dietro la nuca, gomiti fermi puntati al soffitto. Distendi le braccia in alto."
-  }, {
-    id: "d3e4",
-    name: "Push down tricipiti al cavo alto",
-    sets: 2,
-    reps: "12-15",
-    rest: 60,
-    weight: true,
-    muscle: "Tricipiti",
-    video: "qk_saNmVpR4",
-    equip: ["cavo"],
-    desc: "Maniglia a V o singola, gomiti fermi vicino al busto. Spingi in basso usando solo i tricipiti."
-  }, {
-    id: "d3e5",
-    name: "Superman con manubrio",
-    sets: 3,
-    reps: "12-15",
-    rest: 60,
-    weight: true,
-    finisher: true,
-    muscle: "Lombari",
-    video: "yQK1khXw96c",
-    equip: ["manubri"],
-    desc: "A terra pancia in giù, tieni un manubrio leggero con entrambe le mani contro il petto (o dietro la nuca). Sollevi busto e gambe insieme, tieni un attimo, scendi controllato."
-  }]
-}, {
-  id: 4,
-  title: "Petto + Spalle",
-  exercises: [{
-    id: "d4e1",
-    name: "Chest press alla macchina",
-    sets: 3,
-    reps: "8-10",
-    rest: 120,
-    weight: true,
-    muscle: "Petto",
-    video: "6mWAqa41eKI",
-    equip: ["macchina"],
-    desc: "Seduto sulla panca della macchina, schiena contro lo schienale, avambracci sui braccioli imbottiti. Spingi in avanti fino a unire i braccioli davanti al petto, torni controllato."
-  }, {
-    id: "d4e2",
-    name: "Floor press con manubri, presa stretta",
-    sets: 3,
-    reps: "8-10",
-    rest: 90,
-    weight: true,
-    muscle: "Petto",
-    equip: ["manubri"],
-    desc: "Sdraiato a terra, ginocchia piegate, gomiti vicini ai fianchi, un manubrio per mano all'altezza del petto con presa stretta. Spingi verso l'alto senza aprire i gomiti, i tricipiti a terra fanno da stop naturale a fine corsa. Torni giù controllato."
-  }, {
-    id: "d4e3",
-    name: "Arnold press con manubri",
-    sets: 3,
-    reps: "10-12",
-    rest: 90,
-    weight: true,
-    muscle: "Spalle",
-    video: "oKh_mZTfsyc",
-    equip: ["manubri"],
-    desc: "Seduto, manubri all'altezza delle spalle con i palmi rivolti verso di te e i gomiti bassi davanti al petto (come a fine di un curl). Mentre spingi verso l'alto, ruota i polsi in modo che i palmi finiscano rivolti in avanti a braccia quasi tese in cima. Torna giù invertendo la rotazione, controllato."
-  }, {
-    id: "d4e4",
-    name: "Alzate posteriori con manubri",
-    sets: 2,
-    reps: "12-15",
-    rest: 60,
-    weight: true,
-    muscle: "Spalle",
-    video: "--CaHn33JMA",
-    equip: ["manubri"],
-    desc: "In piedi (o seduto sul bordo di una panca), busto piegato in avanti a circa 90°, schiena dritta, un manubrio per mano che pende verso il pavimento sotto le spalle, gomiti leggermente piegati e fissi per tutto il movimento. Senza slancio, apri le braccia lateralmente disegnando un arco verso l'alto fino a quando sono parallele al pavimento, stringendo le scapole tra loro in cima. Scendi controllato."
-  }, {
-    id: "d4e5",
-    name: "Crunch al cavo, seduto",
-    sets: 3,
-    reps: "15-20",
-    rest: 45,
-    weight: true,
-    finisher: true,
-    muscle: "Addominali",
-    video: "exdFR8iFlA8",
-    equip: ["cavo"],
-    desc: "Seduto sulla panca della macchina, cavo in mano dietro la nuca. Curvi il busto in avanti portando i gomiti verso le ginocchia, poi torni su controllato senza mollare la tensione sul cavo."
-  }, {
-    id: "d4e6",
-    name: "Flessione laterale cervicale con manubrio leggero",
-    sets: 2,
-    reps: "10-12/lato",
-    rest: 30,
-    weight: true,
-    finisher: true,
-    muscle: "Collo",
-    equip: ["manubri"],
-    desc: "Sdraiato su un fianco, manubrio leggero contro il lato della testa, sollevi la testa lateralmente verso la spalla. Cambi lato. Lento, mai a scatto."
-  }]
-}, {
-  id: 5,
-  title: "Bicipiti + Tricipiti",
-  exercises: [{
-    id: "d5e1",
-    name: "Curl manubri seduto (panca macchina)",
-    sets: 3,
-    reps: "8-10",
-    rest: 90,
-    weight: true,
-    muscle: "Bicipiti",
-    video: "3eDvOm1d5x0",
-    equip: ["manubri", "panca"],
-    desc: "Seduto, schienale dritto, manubri lungo i fianchi con i palmi in avanti, gomiti fermi. Curl classico portando i manubri verso le spalle, busto fermo senza slancio."
-  }, {
-    id: "d5e2",
-    name: "Hammer curl manubri",
-    sets: 2,
-    reps: "12-15",
-    rest: 60,
-    weight: true,
-    muscle: "Bicipiti",
-    video: "zi_OiMHzge8",
-    equip: ["manubri"],
-    desc: "Come il curl normale ma palmi rivolti l'uno verso l'altro (presa neutra) per tutto il movimento."
-  }, {
-    id: "d5e3",
-    name: "Kickback tricipiti con manubrio",
-    sets: 3,
-    reps: "10-12",
-    rest: 60,
-    weight: true,
-    muscle: "Tricipiti",
-    video: "fY0GtRAcRY4",
-    equip: ["manubri"],
-    desc: "Busto piegato in avanti a circa 90° (puoi appoggiare la mano libera su una sedia o sul ginocchio per stabilità), un manubrio nell'altra mano. Gomito piegato a 90° e fermo, alto e vicino al fianco, braccio superiore parallelo al pavimento. Distendi solo l'avambraccio all'indietro fino a braccio completamente teso, senza muovere il gomito, poi torna controllato."
-  }, {
-    id: "d5e4",
-    name: "Estensione tricipiti a un braccio, sopra la testa",
-    sets: 2,
-    reps: "10-12",
-    rest: 90,
-    weight: true,
-    muscle: "Tricipiti",
-    video: "jhSawAaNeow",
-    equip: ["manubri"],
-    desc: "Seduto o in piedi, un manubrio con un braccio sopra la testa, gomito fermo vicino all'orecchio senza aprirsi lateralmente. Pieghi il gomito portando il peso dietro la nuca, poi distendi tornando su."
-  }, {
-    id: "d5e5",
-    name: "Molla avambracci",
-    sets: 3,
-    reps: "30-40 strizzate/mano",
-    rest: 30,
-    weight: true,
-    finisher: true,
-    muscle: "Avambracci",
-    video: "hrhucObQ-2k",
-    equip: ["molla"],
-    desc: "Stringi a fondo corsa e rilasci controllato. Resistenza regolabile: aumenta il carico (kg) quando le ripetizioni diventano facili, così tieni traccia della progressione."
-  }, {
-    id: "d5e6",
-    name: "Curl al polso, palmo verso il basso (seduto)",
-    sets: 2,
-    reps: "15-20",
-    rest: 30,
-    weight: true,
-    finisher: true,
-    muscle: "Avambracci",
-    equip: ["manubri"],
-    desc: "Come il curl al polso di Giorno 2 ma palmo giù: lavora gli estensori invece dei flessori."
-  }, {
-    id: "d5e7",
-    name: "Superman con manubrio",
-    sets: 3,
-    reps: "12-15",
-    rest: 60,
-    weight: true,
-    finisher: true,
-    muscle: "Lombari",
-    video: "yQK1khXw96c",
-    equip: ["manubri"],
-    desc: "A terra pancia in giù, tieni un manubrio leggero con entrambe le mani contro il petto (o dietro la nuca). Sollevi busto e gambe insieme, tieni un attimo, scendi controllato."
-  }]
-}];
-
-/* ---------------------------------------------------------
-   LIBRERIA — 32 esercizi extra, richiamabili dalla schermata
-   Libreria/Editor per sostituire uno slot della scheda.
-   Nessuno di questi è nella scheda di default.
---------------------------------------------------------- */
-const LIBRARY = [{
-  id: "lib1",
-  name: "Croci ai cavi bassi (incrocio davanti al petto)",
-  muscle: "Petto",
-  sets: 2,
-  reps: "12-15",
-  rest: 60,
-  weight: true,
-  equip: ["cavo"],
-  desc: "In piedi tra due pulegge basse, un passo avanti, piedi piantati per stabilità. Porti le maniglie ad incrociarsi davanti al petto con un ampio arco, gomiti leggermente piegati e fissi."
-}, {
-  id: "lib2",
-  name: "Floor press manubri, presa stretta",
-  muscle: "Petto",
-  sets: 3,
-  reps: "8-10",
-  rest: 90,
-  weight: true,
-  equip: ["manubri"],
-  desc: "Sdraiato a terra, gomiti vicini ai fianchi, manubri all'altezza del petto con presa stretta. Spingi verso l'alto senza aprire i gomiti: lavora molto anche il tricipite."
-}, {
-  id: "lib5",
-  name: "Pullover manubrio a terra",
-  muscle: "Dorso",
-  sets: 2,
-  reps: "12-15",
-  rest: 60,
-  weight: true,
-  equip: ["manubri"],
-  desc: "Sdraiato a terra, un manubrio tenuto con entrambe le mani sopra il petto. Porti il manubrio indietro oltre la testa mantenendo i gomiti leggermente piegati, poi torni su."
-}, {
-  id: "lib6",
-  name: "Rematore inverso al cavo basso (presa supina)",
-  muscle: "Dorso",
-  sets: 3,
-  reps: "10-12",
-  rest: 90,
-  weight: true,
-  equip: ["cavo"],
-  desc: "Seduto a terra come il rematore classico, ma con presa supina (palmi verso l'alto) sulla maniglia. Tiri verso l'addome portando i gomiti vicino ai fianchi: coinvolge di più i bicipiti insieme al dorso."
-}, {
-  id: "lib7",
-  name: "Face pull al cavo alto",
-  muscle: "Dorso",
-  sets: 3,
-  reps: "12-15",
-  rest: 60,
-  weight: true,
-  equip: ["cavo"],
-  desc: "In piedi davanti al cavo alto con corda, tiri verso il viso separando le mani a fine corsa, gomiti alti. Ottimo per la parte alta della schiena e la postura."
-}, {
-  id: "lib8",
-  name: "Lat machine presa neutra",
-  muscle: "Dorso",
-  sets: 3,
-  reps: "10-12",
-  rest: 90,
-  weight: true,
-  equip: ["cavo"],
-  desc: "Come la lat machine classica ma con le mani rivolte l'una verso l'altra sulla maniglia (se disponibile), tirando verso il petto alto."
-}, {
-  id: "lib9",
-  name: "Alzate frontali manubri",
-  muscle: "Spalle",
-  sets: 2,
-  reps: "12-15",
-  rest: 60,
-  weight: true,
-  equip: ["manubri"],
-  desc: "In piedi, manubri davanti alle cosce. Sollevi un braccio alla volta (o insieme) fino all'altezza delle spalle, senza slancio, poi scendi controllato."
-}, {
-  id: "lib10",
-  name: "Upright row al cavo basso",
-  muscle: "Spalle",
-  sets: 3,
-  reps: "10-12",
-  rest: 90,
-  weight: true,
-  equip: ["cavo"],
-  desc: "In piedi davanti al cavo basso, presa stretta sulla barra. Tiri verso l'alto lungo il corpo fino al petto, gomiti che guidano il movimento verso l'esterno."
-}, {
-  id: "lib11",
-  name: "Y-raise busto piegato con manubri leggeri",
-  muscle: "Spalle",
-  sets: 2,
-  reps: "12-15",
-  rest: 60,
-  weight: true,
-  equip: ["manubri"],
-  desc: "Busto piegato in avanti a 45°, manubri leggeri. Sollevi le braccia disegnando una Y sopra la testa, pollici verso l'alto, poi scendi controllato."
-}, {
-  id: "lib12",
-  name: "Spinte in avanti al cavo, un braccio alla volta",
-  muscle: "Spalle",
-  sets: 2,
-  reps: "10-12/lato",
-  rest: 60,
-  weight: true,
-  equip: ["cavo"],
-  desc: "In piedi davanti al cavo basso, piedi piantati. Spingi la maniglia in avanti e in alto con un braccio, busto stabile senza ruotare, poi cambi lato."
-}, {
-  id: "lib13",
-  name: "Curl a martello su panca inclinata",
-  muscle: "Bicipiti",
-  sets: 3,
-  reps: "10-12",
-  rest: 60,
-  weight: true,
-  equip: ["manubri", "panca"],
-  desc: "Sdraiato su panca inclinata a 45-60°, braccia che pendono lungo i fianchi, presa neutra. Curl con maggiore stiramento iniziale del bicipite."
-}, {
-  id: "lib14",
-  name: "Curl 21",
-  muscle: "Bicipiti",
-  sets: 2,
-  reps: "21 (7+7+7)",
-  rest: 90,
-  weight: true,
-  equip: ["manubri"],
-  desc: "7 ripetizioni parziali dal basso a metà corsa, 7 ripetizioni parziali da metà a fine corsa, poi 7 ripetizioni complete. Tutto senza riposare tra i blocchi."
-}, {
-  id: "lib15",
-  name: "Curl concentrico seduto",
-  muscle: "Bicipiti",
-  sets: 2,
-  reps: "10-12/braccio",
-  rest: 60,
-  weight: true,
-  equip: ["manubri"],
-  desc: "Seduto, gomito appoggiato all'interno della coscia dello stesso lato, braccio teso verso il basso. Curl isolato un braccio alla volta, busto fermo."
-}, {
-  id: "lib16",
-  name: "French press manubrio bilaterale, seduto",
-  muscle: "Tricipiti",
-  sets: 3,
-  reps: "10-12",
-  rest: 90,
-  weight: true,
-  equip: ["manubri"],
-  desc: "Seduto, un manubrio tenuto con entrambe le mani dietro la nuca, gomiti fermi e vicini alla testa. Distendi le braccia verso l'alto, busto verticale."
-}, {
-  id: "lib17",
-  name: "Estensione tricipiti al cavo alto con corda, overhead",
-  muscle: "Tricipiti",
-  sets: 2,
-  reps: "12-15",
-  rest: 60,
-  weight: true,
-  equip: ["cavo"],
-  desc: "Schiena al cavo alto, corda tenuta con entrambe le mani dietro la testa, gomiti fermi puntati in avanti. Distendi le braccia in alto, gomiti fissi."
-}, {
-  id: "lib18",
-  name: "Kickback bilaterale",
-  muscle: "Tricipiti",
-  sets: 3,
-  reps: "10-12",
-  rest: 60,
-  weight: true,
-  equip: ["manubri"],
-  desc: "Busto piegato in avanti, un manubrio per mano, gomiti fermi e sollevati vicino ai fianchi. Distendi entrambi gli avambracci all'indietro insieme."
-}, {
-  id: "lib19",
-  name: "Push down inverso (presa supina) al cavo alto",
-  muscle: "Tricipiti",
-  sets: 2,
-  reps: "12-15",
-  rest: 60,
-  weight: true,
-  equip: ["cavo"],
-  desc: "Come il push down classico ma con i palmi rivolti verso l'alto sulla barra. Gomiti fermi vicino al busto, spingi in basso."
-}, {
-  id: "lib26",
-  name: "Rotazione laterale del collo con manubrio leggero",
-  muscle: "Collo",
-  sets: 2,
-  reps: "10-12/lato",
-  rest: 30,
-  weight: true,
-  equip: ["manubri"],
-  desc: "Sdraiato su un fianco su letto o tappetino, manubrio leggero contro la tempia. Ruoti la testa verso il soffitto e torni, lento e controllato. Cambi lato."
-}, {
-  id: "lib27",
-  name: "Rotazione polso pronazione/supinazione con manubrio",
-  muscle: "Avambracci",
-  sets: 2,
-  reps: "15-20/braccio",
-  rest: 45,
-  weight: true,
-  equip: ["manubri"],
-  desc: "Seduto, avambraccio appoggiato sulla coscia, gomito a 90°, manubrio in mano verticale. Ruoti il polso portando il manubrio da un lato all'altro, come a girare una chiave."
-}, {
-  id: "lib28",
-  name: "Farmer's carry (camminata con manubri)",
-  muscle: "Avambracci",
-  sets: 3,
-  reps: "30-40 sec",
-  rest: 60,
-  weight: true,
-  equip: ["manubri"],
-  desc: "Un manubrio pesante per mano, cammini a passo normale mantenendo spalle basse e busto dritto, senza far dondolare i pesi. Ottimo anche per presa e core."
-}, {
-  id: "lib29",
-  name: "Curl inverso (presa prona) in piedi",
-  muscle: "Avambracci",
-  sets: 2,
-  reps: "12-15",
-  rest: 45,
-  weight: true,
-  equip: ["manubri"],
-  desc: "In piedi, manubri con palmi rivolti verso il basso (presa prona). Curl classico ma lavora molto di più avambraccio ed estensori del polso."
-}, {
-  id: "lib30",
-  name: "Presa statica (grip statico)",
-  muscle: "Avambracci",
-  sets: 3,
-  reps: "max secondi",
-  rest: 60,
-  weight: true,
-  equip: ["manubri"],
-  desc: "Tieni in mano un manubrio pesante lungo il fianco il più a lungo possibile senza farlo scivolare, poi cambi mano. Il carico giusto è quello che regge 20-40 secondi."
-}, /* -------- esercizi con panca + manubri -------- */
-{
-  id: "lib31",
-  name: "Panca piana con manubri",
-  muscle: "Petto",
-  sets: 3,
-  reps: "8-10",
-  rest: 120,
-  weight: true,
-  equip: ["manubri", "panca"],
-  desc: "Sdraiato sulla panca piana, piedi ben piantati a terra, un manubrio per mano all'altezza del petto con i gomiti aperti a circa 45° dal busto. Spingi i manubri verso l'alto fino quasi a toccarli sopra il petto, poi scendi controllato fino a sentire un leggero stiramento sul petto."
-}, {
-  id: "lib32",
-  name: "Panca inclinata con manubri",
-  muscle: "Petto",
-  sets: 3,
-  reps: "8-10",
-  rest: 120,
-  weight: true,
-  equip: ["manubri", "panca"],
-  desc: "Panca inclinata a 30-45°, un manubrio per mano all'altezza del petto alto, gomiti a circa 45° dal busto. Spingi verso l'alto e leggermente indietro, senza far sbattere i manubri in cima, poi scendi controllato. Lavora di più la parte alta del pettorale rispetto alla panca piana."
-}, {
-  id: "lib33",
-  name: "Croci su panca piana con manubri",
-  muscle: "Petto",
-  sets: 2,
-  reps: "12-15",
-  rest: 60,
-  weight: true,
-  equip: ["manubri", "panca"],
-  desc: "Sdraiato sulla panca piana, manubri sopra il petto con i palmi rivolti l'uno verso l'altro, gomiti leggermente piegati e fissi per tutto il movimento. Apri le braccia lateralmente disegnando un arco fino a sentire lo stiramento sul petto, poi richiudi senza far scontrare i pesi in cima."
-}, {
-  id: "lib34",
-  name: "Croci su panca inclinata con manubri",
-  muscle: "Petto",
-  sets: 2,
-  reps: "12-15",
-  rest: 60,
-  weight: true,
-  equip: ["manubri", "panca"],
-  desc: "Come le croci su panca piana ma con la panca inclinata a 30-45°: stesso movimento ad arco con gomiti fissi, ma lo stiramento si sposta sulla parte alta del pettorale."
-}, {
-  id: "lib35",
-  name: "Pullover su panca con manubrio",
-  muscle: "Dorso",
-  sets: 2,
-  reps: "12-15",
-  rest: 60,
-  weight: true,
-  equip: ["manubri", "panca"],
-  desc: "Sdraiato di traverso sulla panca piana, solo le spalle appoggiate, bacino basso e piedi a terra per stabilità. Un manubrio tenuto con entrambe le mani sopra il petto, gomiti leggermente piegati e fissi. Porti il manubrio indietro oltre la testa in un arco ampio finché senti lo stiramento sul dorso/gran dorsale, poi torni su."
-}, {
-  id: "lib36",
-  name: "Rematore a un braccio su panca",
-  muscle: "Dorso",
-  sets: 3,
-  reps: "8-10/braccio",
-  rest: 90,
-  weight: true,
-  equip: ["manubri", "panca"],
-  desc: "Un ginocchio e la mano dello stesso lato appoggiati sulla panca, schiena parallela al pavimento e dritta, l'altro piede a terra. Manubrio nella mano libera, braccio disteso verso il basso. Tiri il gomito indietro e in alto vicino al fianco, scapola che si stringe, poi scendi controllato senza ruotare il busto."
-}, {
-  id: "lib37",
-  name: "Shoulder press seduto su panca con manubri",
-  muscle: "Spalle",
-  sets: 3,
-  reps: "8-10",
-  rest: 120,
-  weight: true,
-  equip: ["manubri", "panca"],
-  desc: "Seduto sulla panca con schienale verticale, manubri all'altezza delle spalle con i palmi in avanti. Spingi verso l'alto fino a braccia quasi tese senza inarcare la schiena contro lo schienale, poi scendi controllato."
-}, {
-  id: "lib38",
-  name: "French press su panca (skull crusher con manubri)",
-  muscle: "Tricipiti",
-  sets: 3,
-  reps: "8-10",
-  rest: 90,
-  weight: true,
-  equip: ["manubri", "panca"],
-  desc: "Sdraiato sulla panca piana, un manubrio per mano tenuto sopra il petto con le braccia tese, gomiti fermi puntati al soffitto. Pieghi solo i gomiti portando i manubri verso le tempie/dietro la testa, poi distendi tornando su senza muovere i gomiti lateralmente."
-}, {
-  id: "lib39",
-  name: "Crunch su panca con manubrio",
-  muscle: "Addominali",
-  sets: 3,
-  reps: "15-20",
-  rest: 45,
-  weight: true,
-  finisher: true,
-  equip: ["manubri", "panca"],
-  desc: "Sdraiato sulla panca piana (o con i piedi agganciati/appoggiati a un'estremità), un manubrio tenuto con entrambe le mani contro il petto. Esegui il crunch classico, sali contraendo l'addome, scendi controllato senza sbattere la schiena sulla panca."
-}, {
-  id: "lib40",
-  name: "Spider curl su panca inclinata",
-  muscle: "Bicipiti",
-  sets: 2,
-  reps: "10-12",
-  rest: 60,
-  weight: true,
-  equip: ["manubri", "panca"],
-  desc: "Petto e stomaco appoggiati sul lato inclinato della panca (schienale a 45-60°, tu affacciato dall'altra parte), braccia che pendono verso il basso, un manubrio per mano. Curl isolato senza poter usare slancio del busto, massima contrazione in cima, scendi controllato."
-}];
-const STORAGE_KEY = "puro-tracker-log";
-const PR_STORAGE_KEY = "puro-tracker-prs";
-const OVERRIDES_KEY = "puro-day-overrides";
-const ROTATION_KEY = "puro-last-rotation";
-const SESSION_STATE_KEY = "puro-session-inprogress";
-const LAST_BACKUP_COUNT_KEY = "puro-last-backup-session-count";
-const LIKES_KEY = "puro-exercise-likes";
-const ROTATION_ENABLED_KEY = "puro-rotation-enabled";
-const ROTATION_INTERVAL_KEY = "puro-rotation-interval-days";
-function loadLikes() {
-  try {
-    const raw = localStorage.getItem(LIKES_KEY);
-    if (raw) return JSON.parse(raw);
-  } catch (e) {/* nessuna preferenza ancora, ok */}
-  return {};
-}
-function saveLikes(likes) {
-  try {
-    localStorage.setItem(LIKES_KEY, JSON.stringify(likes));
-  } catch (e) {/* riprova al prossimo salvataggio */}
-}
-function isRotationEnabled() {
-  try {
-    return localStorage.getItem(ROTATION_ENABLED_KEY) !== "off";
-  } catch (e) {
-    return true;
-  }
-}
-function getRotationIntervalDays() {
-  try {
-    const v = parseInt(localStorage.getItem(ROTATION_INTERVAL_KEY), 10);
-    if (v && v > 0) return v;
-  } catch (e) {/* usa il default */}
-  return 30;
-}
-const EQUIPMENT_KEY = "puro-equipment";
-const ALL_EQUIPMENT = ["manubri", "panca", "macchina", "cavo", "molla"];
-const EQUIPMENT_LABELS = {
-  manubri: "Manubri",
-  panca: "Panca",
-  macchina: "Macchine (chest press, ecc.)",
-  cavo: "Cavi / lat machine / pulley",
-  molla: "Molla avambracci"
+const LS = {
+  cards: "pkw-cards",
+  accent: "pkw-accent",
+  alertThreshold: "pkw-alert-threshold"
 };
-function loadEquipment() {
-  try {
-    const raw = localStorage.getItem(EQUIPMENT_KEY);
-    if (raw) return JSON.parse(raw);
-  } catch (e) {/* prima volta, ok */}
-  return ALL_EQUIPMENT.slice(); // default: tutto disponibile
-}
-function saveEquipment(list) {
-  try {
-    localStorage.setItem(EQUIPMENT_KEY, JSON.stringify(list));
-  } catch (e) {}
-}
-function exerciseUsable(ex, equipment) {
-  if (!ex.equip || ex.equip.length === 0) return true;
-  return ex.equip.every(e => equipment.includes(e));
-}
-
-/* ---------------------------------------------------------
-   POOL esercizi (scheda + libreria) e gestione slot/override
---------------------------------------------------------- */
-const POOL = {};
-DAYS.forEach(d => d.exercises.forEach(e => {
-  POOL[e.id] = e;
-}));
-LIBRARY.forEach(e => {
-  POOL[e.id] = e;
-});
-function defaultSlotsForDay(day) {
-  return day.exercises.map(e => ({
-    exId: e.id,
-    finisher: !!e.finisher
-  }));
-}
-function loadOverrides() {
-  try {
-    const raw = localStorage.getItem(OVERRIDES_KEY);
-    if (raw) return JSON.parse(raw);
-  } catch (e) {/* nessun override ancora, ok */}
-  return {};
-}
-function saveOverrides(ov) {
-  try {
-    localStorage.setItem(OVERRIDES_KEY, JSON.stringify(ov));
-  } catch (e) {/* riprova al prossimo salvataggio */}
-}
-function getDaySlots(day, overrides) {
-  return overrides && overrides[day.id] || defaultSlotsForDay(day);
-}
-function buildResolvedDays(overrides) {
-  return DAYS.map(d => ({
-    ...d,
-    exercises: getDaySlots(d, overrides).map(slot => {
-      const base = POOL[slot.exId] || POOL[slot.exId] || d.exercises[0];
-      return {
-        ...base,
-        finisher: slot.finisher
-      };
-    })
-  }));
-}
-function setSlotExercise(overrides, dayId, slotIdx, newExId) {
-  const day = DAYS.find(d => d.id === dayId);
-  const current = getDaySlots(day, overrides).map(s => ({
-    ...s
-  }));
-  if (current[slotIdx]) current[slotIdx].exId = newExId;
-  return {
-    ...overrides,
-    [dayId]: current
-  };
-}
-function resetSlotExercise(overrides, dayId, slotIdx) {
-  const day = DAYS.find(d => d.id === dayId);
-  const defaults = defaultSlotsForDay(day);
-  const current = getDaySlots(day, overrides).map(s => ({
-    ...s
-  }));
-  if (current[slotIdx] && defaults[slotIdx]) current[slotIdx].exId = defaults[slotIdx].exId;
-  return {
-    ...overrides,
-    [dayId]: current
-  };
-}
-function allUsedExIds(overrides) {
-  const used = new Set();
-  DAYS.forEach(d => getDaySlots(d, overrides).forEach(s => used.add(s.exId)));
-  return used;
-}
-
-/* ---- rotazione automatica mensile: sostituisce 1 esercizio al mese
-   con uno della libreria dello stesso gruppo muscolare ---- */
-function maybeRotate(overrides) {
-  if (!isRotationEnabled()) return {
-    overrides,
-    note: null
-  };
-  let lastDate = null;
-  try {
-    lastDate = localStorage.getItem(ROTATION_KEY);
-  } catch (e) {}
-  const today = todayStr();
-  if (!lastDate) {
-    try {
-      localStorage.setItem(ROTATION_KEY, today);
-    } catch (e) {}
-    return {
-      overrides,
-      note: null
-    };
-  }
-  if (daysBetween(lastDate, today) < getRotationIntervalDays()) return {
-    overrides,
-    note: null
-  };
-  const used = allUsedExIds(overrides);
-  const likes = loadLikes();
-  const equipment = loadEquipment();
-  const slotsPool = [];
-  DAYS.forEach(d => {
-    getDaySlots(d, overrides).forEach((slot, i) => slotsPool.push({
-      dayId: d.id,
-      slotIdx: i,
-      slot
-    }));
-  });
-  // mescola per non rifare sempre lo stesso ordine
-  for (let i = slotsPool.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [slotsPool[i], slotsPool[j]] = [slotsPool[j], slotsPool[i]];
-  }
-  for (const {
-    dayId,
-    slotIdx,
-    slot
-  } of slotsPool) {
-    const oldEx = POOL[slot.exId];
-    if (!oldEx || !oldEx.muscle) continue;
-    const candidates = LIBRARY.filter(l => l.muscle === oldEx.muscle && !used.has(l.id) && likes[l.id] !== "dislike" && exerciseUsable(l, equipment));
-    if (candidates.length === 0) continue;
-    const chosen = candidates[Math.floor(Math.random() * candidates.length)];
-    const nextOverrides = setSlotExercise(overrides, dayId, slotIdx, chosen.id);
-    try {
-      localStorage.setItem(ROTATION_KEY, today);
-    } catch (e) {}
-    saveOverrides(nextOverrides);
-    return {
-      overrides: nextOverrides,
-      note: {
-        dayId,
-        from: oldEx.name,
-        to: chosen.name
-      }
-    };
-  }
-  // nessuno slot aveva candidati disponibili: aggiorna comunque la data per non ricontrollare ogni volta
-  try {
-    localStorage.setItem(ROTATION_KEY, today);
-  } catch (e) {}
-  return {
-    overrides,
-    note: null
-  };
-}
-const STRETCHES_BY_MUSCLE = {
-  "Petto": {
-    name: "Petto sulla porta",
-    seconds: 25,
-    sides: 2,
-    steps: ["Mettiti sulla soglia di una porta. Appoggia avambraccio e gomito contro lo stipite, con il gomito piegato a 90°.", "Fai un piccolo passo in avanti con il piede dello stesso lato e ruota lentamente il busto in avanti, allontanandoti dallo stipite.", "Fermati appena senti una tensione decisa ma non dolorosa: resta fermo in quella posizione, senza rimbalzare."],
-    feel: "Senti lo stiramento davanti alla spalla e sul petto."
-  },
-  "Dorso": {
-    name: "Dorso, braccia in avanti",
-    seconds: 25,
-    sides: 1,
-    steps: ["In piedi o seduto, intreccia le dita delle mani davanti a te e stendi le braccia all'altezza del petto, palmi rivolti in fuori.", "Spingi le braccia in avanti allontanandole dal corpo, lasciando che la schiena si incurvi (fai la gobba) e il mento scenda verso il petto.", "Mantieni la posizione ferma, senza tirare a scatti."],
-    feel: "Senti lo stiramento tra le scapole e lungo la parte alta della schiena."
-  },
-  "Spalle": {
-    name: "Spalle, braccio al petto",
-    seconds: 25,
-    sides: 2,
-    steps: ["In piedi, porta un braccio teso davanti al petto, all'altezza delle spalle.", "Con l'altra mano afferra il gomito (o l'avambraccio) e tiralo delicatamente verso il petto, senza ruotare il busto.", "Tieni la posizione ferma, respirando normalmente."],
-    feel: "Senti lo stiramento nella parte posteriore della spalla del braccio teso."
-  },
-  "Tricipiti": {
-    name: "Tricipiti sopra la testa",
-    seconds: 25,
-    sides: 2,
-    steps: ["In piedi, piega un braccio portando la mano dietro la nuca, con il gomito puntato verso il soffitto.", "Con l'altra mano afferra il gomito piegato e spingilo delicatamente indietro e verso il basso.", "Mantieni la spinta leggera e costante, senza strappi."],
-    feel: "Senti lo stiramento lungo il tricipite e il fianco, dietro il braccio piegato."
-  },
-  "Bicipiti": {
-    name: "Bicipiti, braccio teso dietro",
-    seconds: 25,
-    sides: 2,
-    steps: ["In piedi, stendi un braccio all'indietro all'altezza del fianco, con il palmo rivolto indietro.", "Con l'altra mano afferra il polso o le dita e tira leggermente verso di te, ruotando il busto dal lato opposto.", "Tieni la posizione ferma, senza forzare oltre la tensione."],
-    feel: "Senti lo stiramento lungo la parte anteriore del braccio, dal gomito alla spalla."
-  },
-  "Addominali": {
-    name: "Cobra, estensione addominale",
-    seconds: 25,
-    sides: 1,
-    steps: ["Sdraiato a pancia in giù, mani a terra sotto le spalle.", "Spingi il busto verso l'alto sollevando il petto da terra, bacino che resta a contatto col pavimento, braccia che si distendono gradualmente.", "Fermati dove senti tensione nell'addome, senza forzare la zona lombare."],
-    feel: "Senti lo stiramento lungo tutto l'addome, dallo sterno al bacino."
-  },
-  "Avambracci": {
-    name: "Estensione polso, palmo in avanti",
-    seconds: 20,
-    sides: 2,
-    steps: ["In piedi, tendi un braccio davanti a te, palmo rivolto in avanti e dita verso l'alto.", "Con l'altra mano afferra le dita e tirale delicatamente verso di te, gomito teso.", "Mantieni la tensione ferma, poi cambi mano."],
-    feel: "Senti lo stiramento lungo l'avambraccio, dal polso al gomito."
-  },
-  "Collo": {
-    name: "Flessione laterale del collo",
-    seconds: 20,
-    sides: 2,
-    steps: ["Seduto o in piedi, busto dritto e spalle rilassate e basse.", "Inclina lentamente la testa verso una spalla, senza sollevare la spalla verso l'orecchio.", "Per aumentare, appoggia la mano dello stesso lato sulla testa e lascia che il peso la tiri leggermente più giù, senza forzare."],
-    feel: "Senti lo stiramento lungo il lato del collo, dall'orecchio alla spalla."
-  },
-  "Lombari": {
-    name: "Child's pose, flessione lombare",
-    seconds: 30,
-    sides: 1,
-    steps: ["Inginocchiato a terra, siediti sui talloni e allunga le braccia in avanti, fronte verso il pavimento.", "Lascia che il bacino scenda verso i talloni, schiena rilassata e allungata.", "Respira lento, senza spingere oltre il limite naturale."],
-    feel: "Senti lo stiramento lungo tutta la zona lombare e i fianchi."
-  }
+const DEFAULT_ALERT_THRESHOLD = 50;
+const ACCENT_PRESETS = ["#ffcb05", "#3b6cff", "#ff5252", "#2ecc71", "#a066ff", "#ff8a3d"];
+const DEFAULT_RESTORATION_TASKS = ["Incollare angoli", "Togliere inchiostro", "Togliere pieghe", "Pulire superficie"];
+const CONDITION_OPTIONS = ["NM", "EX", "GD", "LP", "PL", "PO"];
+const FLIP_STATUS = {
+  DA_RESTAURARE: "Da restaurare",
+  IN_RESTAURO: "In restauro",
+  PRONTA: "Pronta da vendere"
 };
-function getStretchesForDay(day) {
-  const seen = new Set();
-  const list = [];
-  day.exercises.forEach(e => {
-    if (e.muscle && !seen.has(e.muscle) && STRETCHES_BY_MUSCLE[e.muscle]) {
-      seen.add(e.muscle);
-      list.push(STRETCHES_BY_MUSCLE[e.muscle]);
-    }
-  });
-  return list;
+const FLIP_STATUS_OPTIONS = [FLIP_STATUS.DA_RESTAURARE, FLIP_STATUS.IN_RESTAURO, FLIP_STATUS.PRONTA];
+const SALE_CHANNELS = ["Vinted", "Fiera", "Altro"];
+function uid() {
+  return Date.now().toString(36) + Math.random().toString(36).slice(2, 8);
 }
-function advanceStretchSession(prev) {
-  const cur = prev.list[prev.idx];
-  if (cur.sides === 2 && prev.side === 1) {
-    return {
-      ...prev,
-      side: 2,
-      phase: "prep",
-      remaining: cur.seconds,
-      endAt: null
-    };
-  }
-  if (prev.idx + 1 < prev.list.length) {
-    const nextIdx = prev.idx + 1;
-    return {
-      ...prev,
-      idx: nextIdx,
-      side: 1,
-      phase: "prep",
-      remaining: prev.list[nextIdx].seconds,
-      endAt: null
-    };
-  }
-  return null;
-}
-function stretchDurLabel(s) {
-  return `${s.seconds}"${s.sides === 2 ? " per lato" : ""}`;
-}
-
-/* ---------------------------------------------------------
-   AUDIO — beep generato via Web Audio API, nessun file esterno
---------------------------------------------------------- */
-const ACCENT_KEY = "puro-accent-color";
-const DEFAULT_ACCENT = "#E4362B";
-const ACCENT_PRESETS = [{
-  name: "Rosso",
-  hex: "#E4362B"
-}, {
-  name: "Arancio",
-  hex: "#F26430"
-}, {
-  name: "Verde",
-  hex: "#3DA35D"
-}, {
-  name: "Blu",
-  hex: "#3B82F6"
-}, {
-  name: "Viola",
-  hex: "#8B5CF6"
-}, {
-  name: "Giallo",
-  hex: "#F2B705"
-}, {
-  name: "Rosa",
-  hex: "#EC4899"
-}, {
-  name: "Ciano",
-  hex: "#22D3D8"
-}];
-function hexToRgb(hex) {
-  let h = String(hex).replace("#", "");
-  if (h.length === 3) h = h.split("").map(c => c + c).join("");
-  const num = parseInt(h, 16);
-  return {
-    r: num >> 16 & 255,
-    g: num >> 8 & 255,
-    b: num & 255
-  };
-}
-function lightenHex(hex, amt) {
-  const {
-    r,
-    g,
-    b
-  } = hexToRgb(hex);
-  const clamp = v => Math.max(0, Math.min(255, v));
-  const nr = clamp(r + amt),
-    ng = clamp(g + amt),
-    nb = clamp(b + amt);
-  return "#" + [nr, ng, nb].map(v => v.toString(16).padStart(2, "0")).join("");
-}
-function rgbaFromHex(hex, a) {
-  const {
-    r,
-    g,
-    b
-  } = hexToRgb(hex);
-  return `rgba(${r},${g},${b},${a})`;
-}
-function loadAccent() {
+function loadCards() {
   try {
-    const v = localStorage.getItem(ACCENT_KEY);
-    if (v) return v;
-  } catch (e) {/* usa default */}
-  return DEFAULT_ACCENT;
-}
-function saveAccent(hex) {
-  try {
-    localStorage.setItem(ACCENT_KEY, hex);
-  } catch (e) {/* riprova al prossimo cambio */}
-}
-
-/* ---------------------------------------------------------
-   BACKUP — esporta/importa tutti i dati come file .json,
-   indipendente da dove/come viene ospitata l'app
---------------------------------------------------------- */
-function exportBackup(sessionCount) {
-  const bundle = {
-    version: 1,
-    exportedAt: todayStr(),
-    log: localStorage.getItem(STORAGE_KEY),
-    prLog: localStorage.getItem(PR_STORAGE_KEY),
-    overrides: localStorage.getItem(OVERRIDES_KEY),
-    rotation: localStorage.getItem(ROTATION_KEY),
-    accent: localStorage.getItem(ACCENT_KEY),
-    likes: localStorage.getItem(LIKES_KEY),
-    rotationEnabled: localStorage.getItem(ROTATION_ENABLED_KEY),
-    rotationInterval: localStorage.getItem(ROTATION_INTERVAL_KEY),
-    equipment: localStorage.getItem(EQUIPMENT_KEY)
-  };
-  const blob = new Blob([JSON.stringify(bundle)], {
-    type: "application/json"
-  });
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement("a");
-  a.href = url;
-  a.download = `puro-tracker-backup-${todayStr()}.json`;
-  document.body.appendChild(a);
-  a.click();
-  document.body.removeChild(a);
-  URL.revokeObjectURL(url);
-  if (sessionCount != null) {
-    try {
-      localStorage.setItem(LAST_BACKUP_COUNT_KEY, String(sessionCount));
-    } catch (e) {}
-  }
-}
-function getLastBackupSessionCount() {
-  try {
-    const raw = localStorage.getItem(LAST_BACKUP_COUNT_KEY);
-    return raw != null ? parseInt(raw, 10) : 0;
+    const raw = localStorage.getItem(LS.cards);
+    return raw ? JSON.parse(raw) : [];
   } catch (e) {
-    return 0;
+    return [];
   }
 }
-function importBackup(file, onDone) {
-  const reader = new FileReader();
-  reader.onload = e => {
-    try {
-      const bundle = JSON.parse(e.target.result);
-      if (bundle.log != null) localStorage.setItem(STORAGE_KEY, bundle.log);
-      if (bundle.prLog != null) localStorage.setItem(PR_STORAGE_KEY, bundle.prLog);
-      if (bundle.overrides != null) localStorage.setItem(OVERRIDES_KEY, bundle.overrides);
-      if (bundle.rotation != null) localStorage.setItem(ROTATION_KEY, bundle.rotation);
-      if (bundle.accent != null) localStorage.setItem(ACCENT_KEY, bundle.accent);
-      if (bundle.likes != null) localStorage.setItem(LIKES_KEY, bundle.likes);
-      if (bundle.rotationEnabled != null) localStorage.setItem(ROTATION_ENABLED_KEY, bundle.rotationEnabled);
-      if (bundle.rotationInterval != null) localStorage.setItem(ROTATION_INTERVAL_KEY, bundle.rotationInterval);
-      if (bundle.equipment != null) localStorage.setItem(EQUIPMENT_KEY, bundle.equipment);
-      onDone(null, bundle);
-    } catch (err) {
-      onDone(err, null);
-    }
-  };
-  reader.onerror = () => onDone(reader.error, null);
-  reader.readAsText(file);
+function saveCards(cards) {
+  localStorage.setItem(LS.cards, JSON.stringify(cards));
 }
-function playBeep() {
-  try {
-    const ctx = new (window.AudioContext || window.webkitAudioContext)();
-    const times = [0, 0.18, 0.36];
-    times.forEach((t, i) => {
-      const osc = ctx.createOscillator();
-      const gain = ctx.createGain();
-      osc.type = "square";
-      osc.frequency.value = i < 2 ? 880 : 1180;
-      gain.gain.setValueAtTime(0.001, ctx.currentTime + t);
-      gain.gain.exponentialRampToValueAtTime(0.35, ctx.currentTime + t + 0.02);
-      gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + t + 0.16);
-      osc.connect(gain).connect(ctx.destination);
-      osc.start(ctx.currentTime + t);
-      osc.stop(ctx.currentTime + t + 0.18);
-    });
-  } catch (e) {/* audio non disponibile, ignora */}
-}
-function todayStr() {
-  const d = new Date();
-  return d.toISOString().slice(0, 10);
-}
-function parseRepRange(str) {
-  const m = String(str).match(/(\d+)\s*-\s*(\d+)/);
-  if (!m) return null;
-  return {
-    bottom: parseInt(m[1], 10),
-    top: parseInt(m[2], 10)
-  };
-}
-const EXERCISES_FLAT = [...DAYS.flatMap(d => d.exercises.map(e => ({
-  ...e,
-  dayId: d.id
-}))), ...LIBRARY].filter(e => e.weight);
-function daysBetween(d1, d2) {
-  return Math.round((new Date(d2 + "T00:00:00") - new Date(d1 + "T00:00:00")) / 86400000);
-}
-function getAllSessionDates(log) {
-  const set = new Set();
-  Object.values(log).forEach(entries => (entries || []).forEach(e => set.add(e.date)));
-  return Array.from(set).sort();
-}
-function computeStreaks(dates) {
-  if (!dates.length) return {
-    current: 0,
-    best: 0,
-    alive: false
-  };
-  let best = 1,
-    run = 1;
-  for (let i = 1; i < dates.length; i++) {
-    const gap = daysBetween(dates[i - 1], dates[i]);
-    if (gap >= 1 && gap <= 2) run++;else if (gap === 0) {/* stesso giorno, ignora */} else run = 1;
-    if (run > best) best = run;
-  }
-  let current = 1;
-  for (let i = dates.length - 1; i > 0; i--) {
-    const gap = daysBetween(dates[i - 1], dates[i]);
-    if (gap >= 1 && gap <= 2) current++;else if (gap === 0) continue;else break;
-  }
-  const gapToToday = daysBetween(dates[dates.length - 1], todayStr());
-  const alive = gapToToday <= 2;
-  return {
-    current: alive ? current : 0,
-    best,
-    alive,
-    lastDate: dates[dates.length - 1]
-  };
-}
-function getSessionSeries(log, exId) {
-  const entries = log[exId] || [];
-  return entries.map(e => {
-    const sets = e.sets || (e.kg ? e.kg.map(kg => ({
-      kg,
-      reps: null
-    })) : []);
-    const kgs = sets.map(s => s.kg).filter(k => k != null);
-    return {
-      date: e.date,
-      kg: kgs.length ? Math.max(...kgs) : null
-    };
-  }).filter(p => p.kg != null);
-}
-function getRecordKg(log, exId) {
-  const series = getSessionSeries(log, exId);
-  if (!series.length) return null;
-  return Math.max(...series.map(p => p.kg));
-}
-
-/* ---- volume settimanale per muscolo (ultimi 7 giorni) ---- */
-function getWeeklyVolumeByMuscle(log) {
-  const cutoff = new Date(todayStr() + "T00:00:00");
-  cutoff.setDate(cutoff.getDate() - 6);
-  const tally = {};
-  Object.entries(log).forEach(([exId, entries]) => {
-    const ex = POOL[exId];
-    if (!ex || !ex.muscle) return;
-    (entries || []).forEach(e => {
-      const d = new Date(e.date + "T00:00:00");
-      if (d >= cutoff) {
-        const setCount = (e.sets || e.kg || []).length;
-        tally[ex.muscle] = (tally[ex.muscle] || 0) + setCount;
-      }
-    });
+function fmtEUR(n) {
+  const v = Number(n) || 0;
+  return v.toLocaleString("it-IT", {
+    style: "currency",
+    currency: "EUR"
   });
-  return Object.entries(tally).map(([muscle, sets]) => ({
-    muscle,
-    sets
-  })).sort((a, b) => b.sets - a.sets);
 }
-
-/* ---- rilevamento stallo: kg non progredisce da almeno 3 sedute ---- */
-function isStagnant(series) {
-  if (series.length < 3) return false;
-  const lastN = series.slice(-3).map(p => p.kg);
-  return lastN[2] <= lastN[0];
+function fmtDate(iso) {
+  if (!iso) return "";
+  const d = new Date(iso);
+  return d.toLocaleDateString("it-IT", {
+    day: "2-digit",
+    month: "2-digit",
+    year: "numeric"
+  });
 }
-function countStagnantExercises(log) {
-  return EXERCISES_FLAT.filter((ex, i, arr) => arr.findIndex(e => e.id === ex.id) === i).filter(ex => isStagnant(getSessionSeries(log, ex.id))).length;
+function currentValue(card) {
+  if (!card.priceHistory || card.priceHistory.length === 0) return card.purchasePrice || 0;
+  return card.priceHistory[card.priceHistory.length - 1].value;
 }
-function fmtRest(sec) {
-  if (sec >= 60) {
-    const m = sec / 60;
-    return (Number.isInteger(m) ? m : m.toFixed(1)) + "'";
-  }
-  return sec + '"';
+function previousValue(card) {
+  if (!card.priceHistory || card.priceHistory.length < 2) return null;
+  return card.priceHistory[card.priceHistory.length - 2].value;
 }
-function App() {
-  const [screen, setScreen] = useState("home"); // 'home' | 'session' | 'summary' | 'stats' | 'library'
-  const [log, setLog] = useState({});
-  const [prLog, setPrLog] = useState([]);
-  const [loaded, setLoaded] = useState(false);
-  const [overrides, setOverrides] = useState({});
-  const [rotationNote, setRotationNote] = useState(null);
-  const [accent, setAccentState] = useState(DEFAULT_ACCENT);
-  const changeAccent = hex => {
-    setAccentState(hex);
-    saveAccent(hex);
+function deltaPct(card) {
+  const prev = previousValue(card);
+  if (prev === null || prev === 0) return null;
+  const cur = currentValue(card);
+  return (cur - prev) / prev * 100;
+}
+function newRestoration() {
+  return {
+    needed: false,
+    tasks: []
   };
-  const handleImportBackup = file => {
-    importBackup(file, (err, bundle) => {
-      if (err) {
-        alert("File non valido, il ripristino non è riuscito.");
-        return;
-      }
-      try {
-        setLog(bundle.log ? JSON.parse(bundle.log) : {});
-        setPrLog(bundle.prLog ? JSON.parse(bundle.prLog) : []);
-        setOverrides(bundle.overrides ? JSON.parse(bundle.overrides) : {});
-        if (bundle.accent) setAccentState(bundle.accent);
-        alert("Backup ripristinato.");
-      } catch (e) {
-        alert("Dati ripristinati ma qualcosa non è tornato correttamente — riapri l'app per sicurezza.");
-      }
-    });
+}
+function emptyCard() {
+  return {
+    id: uid(),
+    name: "",
+    set: "",
+    number: "",
+    language: "ENG",
+    quantity: 1,
+    graded: false,
+    gradingCompany: "",
+    grade: "",
+    condition: "NM",
+    flipStatus: FLIP_STATUS.PRONTA,
+    image: "",
+    source: "Altro",
+    purchasePrice: "",
+    purchaseDate: new Date().toISOString().slice(0, 10),
+    priceHistory: [],
+    sold: null,
+    restoration: newRestoration(),
+    notes: ""
   };
-  const [selectedDayIdx, setSelectedDayIdx] = useState(0);
-  const [session, setSession] = useState(null); // { dayIdx, exIndex, progress:{exId:n}, loggedSets:[], prs:[] }
-  const [openDesc, setOpenDesc] = useState(false);
-  const [rest, setRest] = useState(null); // { name, total, remaining }
-  const [prBanner, setPrBanner] = useState(null);
-  const [stretchSession, setStretchSession] = useState(null); // { idx, side, remaining }
-  const timerRef = useRef(null);
-  const stretchTimerRef = useRef(null);
-  const wakeLockRef = useRef(null);
-
-  /* ---- schermo sempre acceso durante allenamento/stretching ---- */
-  useEffect(() => {
-    const active = screen === "session" || screen === "stretch";
-    const acquire = async () => {
-      try {
-        if ("wakeLock" in navigator && !wakeLockRef.current) {
-          wakeLockRef.current = await navigator.wakeLock.request("screen");
-        }
-      } catch (e) {/* non supportato o negato, ignora */}
-    };
-    const release = async () => {
-      try {
-        if (wakeLockRef.current) {
-          await wakeLockRef.current.release();
-          wakeLockRef.current = null;
-        }
-      } catch (e) {/* già rilasciato, ignora */}
-    };
-    if (active) acquire();else release();
-    const onVisibility = () => {
-      if (active && document.visibilityState === "visible") acquire();
-    };
-    document.addEventListener("visibilitychange", onVisibility);
-    return () => {
-      document.removeEventListener("visibilitychange", onVisibility);
-      release();
-    };
-  }, [screen]);
-  const resolvedDays = React.useMemo(() => buildResolvedDays(overrides), [overrides]);
-  const updateSlot = (dayId, slotIdx, newExId) => {
-    const next = setSlotExercise(overrides, dayId, slotIdx, newExId);
-    setOverrides(next);
-    saveOverrides(next);
+}
+async function searchTcgdex(name) {
+  const res = await fetch("https://api.tcgdex.net/v2/en/cards?name=" + encodeURIComponent(name));
+  if (!res.ok) throw new Error("Ricerca fallita");
+  const list = await res.json();
+  return list.slice(0, 8);
+}
+async function fetchTcgdexPrice(cardId) {
+  const res = await fetch("https://api.tcgdex.net/v2/en/cards/" + encodeURIComponent(cardId));
+  if (!res.ok) throw new Error("Dettaglio fallito");
+  const data = await res.json();
+  const cm = data.pricing && data.pricing.cardmarket;
+  if (!cm) return null;
+  // struttura reale tcgdex: campi piatti (trend, avg, trend-holo, avg-holo...).
+  // se esistono sia normale che holo, media dei due (carta ambigua) come da regola del progetto.
+  const vals = [];
+  if (typeof cm.trend === "number") vals.push(cm.trend);else if (typeof cm.avg === "number") vals.push(cm.avg);
+  if (typeof cm["trend-holo"] === "number") vals.push(cm["trend-holo"]);else if (typeof cm["avg-holo"] === "number") vals.push(cm["avg-holo"]);
+  if (vals.length === 0) return null;
+  const avg = vals.reduce((a, b) => a + b, 0) / vals.length;
+  return {
+    value: Math.round(avg * 100) / 100,
+    name: data.name,
+    raw: cm
   };
-  const restoreSlot = (dayId, slotIdx) => {
-    const next = resetSlotExercise(overrides, dayId, slotIdx);
-    setOverrides(next);
-    saveOverrides(next);
-  };
-
-  /* ---- carica storico + override, poi valuta la rotazione mensile ---- */
-  useEffect(() => {
-    let ov = {};
-    try {
-      const raw = localStorage.getItem(STORAGE_KEY);
-      if (raw) setLog(JSON.parse(raw));
-    } catch (e) {}
-    try {
-      const rawPr = localStorage.getItem(PR_STORAGE_KEY);
-      if (rawPr) setPrLog(JSON.parse(rawPr));
-    } catch (e) {}
-    setAccentState(loadAccent());
-    try {
-      ov = loadOverrides();
-    } catch (e) {}
-    const {
-      overrides: nextOv,
-      note
-    } = maybeRotate(ov);
-    setOverrides(nextOv);
-    if (note) setRotationNote(note);
-    // riprendi un allenamento interrotto (ricarica pagina, standby, crash) invece di perderlo
-    try {
-      const rawSession = localStorage.getItem(SESSION_STATE_KEY);
-      if (rawSession) {
-        const savedSession = JSON.parse(rawSession);
-        setSession(savedSession);
-        const dayForCheck = buildResolvedDays(nextOv)[savedSession.dayIdx];
-        const allDone = dayForCheck && dayForCheck.exercises.every(e => (savedSession.progress[e.id] || 0) >= e.sets);
-        setScreen(allDone ? "summary" : "session");
-      }
-    } catch (e) {}
-    setLoaded(true);
-  }, []);
-
-  /* ---- salva la sessione in corso ad ogni cambiamento, per poterla riprendere ---- */
-  useEffect(() => {
-    try {
-      if (session) localStorage.setItem(SESSION_STATE_KEY, JSON.stringify(session));else localStorage.removeItem(SESSION_STATE_KEY);
-    } catch (e) {}
-  }, [session]);
-
-  /* ---- suggerisci il prossimo giorno in base all'ultima seduta ---- */
-  useEffect(() => {
-    if (!loaded) return;
-    const dates = getAllSessionDates(log);
-    if (!dates.length) return;
-    const lastDate = dates[dates.length - 1];
-    // trova quali esercizi (e quindi giorni) sono stati loggati nell'ultima data
-    let lastDayId = null;
-    Object.entries(log).forEach(([exId, entries]) => {
-      if ((entries || []).some(e => e.date === lastDate)) {
-        const d = DAYS.find(dd => dd.exercises.some(x => x.id === exId));
-        if (d) lastDayId = d.id;
-      }
-    });
-    if (lastDayId != null) {
-      const idx = DAYS.findIndex(d => d.id === lastDayId);
-      setSelectedDayIdx((idx + 1) % DAYS.length);
-    }
-  }, [loaded]); // eslint-disable-line
-
-  /* ---- timer recupero ----
-     basato su timestamp assoluto (endAt), non su un countdown a scatti:
-     se il telefono va in standby/background e i setTimeout vengono
-     sospesi, al ritorno si ricalcola subito il tempo vero rimasto
-     invece di restare bloccato o sfasato. ---- */
-  useEffect(() => {
-    if (!rest) return;
-    const endAt = rest.endAt;
-    let cancelled = false;
-    const tick = () => {
-      if (cancelled) return;
-      const remaining = Math.max(0, Math.round((endAt - Date.now()) / 1000));
-      if (remaining <= 0) {
-        playBeep();
-        if (navigator.vibrate) {
-          try {
-            navigator.vibrate([120, 60, 120]);
-          } catch (e) {}
-        }
-        setRest(null);
-        return;
-      }
-      setRest(r => r && r.endAt === endAt ? {
-        ...r,
-        remaining
-      } : r);
-      timerRef.current = setTimeout(tick, 250);
-    };
-    tick();
-    const onVisible = () => {
-      if (document.visibilityState === "visible") tick();
-    };
-    document.addEventListener("visibilitychange", onVisible);
-    return () => {
-      cancelled = true;
-      clearTimeout(timerRef.current);
-      document.removeEventListener("visibilitychange", onVisible);
-    };
-  }, [rest && rest.endAt]); // eslint-disable-line
-
-  /* ---- timer stretching guidato (stessa logica a timestamp) ---- */
-  useEffect(() => {
-    if (!stretchSession || stretchSession.phase !== "hold") return;
-    const endAt = stretchSession.endAt;
-    let cancelled = false;
-    const tick = () => {
-      if (cancelled) return;
-      const remaining = Math.max(0, Math.round((endAt - Date.now()) / 1000));
-      if (remaining <= 0) {
-        playBeep();
-        if (navigator.vibrate) {
-          try {
-            navigator.vibrate([120, 60, 120]);
-          } catch (e) {}
-        }
-        setStretchSession(prev => {
-          if (!prev) return prev;
-          const next = advanceStretchSession(prev);
-          if (!next) {
-            setScreen("home");
-            return null;
-          }
-          return next;
-        });
-        return;
-      }
-      setStretchSession(s => s && s.endAt === endAt ? {
-        ...s,
-        remaining
-      } : s);
-      stretchTimerRef.current = setTimeout(tick, 250);
-    };
-    tick();
-    const onVisible = () => {
-      if (document.visibilityState === "visible") tick();
-    };
-    document.addEventListener("visibilitychange", onVisible);
-    return () => {
-      cancelled = true;
-      clearTimeout(stretchTimerRef.current);
-      document.removeEventListener("visibilitychange", onVisible);
-    };
-  }, [stretchSession && stretchSession.phase, stretchSession && stretchSession.endAt]); // eslint-disable-line
-
-  const startStretching = day => {
-    const list = getStretchesForDay(day);
-    setStretchSession({
-      list,
-      idx: 0,
-      side: 1,
-      phase: "prep",
-      remaining: list[0].seconds,
-      endAt: null
-    });
-    setScreen("stretch");
-  };
-  const readyStretch = () => {
-    setStretchSession(prev => {
-      if (!prev) return prev;
-      const cur = prev.list[prev.idx];
-      return {
-        ...prev,
-        phase: "hold",
-        endAt: Date.now() + cur.seconds * 1000,
-        remaining: cur.seconds
-      };
-    });
-  };
-  const skipStretch = () => {
-    clearTimeout(stretchTimerRef.current);
-    setStretchSession(prev => {
-      if (!prev) return prev;
-      const next = advanceStretchSession(prev);
-      if (!next) {
-        setScreen("home");
-        return null;
-      }
-      return next;
-    });
-  };
-  const exitStretching = () => {
-    clearTimeout(stretchTimerRef.current);
-    setStretchSession(null);
-    setScreen("home");
-  };
-  const persistLog = useCallback(newLog => {
-    setLog(newLog);
-    try {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(newLog));
-    } catch (e) {}
-  }, []);
-  const persistPrLog = useCallback(newPrLog => {
-    setPrLog(newPrLog);
-    try {
-      localStorage.setItem(PR_STORAGE_KEY, JSON.stringify(newPrLog));
-    } catch (e) {}
-  }, []);
-
-  /* ---- lettura storico per esercizio ---- */
-  const getLastSessionSets = exId => {
-    const entries = log[exId];
-    if (!entries || entries.length === 0) return null;
-    const last = entries[entries.length - 1];
-    if (last.sets) return last.sets;
-    if (last.kg) return last.kg.map(kg => ({
-      kg,
-      reps: null
-    }));
-    return null;
-  };
-  const lastKg = exId => {
-    const sets = getLastSessionSets(exId);
-    if (!sets || sets.length === 0) return null;
-    const withKg = [...sets].reverse().find(s => s.kg != null);
-    return withKg ? withKg.kg : null;
-  };
-  const readyToProgress = ex => {
-    if (!ex.weight) return false;
-    const range = parseRepRange(ex.reps);
-    if (!range) return false;
-    const sets = getLastSessionSets(ex.id);
-    if (!sets || sets.length < ex.sets) return false;
-    // il criterio è il tetto del range di reps: se lo raggiungi su tutte le serie, la volta dopo
-    // si suggerisce più peso, indipendentemente da quanto segnato sul RIR (che resta solo informativo)
-    return sets.every(s => s.kg != null && s.reps != null && s.reps >= range.top);
-  };
-
-  /* ---- avvio / chiusura sessione ---- */
-  const startSession = () => {
-    setSession({
-      dayIdx: selectedDayIdx,
-      exIndex: 0,
-      progress: {},
-      loggedSets: [],
-      prs: []
-    });
-    setOpenDesc(false);
-    setScreen("session");
-  };
-  const exitSession = () => {
-    setSession(null);
-    setRest(null);
-    setScreen("home");
-  };
-  const goTo = nextIndex => {
-    setSession(s => s ? {
-      ...s,
-      exIndex: nextIndex
-    } : s);
-    setOpenDesc(false);
-  };
-
-  /* ---- completamento di una serie ---- */
-  const completeSet = (ex, kgValue, repsValue, rirValue) => {
-    setSession(prev => {
-      if (!prev) return prev;
-      const done = (prev.progress[ex.id] || 0) + 1;
-      return {
-        ...prev,
-        progress: {
-          ...prev.progress,
-          [ex.id]: done
-        }
-      };
-    });
-    let didPr = false;
-    if (ex.weight && kgValue !== "") {
-      const kgNum = parseFloat(kgValue);
-      const repsNum = repsValue === "" ? null : parseInt(repsValue, 10);
-      const rirNum = rirValue === "" || rirValue == null ? null : parseInt(rirValue, 10);
-      const prevRecord = getRecordKg(log, ex.id);
-      const today = todayStr();
-      const entries = log[ex.id] ? [...log[ex.id]] : [];
-      const idx = entries.findIndex(e => e.date === today);
-      const setObj = {
-        kg: kgNum,
-        reps: repsNum,
-        rir: rirNum
-      };
-      if (idx >= 0) {
-        const prevSets = entries[idx].sets || (entries[idx].kg ? entries[idx].kg.map(kg => ({
-          kg,
-          reps: null
-        })) : []);
-        entries[idx] = {
-          date: today,
-          sets: [...prevSets, setObj]
-        };
-      } else {
-        entries.push({
-          date: today,
-          sets: [setObj]
-        });
-      }
-      persistLog({
-        ...log,
-        [ex.id]: entries
-      });
-      setSession(prev => prev ? {
-        ...prev,
-        loggedSets: [...prev.loggedSets, {
-          exId: ex.id,
-          name: ex.name,
-          kg: kgNum,
-          reps: repsNum
-        }]
-      } : prev);
-      if (prevRecord != null && kgNum > prevRecord) {
-        didPr = true;
-        setPrBanner({
-          name: ex.name,
-          kg: kgNum
-        });
-        setTimeout(() => setPrBanner(null), 3200);
-        persistPrLog([...prLog, {
-          date: today,
-          exId: ex.id,
-          name: ex.name,
-          kg: kgNum
-        }]);
-        setSession(prev => prev ? {
-          ...prev,
-          prs: [...prev.prs, {
-            name: ex.name,
-            kg: kgNum
-          }]
-        } : prev);
-      }
-    }
-    const doneNow = (session ? session.progress[ex.id] || 0 : 0) + 1;
-    if (doneNow < ex.sets) {
-      setRest({
-        ex,
-        isNext: false,
-        total: ex.rest,
-        remaining: ex.rest,
-        endAt: Date.now() + ex.rest * 1000
-      });
-    } else if (session) {
-      // ultima serie dell'esercizio: pausa anche prima di passare al prossimo
-      const exercises = resolvedDays[session.dayIdx].exercises;
-      const nextEx = exercises[session.exIndex + 1];
-      if (nextEx) {
-        setRest({
-          ex: nextEx,
-          isNext: true,
-          total: ex.rest,
-          remaining: ex.rest,
-          endAt: Date.now() + ex.rest * 1000
-        });
-      }
-    }
-    return didPr;
-  };
-  const skipRest = () => {
-    clearTimeout(timerRef.current);
-    setRest(null);
-  };
+}
+function Icon({
+  children
+}) {
+  return /*#__PURE__*/React.createElement("span", {
+    className: "icon"
+  }, children);
+}
+function BottomNav({
+  screen,
+  setScreen
+}) {
+  const items = [{
+    id: "home",
+    label: "Home",
+    icon: "\u{1F3E0}"
+  }, {
+    id: "collection",
+    label: "Collezione",
+    icon: "\u{1F5C2}️"
+  }, {
+    id: "sold",
+    label: "Vendute",
+    icon: "\u{1F4B0}"
+  }, {
+    id: "restoration",
+    label: "Restauro",
+    icon: "\u{1F9F9}"
+  }, {
+    id: "settings",
+    label: "Impostazioni",
+    icon: "⚙️"
+  }];
+  return /*#__PURE__*/React.createElement("nav", {
+    className: "bottom-nav"
+  }, items.map(it => /*#__PURE__*/React.createElement("button", {
+    key: it.id,
+    className: "nav-btn" + (screen === it.id ? " active" : ""),
+    onClick: () => setScreen(it.id)
+  }, /*#__PURE__*/React.createElement("span", {
+    className: "nav-icon"
+  }, it.icon), /*#__PURE__*/React.createElement("span", {
+    className: "nav-label"
+  }, it.label))));
+}
+function CardRow({
+  card,
+  onClick
+}) {
+  const dp = deltaPct(card);
+  const val = currentValue(card);
   return /*#__PURE__*/React.createElement("div", {
-    className: "app",
-    style: {
-      "--accent": accent,
-      "--accent-2": lightenHex(accent, 40),
-      "--accent-soft": rgbaFromHex(accent, 0.13),
-      "--a05": rgbaFromHex(accent, 0.05),
-      "--a10": rgbaFromHex(accent, 0.10),
-      "--a24": rgbaFromHex(accent, 0.24),
-      "--a28": rgbaFromHex(accent, 0.28),
-      "--a35": rgbaFromHex(accent, 0.35)
-    }
-  }, /*#__PURE__*/React.createElement("style", null, `
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;600;700&display=swap');
-
-        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
-        .app {
-          --bg: #0e0d0b;
-          --surface: #18161200; --surface-1: #17151220;
-          --card: #1a1815; --card-2: #201d18;
-          --field: #100f0d;
-          --border: rgba(255,255,255,0.06);
-          --border-2: rgba(255,255,255,0.11);
-          --accent: #E4362B; --accent-2: #ff5a46;
-          --accent-soft: rgba(228,54,43,0.13);
-          --text: #f5f2ea; --text-2: #a29d92; --text-3: #6d6a61;
-          --good: #4dbb5c;
-          --radius: 16px;
-          --shadow: 0 6px 24px rgba(0,0,0,0.38);
-          min-height: 100vh;
-          background:
-            radial-gradient(120% 60% at 50% -10%, var(--a10), transparent 60%),
-            radial-gradient(90% 50% at 100% 100%, var(--a05), transparent 55%),
-            var(--bg);
-          color: var(--text);
-          font-family: 'Inter', -apple-system, system-ui, sans-serif;
-          -webkit-font-smoothing: antialiased;
-        }
-        .shell {
-          max-width: 460px;
-          margin: 0 auto;
-          padding: 26px 18px calc(26px + env(safe-area-inset-bottom));
-          min-height: 100vh;
-          display: flex; flex-direction: column;
-        }
-        .mono { font-family: 'JetBrains Mono', ui-monospace, monospace; font-variant-numeric: tabular-nums; }
-        button { font-family: inherit; cursor: pointer; border: none; background: none; color: inherit; }
-        input { font-family: inherit; }
-
-        /* ---- header ---- */
-        .kicker {
-          font-family: 'JetBrains Mono', monospace;
-          font-size: 10.5px; letter-spacing: 0.28em; font-weight: 600;
-          color: var(--accent); text-transform: uppercase;
-        }
-        .h-title {
-          font-weight: 800; font-size: 30px; letter-spacing: -0.02em;
-          margin: 8px 0 0; color: var(--text); line-height: 1.05;
-        }
-        .h-sub { color: var(--text-2); font-size: 14px; margin-top: 8px; }
-
-        /* ---- stat chips (home) ---- */
-        .chips { display: flex; gap: 10px; margin-top: 22px; }
-        .chip {
-          flex: 1; background: var(--card); border: 1px solid var(--border);
-          border-radius: 14px; padding: 13px 14px; box-shadow: var(--shadow);
-        }
-        .chip-num { font-size: 22px; font-weight: 700; letter-spacing: -0.01em; }
-        .chip-num .u { font-size: 12px; color: var(--text-3); font-weight: 600; margin-left: 3px; }
-        .chip-lbl { font-size: 11px; color: var(--text-3); text-transform: uppercase; letter-spacing: 0.06em; margin-top: 3px; }
-
-        .section-lbl {
-          font-size: 11.5px; letter-spacing: 0.14em; text-transform: uppercase;
-          color: var(--text-3); font-weight: 600; margin: 28px 2px 12px;
-        }
-
-        /* ---- day cards ---- */
-        .day-list { display: flex; flex-direction: column; gap: 10px; }
-        .day-card {
-          display: flex; align-items: center; gap: 14px; width: 100%; text-align: left;
-          background: var(--card); border: 1px solid var(--border);
-          border-radius: var(--radius); padding: 14px; transition: border-color .18s, transform .1s, background .18s;
-        }
-        .day-card:active { transform: scale(0.99); }
-        .day-card.sel { border-color: var(--accent); background: linear-gradient(var(--accent-soft), var(--accent-soft)), var(--card); }
-        .day-badge {
-          flex: 0 0 auto; width: 44px; height: 44px; border-radius: 12px;
-          display: flex; align-items: center; justify-content: center;
-          font-family: 'JetBrains Mono', monospace; font-weight: 700; font-size: 15px;
-          background: var(--card-2); border: 1px solid var(--border-2); color: var(--text-2);
-        }
-        .day-card.sel .day-badge { background: var(--accent); border-color: var(--accent); color: #17130f; }
-        .day-info { flex: 1; min-width: 0; display: flex; flex-direction: column; }
-        .day-name { font-weight: 700; font-size: 15.5px; letter-spacing: -0.01em; }
-        .day-meta { display: block; font-size: 12.5px; color: var(--text-3); margin-top: 3px; }
-        .day-chev { color: var(--text-3); font-size: 18px; }
-        .day-card.sel .day-chev { color: var(--accent); }
-        .suggested-tag {
-          font-family: 'JetBrains Mono', monospace; font-size: 9.5px; letter-spacing: 0.1em;
-          text-transform: uppercase; color: var(--accent); background: var(--accent-soft);
-          border-radius: 6px; padding: 3px 6px; margin-left: 8px; vertical-align: middle;
-        }
-
-        /* ---- buttons ---- */
-        .spacer { flex: 1; max-height: 32px; }
-        .cta {
-          width: 100%; background: var(--accent); color: #17130f;
-          font-weight: 700; font-size: 16px; letter-spacing: -0.01em;
-          padding: 16px; border-radius: 14px; margin-top: 24px;
-          box-shadow: 0 8px 22px var(--a28); transition: transform .1s, filter .15s;
-        }
-        .cta:active { transform: translateY(1px); filter: brightness(1.05); }
-        .btn-ghost {
-          width: 100%; background: transparent; color: var(--text-2);
-          border: 1px solid var(--border-2); font-weight: 600; font-size: 14px;
-          padding: 13px; border-radius: 12px; margin-top: 10px;
-        }
-        .btn-ghost:active { background: var(--surface-1); }
-
-        /* ---- session top bar ---- */
-        .sess-top { display: flex; align-items: center; gap: 12px; margin-bottom: 16px; }
-        .icon-btn {
-          width: 38px; height: 38px; border-radius: 11px; flex: 0 0 auto;
-          display: flex; align-items: center; justify-content: center; font-size: 18px;
-          background: var(--card); border: 1px solid var(--border); color: var(--text-2);
-        }
-        .icon-btn:active { background: var(--card-2); }
-        .icon-btn:disabled { opacity: 0.3; }
-        .sess-day { flex: 1; min-width: 0; }
-        .sess-day-name { font-weight: 700; font-size: 14px; letter-spacing: -0.01em; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-        .sess-count { font-family: 'JetBrains Mono', monospace; font-size: 11.5px; color: var(--text-3); margin-top: 1px; }
-        .pbar { height: 4px; border-radius: 3px; background: var(--card-2); overflow: hidden; margin-bottom: 22px; }
-        .pbar-fill { height: 100%; background: var(--accent); border-radius: 3px; transition: width .3s ease; }
-
-        /* ---- exercise card ---- */
-        .ex-wrap { animation: slidein .28s ease; }
-        @keyframes slidein { from { opacity: 0; transform: translateX(14px); } to { opacity: 1; transform: none; } }
-        .ex-tag {
-          display: inline-block; font-family: 'JetBrains Mono', monospace; font-size: 10px;
-          letter-spacing: 0.12em; text-transform: uppercase; color: var(--accent);
-          background: var(--accent-soft); border-radius: 6px; padding: 4px 8px; margin-bottom: 12px;
-        }
-        .ex-name { font-weight: 800; font-size: 25px; letter-spacing: -0.02em; line-height: 1.12; margin: 0; }
-        .ex-metarow { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 14px; }
-        .metapill {
-          font-family: 'JetBrains Mono', monospace; font-size: 12px; color: var(--text-2);
-          background: var(--card); border: 1px solid var(--border); border-radius: 9px; padding: 7px 10px;
-        }
-        .metapill b { color: var(--text); font-weight: 700; }
-        .desc-toggle { margin-top: 14px; color: var(--text-2); font-size: 13px; font-weight: 600; display: inline-flex; align-items: center; gap: 6px; }
-        .ex-desc { font-size: 13.5px; color: var(--text-2); line-height: 1.5; margin-top: 10px; padding-left: 12px; border-left: 2px solid var(--border-2); }
-        .lastkg { margin-top: 16px; font-family: 'JetBrains Mono', monospace; font-size: 12.5px; color: var(--text-3); }
-        .lastkg b { color: var(--text-2); }
-        .prog-badge {
-          margin-top: 14px; background: var(--accent-soft); border: 1px solid var(--a35);
-          color: var(--accent-2); font-size: 13px; font-weight: 600; padding: 11px 12px; border-radius: 12px;
-        }
-
-        /* ---- set logger ---- */
-        .logger { margin-top: 26px; background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 18px; box-shadow: var(--shadow); }
-        .dots { display: flex; gap: 8px; margin-bottom: 16px; }
-        .dot { width: 11px; height: 11px; border-radius: 50%; background: var(--card-2); border: 1px solid var(--border-2); transition: background .2s; }
-        .dot.filled { background: var(--accent); border-color: var(--accent); }
-        .fields { display: flex; gap: 12px; }
-        .field { flex: 1; }
-        .field-lbl { font-size: 11px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--text-3); margin-bottom: 7px; font-weight: 600; }
-        .field-in {
-          width: 100%; background: var(--field); border: 1px solid var(--border-2); color: var(--text);
-          font-family: 'JetBrains Mono', monospace; font-weight: 700; font-size: 22px; text-align: center;
-          padding: 12px 8px; border-radius: 12px; -moz-appearance: textfield;
-        }
-        .field-in::-webkit-outer-spin-button, .field-in::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
-        .field-in:focus { outline: none; border-color: var(--accent); }
-        .set-btn {
-          width: 100%; margin-top: 16px; background: var(--accent); color: #17130f;
-          font-weight: 700; font-size: 15px; padding: 15px; border-radius: 12px; transition: transform .1s, filter .15s;
-        }
-        .set-btn:active { transform: translateY(1px); filter: brightness(1.06); }
-        .done-state { margin-top: 26px; background: linear-gradient(rgba(77,187,92,0.08), rgba(77,187,92,0.08)), var(--card); border: 1px solid rgba(77,187,92,0.35); border-radius: var(--radius); padding: 20px; text-align: center; }
-        .done-check { font-size: 26px; color: var(--good); }
-        .done-txt { font-weight: 700; font-size: 15px; margin-top: 6px; }
-        .done-sub { font-size: 12.5px; color: var(--text-3); margin-top: 3px; }
-
-        /* ---- session bottom nav ---- */
-        .sess-nav { display: flex; gap: 10px; margin-top: 20px; }
-        .nav-btn { flex: 1; background: var(--card); border: 1px solid var(--border-2); color: var(--text); font-weight: 600; font-size: 14px; padding: 14px; border-radius: 12px; }
-        .nav-btn:active { background: var(--card-2); }
-        .nav-btn:disabled { opacity: 0.3; }
-        .nav-btn.primary { background: var(--accent); color: #17130f; border-color: var(--accent); box-shadow: 0 8px 22px var(--a24); }
-
-        /* ---- rest overlay ---- */
-        .rest-overlay { position: fixed; inset: 0; background: rgba(10,9,8,0.96); backdrop-filter: blur(6px); display: flex; flex-direction: column; align-items: center; justify-content: center; z-index: 60; padding: 24px; animation: fade .2s ease; overflow-y: auto; }
-        @keyframes fade { from { opacity: 0; } to { opacity: 1; } }
-        .rest-label { font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.22em; color: var(--accent); text-transform: uppercase; margin-bottom: 8px; }
-        .rest-exname { font-weight: 700; font-size: 17px; color: var(--text-2); margin-bottom: 26px; text-align: center; letter-spacing: -0.01em; }
-        .ring-wrap { position: relative; width: 224px; height: 224px; }
-        .ring-num { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; font-family: 'JetBrains Mono', monospace; font-weight: 700; font-size: 48px; color: var(--text); letter-spacing: -0.02em; }
-        .skip-btn { margin-top: 30px; background: transparent; border: 1px solid var(--border-2); color: var(--text-2); font-size: 13.5px; font-weight: 600; padding: 11px 24px; border-radius: 22px; }
-        .skip-btn:active { background: var(--surface-1); }
-
-        /* ---- pr banner ---- */
-        .pr-banner { position: fixed; top: calc(14px + env(safe-area-inset-top)); left: 50%; transform: translateX(-50%); width: calc(100% - 36px); max-width: 424px; z-index: 70; background: linear-gradient(var(--accent-soft), var(--accent-soft)), var(--card); border: 1px solid var(--accent); color: #ffd9bd; font-weight: 700; font-size: 13.5px; padding: 12px 14px; border-radius: 13px; text-align: center; box-shadow: var(--shadow); animation: drop .3s ease; }
-        @keyframes drop { from { opacity: 0; transform: translate(-50%, -12px); } to { opacity: 1; transform: translate(-50%, 0); } }
-
-        /* ---- summary ---- */
-        .summary-hero { text-align: center; padding: 18px 0 6px; }
-        .sum-check { width: 68px; height: 68px; border-radius: 50%; margin: 0 auto 16px; display: flex; align-items: center; justify-content: center; font-size: 32px; background: var(--accent-soft); border: 1px solid var(--accent); color: var(--accent); }
-        .sum-title { font-weight: 800; font-size: 26px; letter-spacing: -0.02em; }
-        .sum-day { color: var(--text-2); font-size: 14px; margin-top: 6px; }
-        .sum-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; margin-top: 24px; }
-        .sum-stat { background: var(--card); border: 1px solid var(--border); border-radius: 14px; padding: 15px 8px; text-align: center; }
-        .sum-stat-num { font-family: 'JetBrains Mono', monospace; font-size: 24px; font-weight: 700; color: var(--accent); }
-        .sum-stat-lbl { font-size: 10.5px; color: var(--text-3); text-transform: uppercase; letter-spacing: 0.05em; margin-top: 5px; }
-
-        /* ---- generic list card ---- */
-        .card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 16px; box-shadow: var(--shadow); }
-        .row { display: flex; justify-content: space-between; align-items: center; gap: 10px; padding: 11px 0; border-bottom: 1px solid var(--border); }
-        .row:last-child { border-bottom: none; }
-        .row-name { font-size: 13.5px; color: var(--text); font-weight: 500; }
-        .row-kg { font-family: 'JetBrains Mono', monospace; font-weight: 700; color: var(--accent); font-size: 13.5px; }
-        .row-date { font-family: 'JetBrains Mono', monospace; color: var(--text-3); font-size: 11px; }
-
-        .stretch-item { padding: 11px 0; border-bottom: 1px solid var(--border); }
-        .stretch-item:last-child { border-bottom: none; }
-        .stretch-name { font-weight: 600; font-size: 13.5px; }
-        .stretch-dur { font-family: 'JetBrains Mono', monospace; font-size: 11.5px; color: var(--accent); margin-left: 6px; }
-        .stretch-desc { font-size: 12.5px; color: var(--text-2); line-height: 1.45; margin-top: 4px; }
-
-        /* ---- stats ---- */
-        .stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-        .trend-card { background: var(--card); border: 1px solid var(--border); border-radius: 14px; padding: 14px; margin-bottom: 10px; box-shadow: var(--shadow); }
-        .trend-head { display: flex; justify-content: space-between; align-items: baseline; gap: 8px; margin-bottom: 8px; }
-        .trend-name { font-size: 13px; font-weight: 600; }
-        .trend-rec { font-family: 'JetBrains Mono', monospace; font-size: 11.5px; color: var(--accent); white-space: nowrap; }
-        .spark-empty { font-size: 12px; color: var(--text-3); }
-        .empty-note { font-size: 13px; color: var(--text-3); line-height: 1.5; text-align: center; padding: 30px 10px; }
-        .day-tabs-lib { display: flex; gap: 6px; overflow-x: auto; margin-bottom: 18px; }
-        .day-tab-lib {
-          flex: 0 0 auto; background: var(--card); border: 1px solid var(--border);
-          color: var(--text-2); font-family: 'JetBrains Mono', monospace; font-weight: 700;
-          font-size: 13px; padding: 9px 14px; border-radius: 10px;
-        }
-        .day-tab-lib.active { background: var(--accent); border-color: var(--accent); color: #1a1a18; }
-        .swatch-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-bottom: 22px; }
-        .swatch {
-          aspect-ratio: 1; border-radius: 14px; border: 2px solid var(--border-2);
-          display: flex; align-items: center; justify-content: center;
-          box-shadow: var(--shadow);
-        }
-        .swatch.sel { border-color: #fff; box-shadow: 0 0 0 2px rgba(255,255,255,0.25), var(--shadow); }
-        .swatch-check { color: #fff; font-size: 18px; font-weight: 800; text-shadow: 0 1px 3px rgba(0,0,0,0.5); }
-        .color-input {
-          width: 52px; height: 52px; border: none; border-radius: 12px;
-          padding: 0; background: none; cursor: pointer;
-        }
-        .color-input::-webkit-color-swatch-wrapper { padding: 0; border-radius: 12px; }
-        .color-input::-webkit-color-swatch { border: 2px solid var(--border-2); border-radius: 12px; }
-      `), prBanner && /*#__PURE__*/React.createElement("div", {
-    className: "pr-banner"
-  }, "🏆 Nuovo record — ", prBanner.name, ": ", /*#__PURE__*/React.createElement("span", {
-    className: "mono"
-  }, prBanner.kg, " kg")), rotationNote && /*#__PURE__*/React.createElement("div", {
-    className: "pr-banner",
-    onClick: () => setRotationNote(null),
-    style: {
-      cursor: "pointer"
-    }
-  }, "🔄 Cambio automatico mensile (Giorno ", rotationNote.dayId, "): ", rotationNote.from, " → ", rotationNote.to), /*#__PURE__*/React.createElement("div", {
-    className: "shell"
-  }, screen === "home" && /*#__PURE__*/React.createElement(HomeScreen, {
-    days: resolvedDays,
-    log: log,
-    prLog: prLog,
-    loaded: loaded,
-    selectedDayIdx: selectedDayIdx,
-    setSelectedDayIdx: setSelectedDayIdx,
-    onStart: startSession,
-    onStats: () => setScreen("stats"),
-    onLibrary: () => setScreen("library"),
-    onSettings: () => setScreen("settings")
-  }), screen === "session" && session && /*#__PURE__*/React.createElement(SessionScreen, {
-    days: resolvedDays,
-    session: session,
-    onExit: exitSession,
-    onGoTo: goTo,
-    onComplete: completeSet,
-    lastKg: lastKg,
-    readyToProgress: readyToProgress,
-    getLastSessionSets: getLastSessionSets,
-    openDesc: openDesc,
-    setOpenDesc: setOpenDesc,
-    onFinish: () => setScreen("summary")
-  }), screen === "summary" && session && /*#__PURE__*/React.createElement(SummaryScreen, {
-    days: resolvedDays,
-    session: session,
-    log: log,
-    onClose: exitSession,
-    onStartStretch: startStretching,
-    onExportBackup: () => exportBackup(getAllSessionDates(log).length)
-  }), screen === "stretch" && stretchSession && /*#__PURE__*/React.createElement(StretchScreen, {
-    session: stretchSession,
-    onExit: exitStretching,
-    onReady: readyStretch,
-    onSkip: skipStretch
-  }), screen === "stats" && /*#__PURE__*/React.createElement(StatsScreen, {
-    log: log,
-    prLog: prLog,
-    onBack: () => setScreen("home")
-  }), screen === "library" && /*#__PURE__*/React.createElement(LibraryScreen, {
-    days: resolvedDays,
-    onBack: () => setScreen("home"),
-    onSetSlot: updateSlot,
-    onResetSlot: restoreSlot
-  }), screen === "settings" && /*#__PURE__*/React.createElement(SettingsScreen, {
-    accent: accent,
-    onChange: changeAccent,
-    onBack: () => setScreen("home"),
-    onImportBackup: handleImportBackup,
-    sessionCount: getAllSessionDates(log).length
-  })), rest && /*#__PURE__*/React.createElement("div", {
-    className: "rest-overlay"
+    className: "card-row",
+    onClick: onClick
   }, /*#__PURE__*/React.createElement("div", {
-    className: "rest-label"
-  }, rest.isNext ? "Prossimo esercizio" : "Recupero"), /*#__PURE__*/React.createElement("div", {
-    className: "rest-exname"
-  }, rest.ex.name), /*#__PURE__*/React.createElement("div", {
-    className: "ex-desc",
-    style: {
-      maxWidth: 380,
-      textAlign: "left",
-      marginBottom: 16
-    }
-  }, rest.ex.desc), lastKg(rest.ex.id) != null && /*#__PURE__*/React.createElement("div", {
-    className: "lastkg",
-    style: {
-      marginBottom: 16
-    }
-  }, "Ultima volta: ", /*#__PURE__*/React.createElement("b", null, lastKg(rest.ex.id), " kg"), " — prepara il peso ora"), /*#__PURE__*/React.createElement(RestRing, {
-    total: rest.total,
-    remaining: rest.remaining
-  }), /*#__PURE__*/React.createElement("button", {
-    className: "skip-btn",
-    onClick: skipRest
-  }, "Salta recupero")));
-}
-
-/* =======================================================
-   HOME
-======================================================= */
-function HomeScreen({
-  days,
-  log,
-  prLog,
-  loaded,
-  selectedDayIdx,
-  setSelectedDayIdx,
-  onStart,
-  onStats,
-  onLibrary,
-  onSettings
-}) {
-  const dates = getAllSessionDates(log);
-  const streaks = computeStreaks(dates);
-  const nSessions = dates.length;
-  return /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("div", {
-    className: "kicker"
-  }, "Steroids · Training Log"), /*#__PURE__*/React.createElement("h1", {
-    className: "h-title"
-  }, "Scheda", /*#__PURE__*/React.createElement("br", null), "Multifrequenza"), /*#__PURE__*/React.createElement("div", {
-    className: "h-sub"
-  }, "Cinque giorni, parte alta. Scegli e vai."), /*#__PURE__*/React.createElement("div", {
-    className: "chips"
-  }, /*#__PURE__*/React.createElement("div", {
-    className: "chip"
-  }, /*#__PURE__*/React.createElement("div", {
-    className: "chip-num mono"
-  }, streaks.alive ? streaks.current : 0, /*#__PURE__*/React.createElement("span", {
-    className: "u"
-  }, streaks.alive ? "🔥" : "gg")), /*#__PURE__*/React.createElement("div", {
-    className: "chip-lbl"
-  }, "Streak")), /*#__PURE__*/React.createElement("div", {
-    className: "chip"
-  }, /*#__PURE__*/React.createElement("div", {
-    className: "chip-num mono"
-  }, nSessions), /*#__PURE__*/React.createElement("div", {
-    className: "chip-lbl"
-  }, "Sedute")), /*#__PURE__*/React.createElement("div", {
-    className: "chip"
-  }, /*#__PURE__*/React.createElement("div", {
-    className: "chip-num mono"
-  }, prLog.length), /*#__PURE__*/React.createElement("div", {
-    className: "chip-lbl"
-  }, "Record"))), /*#__PURE__*/React.createElement("div", {
-    className: "section-lbl"
-  }, "Scegli l'allenamento"), /*#__PURE__*/React.createElement("div", {
-    className: "day-list"
-  }, days.map((d, i) => /*#__PURE__*/React.createElement("button", {
-    key: d.id,
-    className: "day-card" + (i === selectedDayIdx ? " sel" : ""),
-    onClick: () => setSelectedDayIdx(i)
-  }, /*#__PURE__*/React.createElement("span", {
-    className: "day-badge"
-  }, "G", d.id), /*#__PURE__*/React.createElement("span", {
-    className: "day-info"
-  }, /*#__PURE__*/React.createElement("span", {
-    className: "day-name"
-  }, d.title, i === selectedDayIdx && loaded && nSessions > 0 && /*#__PURE__*/React.createElement("span", {
-    className: "suggested-tag"
-  }, "consigliato")), /*#__PURE__*/React.createElement("span", {
-    className: "day-meta"
-  }, d.exercises.length, " esercizi")), /*#__PURE__*/React.createElement("span", {
-    className: "day-chev"
-  }, i === selectedDayIdx ? "●" : "›")))), /*#__PURE__*/React.createElement("div", {
-    className: "spacer"
-  }), /*#__PURE__*/React.createElement("button", {
-    className: "cta",
-    onClick: onStart
-  }, "Inizia allenamento →"), /*#__PURE__*/React.createElement("button", {
-    className: "btn-ghost",
-    onClick: onStats
-  }, "📊 Statistiche e storico"), /*#__PURE__*/React.createElement("button", {
-    className: "btn-ghost",
-    onClick: onLibrary
-  }, "🧩 Libreria esercizi"), /*#__PURE__*/React.createElement("button", {
-    className: "btn-ghost",
-    onClick: onSettings
-  }, "⚙️ Impostazioni e backup"));
-}
-
-/* =======================================================
-   SESSIONE GUIDATA
-======================================================= */
-function SessionScreen({
-  days,
-  session,
-  onExit,
-  onGoTo,
-  onComplete,
-  lastKg,
-  readyToProgress,
-  getLastSessionSets,
-  openDesc,
-  setOpenDesc,
-  onFinish
-}) {
-  const day = days[session.dayIdx];
-  const exercises = day.exercises;
-  const idx = session.exIndex;
-  const ex = exercises[idx];
-  const setsDone = session.progress[ex.id] || 0;
-  const isDone = setsDone >= ex.sets;
-  const last = lastKg(ex.id);
-  const suggestUp = readyToProgress(ex);
-  const lastSets = getLastSessionSets(ex.id);
-  const doneExercises = exercises.filter(e => (session.progress[e.id] || 0) >= e.sets).length;
-  const pct = Math.round(doneExercises / exercises.length * 100);
-  const isLast = idx === exercises.length - 1;
-  const allDone = doneExercises === exercises.length;
-  const confirmExit = () => {
-    if (session.loggedSets.length === 0 || window.confirm("Uscire dall'allenamento? I dati già registrati restano salvati.")) onExit();
-  };
-  return /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("div", {
-    className: "sess-top"
-  }, /*#__PURE__*/React.createElement("button", {
-    className: "icon-btn",
-    onClick: confirmExit
-  }, "✕"), /*#__PURE__*/React.createElement("div", {
-    className: "sess-day"
-  }, /*#__PURE__*/React.createElement("div", {
-    className: "sess-day-name"
-  }, "Giorno ", day.id, " — ", day.title), /*#__PURE__*/React.createElement("div", {
-    className: "sess-count"
-  }, "Esercizio ", idx + 1, " / ", exercises.length)), /*#__PURE__*/React.createElement("button", {
-    className: "icon-btn",
-    onClick: onFinish,
-    title: "Termina"
-  }, "🏁")), /*#__PURE__*/React.createElement("div", {
-    className: "pbar"
-  }, /*#__PURE__*/React.createElement("div", {
-    className: "pbar-fill",
-    style: {
-      width: pct + "%"
-    }
-  })), /*#__PURE__*/React.createElement("div", {
-    className: "ex-wrap",
-    key: ex.id
-  }, /*#__PURE__*/React.createElement("div", {
-    style: {
-      display: "flex",
-      gap: 8
-    }
-  }, /*#__PURE__*/React.createElement("div", {
-    className: "ex-tag"
-  }, "🎯 ", ex.muscle), ex.finisher && /*#__PURE__*/React.createElement("div", {
-    className: "ex-tag"
-  }, "Finisher")), /*#__PURE__*/React.createElement("h2", {
-    className: "ex-name"
-  }, ex.name), /*#__PURE__*/React.createElement("div", {
-    className: "ex-metarow"
-  }, /*#__PURE__*/React.createElement("span", {
-    className: "metapill"
-  }, /*#__PURE__*/React.createElement("b", null, ex.sets), " serie"), /*#__PURE__*/React.createElement("span", {
-    className: "metapill"
-  }, /*#__PURE__*/React.createElement("b", null, ex.reps), " reps"), /*#__PURE__*/React.createElement("span", {
-    className: "metapill"
-  }, "rec ", /*#__PURE__*/React.createElement("b", null, fmtRest(ex.rest)))), /*#__PURE__*/React.createElement("div", {
-    className: "desc-toggle",
-    onClick: () => setOpenDesc(o => !o)
-  }, openDesc ? "▾" : "▸", " Come si esegue"), openDesc && /*#__PURE__*/React.createElement("div", {
-    className: "ex-desc"
-  }, ex.desc), openDesc && ex.video && /*#__PURE__*/React.createElement("div", {
-    style: {
-      position: "relative",
-      paddingBottom: "56.25%",
-      height: 0,
-      marginTop: 12,
-      borderRadius: 12,
-      overflow: "hidden"
-    }
-  }, /*#__PURE__*/React.createElement("iframe", {
-    src: `https://www.youtube.com/embed/${ex.video}`,
-    title: `Video: ${ex.name}`,
-    style: {
-      position: "absolute",
-      top: 0,
-      left: 0,
-      width: "100%",
-      height: "100%",
-      border: "none"
-    },
-    allow: "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture",
-    allowFullScreen: true
-  })), last != null && /*#__PURE__*/React.createElement("div", {
-    className: "lastkg"
-  }, "Ultima volta: ", /*#__PURE__*/React.createElement("b", null, last, " kg")), suggestUp && !isDone && /*#__PURE__*/React.createElement("div", {
-    className: "prog-badge"
-  }, "🔼 Range pieno l'ultima volta — oggi prova ad alzare il peso"), !isDone ? /*#__PURE__*/React.createElement(SetLogger, {
-    ex: ex,
-    setsDone: setsDone,
-    onComplete: onComplete,
-    last: last,
-    suggestUp: suggestUp,
-    lastSets: lastSets
+    className: "card-row-thumb"
+  }, card.image ? /*#__PURE__*/React.createElement("img", {
+    src: card.image,
+    alt: card.name
   }) : /*#__PURE__*/React.createElement("div", {
-    className: "done-state"
+    className: "thumb-placeholder"
+  }, "?")), /*#__PURE__*/React.createElement("div", {
+    className: "card-row-info"
   }, /*#__PURE__*/React.createElement("div", {
-    className: "done-check"
-  }, "✓"), /*#__PURE__*/React.createElement("div", {
-    className: "done-txt"
-  }, "Esercizio completato"), /*#__PURE__*/React.createElement("div", {
-    className: "done-sub"
-  }, ex.sets, " serie registrate"))), /*#__PURE__*/React.createElement("div", {
-    className: "spacer"
-  }), /*#__PURE__*/React.createElement("div", {
-    className: "sess-nav"
-  }, /*#__PURE__*/React.createElement("button", {
-    className: "nav-btn",
-    disabled: idx === 0,
-    onClick: () => onGoTo(idx - 1)
-  }, "← Precedente"), isLast ? /*#__PURE__*/React.createElement("button", {
-    className: "nav-btn primary",
-    onClick: onFinish
-  }, allDone ? "Termina →" : "Termina →") : /*#__PURE__*/React.createElement("button", {
-    className: "nav-btn primary",
-    onClick: () => onGoTo(idx + 1)
-  }, "Successivo →")));
+    className: "card-row-name"
+  }, card.name || "(senza nome)"), /*#__PURE__*/React.createElement("div", {
+    className: "card-row-meta"
+  }, card.set, " · ", card.language, card.graded ? " · " + card.gradingCompany + " " + card.grade : " · " + (card.condition || "NM"), card.quantity > 1 ? " · x" + card.quantity : ""), !card.sold && card.flipStatus && /*#__PURE__*/React.createElement("div", {
+    className: "card-row-status"
+  }, card.flipStatus)), /*#__PURE__*/React.createElement("div", {
+    className: "card-row-value"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "value-amount"
+  }, fmtEUR(val)), dp !== null && /*#__PURE__*/React.createElement("div", {
+    className: "value-delta " + (dp >= 0 ? "up" : "down")
+  }, dp >= 0 ? "▲" : "▼", " ", Math.abs(dp).toFixed(1), "%")));
 }
-function SetLogger({
-  ex,
-  setsDone,
-  onComplete,
-  last,
-  suggestUp,
-  lastSets
+function HomeScreen({
+  cards,
+  openCard,
+  setScreen,
+  alertThreshold
 }) {
-  const range = parseRepRange(ex.reps);
-  const [kg, setKg] = useState("");
-  const [reps, setReps] = useState("");
-  const [rir, setRir] = useState(null);
-  useEffect(() => {
-    setKg(last != null ? String(last) : "");
-  }, [ex.id]); // eslint-disable-line
-
-  useEffect(() => {
-    // suggerisce le reps guardando la STESSA serie (per indice) della volta scorsa,
-    // non sempre la prima: se hai fatto 12/12/10, oggi suggerisce 12/12/10 e non 10/10/10
-    if (suggestUp && range) {
-      setReps(String(range.bottom));
-      return;
-    }
-    const lastRepsThisSet = lastSets && lastSets[setsDone] && lastSets[setsDone].reps != null ? lastSets[setsDone].reps : null;
-    const base = range ? range.top : null;
-    const suggested = lastRepsThisSet != null && base != null ? Math.max(base, lastRepsThisSet) : lastRepsThisSet != null ? lastRepsThisSet : base;
-    setReps(suggested != null ? String(suggested) : "");
-  }, [ex.id, setsDone]); // eslint-disable-line
-
-  useEffect(() => {
-    setRir(null);
-  }, [setsDone]);
+  const active = cards.filter(c => !c.sold);
+  const totalValue = active.reduce((s, c) => s + currentValue(c) * (c.quantity || 1), 0);
+  const totalInvested = active.reduce((s, c) => s + (Number(c.purchasePrice) || 0) * (c.quantity || 1), 0);
+  const unrealized = totalValue - totalInvested;
+  const sold = cards.filter(c => c.sold);
+  const realized = sold.reduce((s, c) => s + (c.sold.price - (Number(c.purchasePrice) || 0)) * (c.quantity || 1), 0);
+  const alerts = active.map(c => ({
+    c,
+    dp: deltaPct(c)
+  })).filter(x => x.dp !== null && Math.abs(x.dp) >= alertThreshold).sort((a, b) => Math.abs(b.dp) - Math.abs(a.dp));
+  const byStatus = {};
+  FLIP_STATUS_OPTIONS.forEach(s => {
+    byStatus[s] = {
+      count: 0,
+      value: 0
+    };
+  });
+  active.forEach(c => {
+    const s = byStatus[c.flipStatus] || byStatus[FLIP_STATUS.PRONTA];
+    s.count += 1;
+    s.value += (Number(c.purchasePrice) || 0) * (c.quantity || 1);
+  });
   return /*#__PURE__*/React.createElement("div", {
-    className: "logger"
+    className: "screen"
   }, /*#__PURE__*/React.createElement("div", {
-    className: "dots"
-  }, Array.from({
-    length: ex.sets
-  }).map((_, i) => /*#__PURE__*/React.createElement("div", {
-    key: i,
-    className: "dot" + (i < setsDone ? " filled" : "")
-  }))), ex.weight ? /*#__PURE__*/React.createElement("div", {
-    className: "fields"
+    className: "summary-grid"
   }, /*#__PURE__*/React.createElement("div", {
-    className: "field"
+    className: "summary-card"
   }, /*#__PURE__*/React.createElement("div", {
-    className: "field-lbl"
-  }, "Peso (kg)"), /*#__PURE__*/React.createElement("input", {
-    className: "field-in mono",
-    type: "number",
-    inputMode: "decimal",
-    placeholder: "—",
-    value: kg,
-    onChange: e => setKg(e.target.value)
-  })), range && /*#__PURE__*/React.createElement("div", {
-    className: "field"
+    className: "summary-label"
+  }, "Valore collezione"), /*#__PURE__*/React.createElement("div", {
+    className: "summary-value"
+  }, fmtEUR(totalValue))), /*#__PURE__*/React.createElement("div", {
+    className: "summary-card"
   }, /*#__PURE__*/React.createElement("div", {
-    className: "field-lbl"
-  }, "Reps"), /*#__PURE__*/React.createElement("input", {
-    className: "field-in mono",
-    type: "number",
-    inputMode: "numeric",
-    placeholder: "—",
-    value: reps,
-    onChange: e => setReps(e.target.value)
-  }))) : /*#__PURE__*/React.createElement("div", {
-    className: "field-lbl",
-    style: {
-      textAlign: "center",
-      marginBottom: 0
-    }
-  }, "A corpo libero · ", ex.reps), ex.weight && /*#__PURE__*/React.createElement("div", {
-    style: {
-      marginTop: 14
-    }
+    className: "summary-label"
+  }, "Investito"), /*#__PURE__*/React.createElement("div", {
+    className: "summary-value"
+  }, fmtEUR(totalInvested))), /*#__PURE__*/React.createElement("div", {
+    className: "summary-card"
   }, /*#__PURE__*/React.createElement("div", {
-    className: "field-lbl"
-  }, "Quanto ti mancava? (opzionale)"), /*#__PURE__*/React.createElement("div", {
-    style: {
-      display: "flex",
-      gap: 6,
-      marginTop: 7
-    }
-  }, [{
-    v: 0,
-    l: "Cedimento"
-  }, {
-    v: 1,
-    l: "Ancora 1-2"
-  }, {
-    v: 3,
-    l: "Ancora 3+"
-  }].map(opt => /*#__PURE__*/React.createElement("button", {
-    key: opt.v,
-    type: "button",
-    onClick: () => setRir(r => r === opt.v ? null : opt.v),
-    style: {
-      flex: 1,
-      padding: "9px 4px",
-      borderRadius: 10,
-      fontWeight: 700,
-      fontSize: 12,
-      fontFamily: "'JetBrains Mono', monospace",
-      background: rir === opt.v ? "var(--accent)" : "var(--card-2)",
-      color: rir === opt.v ? "#17130f" : "var(--text-2)",
-      border: "1px solid " + (rir === opt.v ? "var(--accent)" : "var(--border-2)")
-    }
-  }, opt.l)))), /*#__PURE__*/React.createElement("button", {
-    className: "set-btn",
-    onClick: () => onComplete(ex, kg, reps, rir)
-  }, "Serie ", setsDone + 1, "/", ex.sets, " fatta"));
-}
-
-/* =======================================================
-   RIEPILOGO FINE SESSIONE
-======================================================= */
-function SummaryScreen({
-  days,
-  session,
-  log,
-  onClose,
-  onStartStretch,
-  onExportBackup
-}) {
-  const day = days[session.dayIdx];
-  const exercisesDone = day.exercises.filter(e => (session.progress[e.id] || 0) >= e.sets).length;
-  const totalSets = session.loggedSets.length + day.exercises.reduce((acc, e) => {
-    // conteggia anche le serie senza peso (non presenti in loggedSets)
-    const done = session.progress[e.id] || 0;
-    return acc + (e.weight ? 0 : done);
-  }, 0);
-  const volume = session.loggedSets.reduce((acc, s) => acc + (s.kg != null && s.reps != null ? s.kg * s.reps : 0), 0);
-  const totalSessions = getAllSessionDates(log).length;
-  const streaks = computeStreaks(getAllSessionDates(log));
-  const dayStretches = getStretchesForDay(day);
-  const sessionsSinceBackup = totalSessions - getLastBackupSessionCount();
-  const [backupDone, setBackupDone] = useState(false);
-  const handleExport = () => {
-    onExportBackup();
-    setBackupDone(true);
-  };
-  return /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("div", {
-    className: "summary-hero"
+    className: "summary-label"
+  }, "Non realizzato"), /*#__PURE__*/React.createElement("div", {
+    className: "summary-value " + (unrealized >= 0 ? "up" : "down")
+  }, fmtEUR(unrealized))), /*#__PURE__*/React.createElement("div", {
+    className: "summary-card"
   }, /*#__PURE__*/React.createElement("div", {
-    className: "sum-check"
-  }, "✓"), /*#__PURE__*/React.createElement("div", {
-    className: "sum-title"
-  }, "Allenamento completato"), /*#__PURE__*/React.createElement("div", {
-    className: "sum-day"
-  }, "Giorno ", day.id, " — ", day.title)), sessionsSinceBackup >= 5 && !backupDone && /*#__PURE__*/React.createElement("div", {
-    className: "card",
-    style: {
-      marginTop: 18,
-      borderColor: "var(--accent)"
-    }
+    className: "summary-label"
+  }, "Profitto realizzato"), /*#__PURE__*/React.createElement("div", {
+    className: "summary-value " + (realized >= 0 ? "up" : "down")
+  }, fmtEUR(realized)))), /*#__PURE__*/React.createElement("h3", {
+    className: "section-title"
+  }, "Giacenze"), /*#__PURE__*/React.createElement("div", {
+    className: "stock-grid"
+  }, FLIP_STATUS_OPTIONS.map(s => /*#__PURE__*/React.createElement("div", {
+    className: "summary-card",
+    key: s
   }, /*#__PURE__*/React.createElement("div", {
-    className: "stretch-desc",
-    style: {
-      marginBottom: 12
-    }
-  }, "Sono passate ", sessionsSinceBackup, " sedute dall'ultimo backup — meglio salvarne uno ora, così non rischi di perdere lo storico."), /*#__PURE__*/React.createElement("button", {
-    className: "set-btn",
-    onClick: handleExport
-  }, "💾 Salva progressi ora")), backupDone && /*#__PURE__*/React.createElement("div", {
-    className: "card",
-    style: {
-      marginTop: 18
-    }
-  }, /*#__PURE__*/React.createElement("div", {
-    className: "stretch-desc"
-  }, "✓ Backup esportato.")), /*#__PURE__*/React.createElement("div", {
-    className: "sum-grid"
-  }, /*#__PURE__*/React.createElement("div", {
-    className: "sum-stat"
-  }, /*#__PURE__*/React.createElement("div", {
-    className: "sum-stat-num"
-  }, exercisesDone), /*#__PURE__*/React.createElement("div", {
-    className: "sum-stat-lbl"
-  }, "Esercizi")), /*#__PURE__*/React.createElement("div", {
-    className: "sum-stat"
-  }, /*#__PURE__*/React.createElement("div", {
-    className: "sum-stat-num"
-  }, totalSets), /*#__PURE__*/React.createElement("div", {
-    className: "sum-stat-lbl"
-  }, "Serie")), /*#__PURE__*/React.createElement("div", {
-    className: "sum-stat"
-  }, /*#__PURE__*/React.createElement("div", {
-    className: "sum-stat-num"
-  }, volume >= 1000 ? (volume / 1000).toFixed(1) + "k" : Math.round(volume)), /*#__PURE__*/React.createElement("div", {
-    className: "sum-stat-lbl"
-  }, "Volume kg"))), session.prs.length > 0 && /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("div", {
-    className: "section-lbl"
-  }, "🏆 Nuovi record di oggi"), /*#__PURE__*/React.createElement("div", {
-    className: "card"
-  }, session.prs.map((p, i) => /*#__PURE__*/React.createElement("div", {
-    key: i,
-    className: "row"
-  }, /*#__PURE__*/React.createElement("span", {
-    className: "row-name"
-  }, p.name), /*#__PURE__*/React.createElement("span", {
-    className: "row-kg"
-  }, p.kg, " kg"))))), /*#__PURE__*/React.createElement("div", {
-    className: "section-lbl"
-  }, "🔥 Streak"), /*#__PURE__*/React.createElement("div", {
-    className: "card"
-  }, /*#__PURE__*/React.createElement("div", {
-    className: "row"
-  }, /*#__PURE__*/React.createElement("span", {
-    className: "row-name"
-  }, "Streak attuale"), /*#__PURE__*/React.createElement("span", {
-    className: "row-kg"
-  }, streaks.alive ? streaks.current : 0, " ", streaks.alive ? "🔥" : "")), /*#__PURE__*/React.createElement("div", {
-    className: "row"
-  }, /*#__PURE__*/React.createElement("span", {
-    className: "row-name"
-  }, "Record personale streak"), /*#__PURE__*/React.createElement("span", {
-    className: "row-kg"
-  }, streaks.best))), /*#__PURE__*/React.createElement("div", {
-    className: "section-lbl"
-  }, "🧘 Stretching specifico per oggi"), /*#__PURE__*/React.createElement("div", {
-    className: "card"
-  }, /*#__PURE__*/React.createElement("div", {
-    className: "stretch-desc",
-    style: {
-      marginBottom: 12
-    }
-  }, "Statico, niente rimbalzi: tensione leggera e ferma. Solo i gruppi muscolari allenati oggi, ti guido io uno alla volta con il timer."), /*#__PURE__*/React.createElement("button", {
-    className: "set-btn",
-    onClick: () => onStartStretch(day)
-  }, "▶ Inizia stretching guidato"), /*#__PURE__*/React.createElement("div", {
-    style: {
-      marginTop: 14
-    }
-  }, dayStretches.map((s, i) => /*#__PURE__*/React.createElement("div", {
-    key: i,
-    className: "stretch-item"
-  }, /*#__PURE__*/React.createElement("span", {
-    className: "stretch-name"
-  }, s.name), /*#__PURE__*/React.createElement("span", {
-    className: "stretch-dur mono"
-  }, stretchDurLabel(s)))))), /*#__PURE__*/React.createElement("div", {
-    className: "spacer"
-  }), /*#__PURE__*/React.createElement("button", {
-    className: "cta",
-    onClick: onClose
-  }, "Chiudi"));
-}
-
-/* =======================================================
-   STRETCHING GUIDATO
-======================================================= */
-function StretchScreen({
-  session,
-  onExit,
-  onReady,
-  onSkip
-}) {
-  const cur = session.list[session.idx];
-  const showSide = cur.sides === 2;
-  const isLast = session.idx === session.list.length - 1 && (!showSide || session.side === 2);
-  const isPrep = session.phase === "prep";
-  return /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("div", {
-    className: "sess-top"
-  }, /*#__PURE__*/React.createElement("button", {
-    className: "icon-btn",
-    onClick: onExit
-  }, "✕"), /*#__PURE__*/React.createElement("div", {
-    className: "sess-day"
-  }, /*#__PURE__*/React.createElement("div", {
-    className: "sess-day-name"
-  }, "Stretching guidato"), /*#__PURE__*/React.createElement("div", {
-    className: "sess-count"
-  }, "Allungamento ", session.idx + 1, " / ", session.list.length, showSide ? ` · Lato ${session.side}/2` : "")), /*#__PURE__*/React.createElement("div", {
-    style: {
-      width: 38
-    }
-  })), /*#__PURE__*/React.createElement("div", {
-    className: "pbar"
-  }, /*#__PURE__*/React.createElement("div", {
-    className: "pbar-fill",
-    style: {
-      width: Math.round((session.idx + (!showSide || session.side === 2 ? 1 : 0.5)) / session.list.length * 100) + "%"
-    }
-  })), /*#__PURE__*/React.createElement("div", {
-    className: "ex-wrap",
-    key: session.idx + "-" + session.side
-  }, /*#__PURE__*/React.createElement("h2", {
-    className: "ex-name"
-  }, cur.name), /*#__PURE__*/React.createElement("div", {
-    className: "ex-desc",
-    style: {
-      marginTop: 14,
-      borderLeft: "none",
-      paddingLeft: 0
-    }
-  }, /*#__PURE__*/React.createElement("ol", {
-    style: {
-      margin: 0,
-      paddingLeft: 18,
-      display: "flex",
-      flexDirection: "column",
-      gap: 8
-    }
-  }, cur.steps.map((s, i) => /*#__PURE__*/React.createElement("li", {
-    key: i
-  }, s)))), /*#__PURE__*/React.createElement("div", {
-    className: "prog-badge"
-  }, cur.feel)), /*#__PURE__*/React.createElement("div", {
-    style: {
-      display: "flex",
-      flexDirection: "column",
-      alignItems: "center",
-      marginTop: 26
-    }
-  }, /*#__PURE__*/React.createElement(RestRing, {
-    total: cur.seconds,
-    remaining: isPrep ? cur.seconds : session.remaining
-  }), isPrep ? /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("div", {
-    className: "h-sub",
-    style: {
-      marginTop: 14,
-      textAlign: "center"
-    }
-  }, "Mettiti in posizione, poi tocca quando sei pronto."), /*#__PURE__*/React.createElement("button", {
-    className: "set-btn",
-    style: {
-      marginTop: 12,
-      width: 220
-    },
-    onClick: onReady
-  }, "Pronto, via ⏱")) : /*#__PURE__*/React.createElement("button", {
-    className: "skip-btn",
-    style: {
-      marginTop: 20
-    },
-    onClick: onSkip
-  }, showSide && session.side === 1 ? "Cambia lato →" : isLast ? "Fine →" : "Prossimo →")));
-}
-
-/* =======================================================
-   STATISTICHE / STORICO
-======================================================= */
-function StatsScreen({
-  log,
-  prLog,
-  onBack
-}) {
-  const dates = getAllSessionDates(log);
-  const streaks = computeStreaks(dates);
-  const totalSessions = dates.length;
-  const totalSets = Object.values(log).reduce((acc, entries) => acc + (entries || []).reduce((a, e) => a + (e.sets || e.kg || []).length, 0), 0);
-  const recentPrs = [...prLog].reverse().slice(0, 6);
-  const exerciseRows = EXERCISES_FLAT.filter((ex, i, arr) => arr.findIndex(e => e.id === ex.id) === i).map(ex => ({
-    ex,
-    series: getSessionSeries(log, ex.id),
-    record: getRecordKg(log, ex.id)
-  })).filter(r => r.series.length > 0);
-  const weeklyVolume = getWeeklyVolumeByMuscle(log);
-  const maxWeeklySets = weeklyVolume.length ? Math.max(...weeklyVolume.map(v => v.sets)) : 0;
-  const stagnantCount = countStagnantExercises(log);
-  const empty = totalSessions === 0;
-  return /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("div", {
-    className: "sess-top"
-  }, /*#__PURE__*/React.createElement("button", {
-    className: "icon-btn",
-    onClick: onBack
-  }, "←"), /*#__PURE__*/React.createElement("div", {
-    className: "sess-day"
-  }, /*#__PURE__*/React.createElement("div", {
-    className: "sess-day-name"
-  }, "Statistiche e storico"))), empty ? /*#__PURE__*/React.createElement("div", {
-    className: "empty-note"
-  }, "Ancora nessun dato.", /*#__PURE__*/React.createElement("br", null), "Completa un allenamento e qui vedrai streak, record e andamento dei carichi.") : /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("div", {
-    className: "stats-grid"
-  }, /*#__PURE__*/React.createElement("div", {
-    className: "chip"
-  }, /*#__PURE__*/React.createElement("div", {
-    className: "chip-num mono"
-  }, streaks.alive ? streaks.current : 0, streaks.alive && /*#__PURE__*/React.createElement("span", {
-    className: "u"
-  }, "🔥")), /*#__PURE__*/React.createElement("div", {
-    className: "chip-lbl"
-  }, "Streak attuale")), /*#__PURE__*/React.createElement("div", {
-    className: "chip"
-  }, /*#__PURE__*/React.createElement("div", {
-    className: "chip-num mono"
-  }, streaks.best), /*#__PURE__*/React.createElement("div", {
-    className: "chip-lbl"
-  }, "Streak record")), /*#__PURE__*/React.createElement("div", {
-    className: "chip"
-  }, /*#__PURE__*/React.createElement("div", {
-    className: "chip-num mono"
-  }, totalSessions), /*#__PURE__*/React.createElement("div", {
-    className: "chip-lbl"
-  }, "Sedute")), /*#__PURE__*/React.createElement("div", {
-    className: "chip"
-  }, /*#__PURE__*/React.createElement("div", {
-    className: "chip-num mono"
-  }, totalSets), /*#__PURE__*/React.createElement("div", {
-    className: "chip-lbl"
-  }, "Serie totali"))), recentPrs.length > 0 && /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("div", {
-    className: "section-lbl"
-  }, "🏆 Ultimi record"), /*#__PURE__*/React.createElement("div", {
-    className: "card"
-  }, recentPrs.map((pr, i) => /*#__PURE__*/React.createElement("div", {
-    key: i,
-    className: "row"
-  }, /*#__PURE__*/React.createElement("span", {
-    className: "row-name"
-  }, pr.name), /*#__PURE__*/React.createElement("span", {
-    className: "row-kg"
-  }, pr.kg, " kg"), /*#__PURE__*/React.createElement("span", {
-    className: "row-date"
-  }, pr.date))))), stagnantCount >= 3 && /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("div", {
-    className: "section-lbl"
-  }, "😮‍💨 Possibile stallo"), /*#__PURE__*/React.createElement("div", {
-    className: "card"
-  }, /*#__PURE__*/React.createElement("div", {
-    className: "stretch-desc"
-  }, stagnantCount, " esercizi non progrediscono in carico da almeno 3 sedute. Potrebbe essere il momento di uno scarico: una settimana a volume ridotto (~metà serie) prima di riprendere a spingere."))), weeklyVolume.length > 0 && /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("div", {
-    className: "section-lbl"
-  }, "Volume settimanale per muscolo"), /*#__PURE__*/React.createElement("div", {
-    className: "card"
-  }, weeklyVolume.map(({
-    muscle,
-    sets
+    className: "summary-label"
+  }, s), /*#__PURE__*/React.createElement("div", {
+    className: "summary-value"
+  }, byStatus[s].count), /*#__PURE__*/React.createElement("div", {
+    className: "hint"
+  }, fmtEUR(byStatus[s].value), " investiti")))), alerts.length > 0 && /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("h3", {
+    className: "section-title alert-title"
+  }, "⚠️ Allerta prezzo (soglia ", alertThreshold, "%)"), /*#__PURE__*/React.createElement("div", {
+    className: "card-list"
+  }, alerts.map(({
+    c,
+    dp
   }) => /*#__PURE__*/React.createElement("div", {
-    key: muscle,
-    style: {
-      marginBottom: 12
-    }
-  }, /*#__PURE__*/React.createElement("div", {
-    className: "row",
-    style: {
-      padding: "0 0 6px",
-      border: "none"
-    }
-  }, /*#__PURE__*/React.createElement("span", {
-    className: "row-name"
-  }, muscle), /*#__PURE__*/React.createElement("span", {
-    className: "row-kg"
-  }, sets, " serie")), /*#__PURE__*/React.createElement("div", {
-    className: "pbar",
-    style: {
-      marginBottom: 0
-    }
-  }, /*#__PURE__*/React.createElement("div", {
-    className: "pbar-fill",
-    style: {
-      width: Math.round(sets / maxWeeklySets * 100) + "%"
-    }
-  })))))), /*#__PURE__*/React.createElement("div", {
-    className: "section-lbl"
-  }, "Andamento carichi"), exerciseRows.length === 0 ? /*#__PURE__*/React.createElement("div", {
-    className: "empty-note"
-  }, "Nessun carico registrato con peso, ancora.") : exerciseRows.map(({
-    ex,
-    series,
-    record
-  }) => /*#__PURE__*/React.createElement("div", {
-    key: ex.id,
-    className: "trend-card"
-  }, /*#__PURE__*/React.createElement("div", {
-    className: "trend-head"
-  }, /*#__PURE__*/React.createElement("span", {
-    className: "trend-name"
-  }, ex.name), /*#__PURE__*/React.createElement("span", {
-    className: "trend-rec"
-  }, "record ", record, " kg")), /*#__PURE__*/React.createElement(Sparkline, {
-    points: series
-  })))), /*#__PURE__*/React.createElement("div", {
-    className: "spacer"
-  }), /*#__PURE__*/React.createElement("button", {
-    className: "btn-ghost",
-    onClick: onBack
-  }, "← Torna alla home"));
+    className: "alert-row",
+    key: c.id,
+    onClick: () => openCard(c.id)
+  }, /*#__PURE__*/React.createElement(CardRow, {
+    card: c,
+    onClick: () => openCard(c.id)
+  }))))), /*#__PURE__*/React.createElement("h3", {
+    className: "section-title"
+  }, "Collezione (", active.length, ")"), active.length === 0 ? /*#__PURE__*/React.createElement("div", {
+    className: "empty-state"
+  }, "Nessuna carta ancora. Vai su \"Collezione\" per aggiungerne una.") : /*#__PURE__*/React.createElement("div", {
+    className: "card-list"
+  }, active.map(c => /*#__PURE__*/React.createElement(CardRow, {
+    key: c.id,
+    card: c,
+    onClick: () => openCard(c.id)
+  }))));
 }
-
-/* =======================================================
-   LIBRERIA / EDITOR ESERCIZI
-======================================================= */
-function LibraryScreen({
-  days,
-  onBack,
-  onSetSlot,
-  onResetSlot
+function CollectionScreen({
+  cards,
+  openCard,
+  onAdd
 }) {
-  const [dayIdx, setDayIdx] = useState(0);
-  const [editingSlot, setEditingSlot] = useState(null); // { slotIdx, muscle } | null
-  const [openDesc, setOpenDesc] = useState({});
-  const [likes, setLikes] = useState(loadLikes);
-  const [equipment] = useState(loadEquipment);
-  const day = days[dayIdx];
-  const defaultDay = DAYS[dayIdx];
-  const toggleLike = (exId, value) => {
-    setLikes(prev => {
-      const next = {
-        ...prev
-      };
-      if (next[exId] === value) delete next[exId]; // ri-clicca per togliere
-      else next[exId] = value;
-      saveLikes(next);
-      return next;
-    });
-  };
-  if (editingSlot != null) {
-    const usedIds = new Set();
-    days.forEach(d => d.exercises.forEach(e => usedIds.add(e.id)));
-    const allCandidates = LIBRARY.filter(l => l.muscle === editingSlot.muscle);
-    const candidates = allCandidates.filter(l => exerciseUsable(l, equipment));
-    const hiddenCount = allCandidates.length - candidates.length;
-    return /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("div", {
-      className: "sess-top"
-    }, /*#__PURE__*/React.createElement("button", {
-      className: "icon-btn",
-      onClick: () => setEditingSlot(null)
-    }, "←"), /*#__PURE__*/React.createElement("div", {
-      className: "sess-day"
+  const [q, setQ] = useState("");
+  const active = cards.filter(c => !c.sold);
+  const filtered = active.filter(c => (c.name + " " + c.set).toLowerCase().includes(q.toLowerCase()));
+  return /*#__PURE__*/React.createElement("div", {
+    className: "screen"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "search-row"
+  }, /*#__PURE__*/React.createElement("input", {
+    className: "text-input",
+    placeholder: "Cerca nella collezione...",
+    value: q,
+    onChange: e => setQ(e.target.value)
+  }), /*#__PURE__*/React.createElement("button", {
+    className: "btn-primary",
+    onClick: onAdd
+  }, "+ Aggiungi")), filtered.length === 0 ? /*#__PURE__*/React.createElement("div", {
+    className: "empty-state"
+  }, "Nessuna carta trovata.") : /*#__PURE__*/React.createElement("div", {
+    className: "card-list"
+  }, filtered.map(c => /*#__PURE__*/React.createElement(CardRow, {
+    key: c.id,
+    card: c,
+    onClick: () => openCard(c.id)
+  }))));
+}
+function SoldScreen({
+  cards,
+  openCard
+}) {
+  const sold = cards.filter(c => c.sold);
+  const totalProfit = sold.reduce((s, c) => s + (c.sold.price - (Number(c.purchasePrice) || 0)) * (c.quantity || 1), 0);
+  return /*#__PURE__*/React.createElement("div", {
+    className: "screen"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "summary-grid",
+    style: {
+      gridTemplateColumns: "1fr"
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "summary-card"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "summary-label"
+  }, "Profitto totale realizzato"), /*#__PURE__*/React.createElement("div", {
+    className: "summary-value " + (totalProfit >= 0 ? "up" : "down")
+  }, fmtEUR(totalProfit)))), sold.length === 0 ? /*#__PURE__*/React.createElement("div", {
+    className: "empty-state"
+  }, "Nessuna carta venduta ancora.") : /*#__PURE__*/React.createElement("div", {
+    className: "card-list"
+  }, sold.map(c => {
+    const profit = (c.sold.price - (Number(c.purchasePrice) || 0)) * (c.quantity || 1);
+    return /*#__PURE__*/React.createElement("div", {
+      className: "card-row",
+      key: c.id,
+      onClick: () => openCard(c.id)
     }, /*#__PURE__*/React.createElement("div", {
-      className: "sess-day-name"
-    }, "Sostituisci — ", editingSlot.muscle))), /*#__PURE__*/React.createElement("div", {
-      className: "h-sub",
-      style: {
-        marginBottom: 14
-      }
-    }, "Scegli un esercizio della libreria per lo stesso gruppo muscolare. Segna 👎 quelli che non ti piacciono: verranno esclusi dalla rotazione automatica.", hiddenCount > 0 && /*#__PURE__*/React.createElement(React.Fragment, null, " ", hiddenCount, " nascosti perché servono attrezzatura che non hai selezionato in Impostazioni.")), candidates.map(c => {
-      const inUse = usedIds.has(c.id) && c.id !== editingSlot.currentId;
-      const liked = likes[c.id] === "like";
-      const disliked = likes[c.id] === "dislike";
-      return /*#__PURE__*/React.createElement("div", {
-        key: c.id,
-        className: "card",
-        style: {
-          opacity: inUse ? 0.5 : 1
-        }
-      }, /*#__PURE__*/React.createElement("div", {
-        className: "row",
-        style: {
-          marginBottom: openDesc[c.id] ? 8 : 0
-        }
-      }, /*#__PURE__*/React.createElement("span", {
-        className: "row-name",
-        onClick: () => setOpenDesc(o => ({
-          ...o,
-          [c.id]: !o[c.id]
-        })),
-        style: {
-          cursor: "pointer"
-        }
-      }, c.name, inUse && /*#__PURE__*/React.createElement("span", {
-        className: "suggested-tag",
-        style: {
-          marginLeft: 6
-        }
-      }, "già in uso"), disliked && /*#__PURE__*/React.createElement("span", {
-        className: "suggested-tag",
-        style: {
-          marginLeft: 6
-        }
-      }, "escluso dalla rotazione"))), openDesc[c.id] && /*#__PURE__*/React.createElement("div", {
-        className: "ex-desc",
-        style: {
-          marginBottom: 10
-        }
-      }, c.desc), /*#__PURE__*/React.createElement("div", {
-        style: {
-          display: "flex",
-          gap: 8,
-          marginBottom: 8
-        }
-      }, /*#__PURE__*/React.createElement("button", {
-        className: "nav-btn",
-        style: {
-          flex: 1,
-          opacity: liked ? 1 : 0.55
-        },
-        onClick: () => toggleLike(c.id, "like")
-      }, "👍 Mi piace"), /*#__PURE__*/React.createElement("button", {
-        className: "nav-btn",
-        style: {
-          flex: 1,
-          opacity: disliked ? 1 : 0.55
-        },
-        onClick: () => toggleLike(c.id, "dislike")
-      }, "👎 Non mi piace")), /*#__PURE__*/React.createElement("button", {
-        className: "set-btn",
-        disabled: inUse,
-        onClick: () => {
-          onSetSlot(day.id, editingSlot.slotIdx, c.id);
-          setEditingSlot(null);
-        }
-      }, "Usa questo esercizio"));
+      className: "card-row-thumb"
+    }, c.image ? /*#__PURE__*/React.createElement("img", {
+      src: c.image,
+      alt: c.name
+    }) : /*#__PURE__*/React.createElement("div", {
+      className: "thumb-placeholder"
+    }, "?")), /*#__PURE__*/React.createElement("div", {
+      className: "card-row-info"
+    }, /*#__PURE__*/React.createElement("div", {
+      className: "card-row-name"
+    }, c.name), /*#__PURE__*/React.createElement("div", {
+      className: "card-row-meta"
+    }, "Comprata ", fmtEUR(c.purchasePrice), " → Venduta ", fmtEUR(c.sold.price), " il ", fmtDate(c.sold.date))), /*#__PURE__*/React.createElement("div", {
+      className: "card-row-value"
+    }, /*#__PURE__*/React.createElement("div", {
+      className: "value-amount " + (profit >= 0 ? "up" : "down")
+    }, fmtEUR(profit))));
+  })));
+}
+function RestorationScreen({
+  cards,
+  openCard
+}) {
+  const needing = cards.filter(c => !c.sold && c.restoration && c.restoration.needed);
+  return /*#__PURE__*/React.createElement("div", {
+    className: "screen"
+  }, needing.length === 0 ? /*#__PURE__*/React.createElement("div", {
+    className: "empty-state"
+  }, "Nessuna carta da restaurare al momento.") : /*#__PURE__*/React.createElement("div", {
+    className: "card-list"
+  }, needing.map(c => {
+    const tasks = c.restoration.tasks || [];
+    const done = tasks.filter(t => t.done).length;
+    return /*#__PURE__*/React.createElement("div", {
+      className: "card-row",
+      key: c.id,
+      onClick: () => openCard(c.id)
+    }, /*#__PURE__*/React.createElement("div", {
+      className: "card-row-thumb"
+    }, c.image ? /*#__PURE__*/React.createElement("img", {
+      src: c.image,
+      alt: c.name
+    }) : /*#__PURE__*/React.createElement("div", {
+      className: "thumb-placeholder"
+    }, "?")), /*#__PURE__*/React.createElement("div", {
+      className: "card-row-info"
+    }, /*#__PURE__*/React.createElement("div", {
+      className: "card-row-name"
+    }, c.name), /*#__PURE__*/React.createElement("div", {
+      className: "card-row-meta"
+    }, tasks.map(t => t.label + (t.done ? " ✓" : "")).join(", ") || "Nessuna attività definita")), /*#__PURE__*/React.createElement("div", {
+      className: "card-row-value"
+    }, /*#__PURE__*/React.createElement("div", {
+      className: "value-amount"
+    }, done, "/", tasks.length)));
+  })));
+}
+function CardForm({
+  initial,
+  onSave,
+  onCancel
+}) {
+  const [card, setCard] = useState(initial);
+  const fileRef = useRef(null);
+  function set(field, val) {
+    setCard(c => ({
+      ...c,
+      [field]: val
     }));
   }
-  return /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("div", {
-    className: "sess-top"
-  }, /*#__PURE__*/React.createElement("button", {
-    className: "icon-btn",
-    onClick: onBack
-  }, "←"), /*#__PURE__*/React.createElement("div", {
-    className: "sess-day"
+  function onImageFile(e) {
+    const file = e.target.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = () => set("image", reader.result);
+    reader.readAsDataURL(file);
+  }
+  return /*#__PURE__*/React.createElement("div", {
+    className: "form-screen"
   }, /*#__PURE__*/React.createElement("div", {
-    className: "sess-day-name"
-  }, "Libreria esercizi"))), /*#__PURE__*/React.createElement("div", {
-    className: "h-sub",
-    style: {
-      marginBottom: 16
-    }
-  }, "32 esercizi extra, con descrizione, per cambiare varietà. Uno slot viene ruotato in automatico ogni tanto (calibrabile in Impostazioni); qui puoi anche farlo a mano."), /*#__PURE__*/React.createElement("div", {
-    className: "day-tabs-lib"
-  }, days.map((d, i) => /*#__PURE__*/React.createElement("button", {
-    key: d.id,
-    className: "day-tab-lib" + (i === dayIdx ? " active" : ""),
-    onClick: () => setDayIdx(i)
-  }, "G", d.id))), /*#__PURE__*/React.createElement("div", {
-    className: "section-lbl"
-  }, "Giorno ", day.id, " — ", day.title), day.exercises.map((ex, i) => {
-    const isCustom = ex.id !== defaultDay.exercises[i].id;
-    return /*#__PURE__*/React.createElement("div", {
-      key: i,
-      className: "card"
-    }, /*#__PURE__*/React.createElement("div", {
-      className: "row",
-      style: {
-        marginBottom: openDesc[ex.id] ? 8 : 0
-      }
-    }, /*#__PURE__*/React.createElement("span", {
-      className: "row-name",
-      onClick: () => setOpenDesc(o => ({
-        ...o,
-        [ex.id]: !o[ex.id]
-      })),
-      style: {
-        cursor: "pointer"
-      }
-    }, ex.name, isCustom && /*#__PURE__*/React.createElement("span", {
-      className: "suggested-tag",
-      style: {
-        marginLeft: 6
-      }
-    }, "modificato"))), openDesc[ex.id] && /*#__PURE__*/React.createElement("div", {
-      className: "ex-desc",
-      style: {
-        marginBottom: 10
-      }
-    }, ex.desc), /*#__PURE__*/React.createElement("div", {
-      className: "ex-metarow",
-      style: {
-        marginBottom: 10
-      }
-    }, /*#__PURE__*/React.createElement("span", {
-      className: "metapill"
-    }, ex.muscle), /*#__PURE__*/React.createElement("span", {
-      className: "metapill"
-    }, /*#__PURE__*/React.createElement("b", null, ex.sets), " serie"), /*#__PURE__*/React.createElement("span", {
-      className: "metapill"
-    }, /*#__PURE__*/React.createElement("b", null, ex.reps), " reps")), /*#__PURE__*/React.createElement("div", {
-      style: {
-        display: "flex",
-        gap: 8
-      }
-    }, /*#__PURE__*/React.createElement("button", {
-      className: "nav-btn",
-      style: {
-        flex: 1
-      },
-      onClick: () => setEditingSlot({
-        slotIdx: i,
-        muscle: ex.muscle,
-        currentId: ex.id
-      })
-    }, "🔁 Cambia"), isCustom && /*#__PURE__*/React.createElement("button", {
-      className: "nav-btn",
-      style: {
-        flex: 1
-      },
-      onClick: () => onResetSlot(day.id, i)
-    }, "↺ Originale")));
-  }), /*#__PURE__*/React.createElement("div", {
-    className: "spacer"
-  }), /*#__PURE__*/React.createElement("button", {
-    className: "btn-ghost",
-    onClick: onBack
-  }, "← Torna alla home"));
-}
-
-/* =======================================================
-   IMPOSTAZIONI — colore personalizzabile
-======================================================= */
-function SettingsScreen({
-  accent,
-  onChange,
-  onBack,
-  onImportBackup,
-  sessionCount
-}) {
-  const fileInputRef = useRef(null);
-  const handleImportClick = () => fileInputRef.current && fileInputRef.current.click();
-  const handleFileChange = e => {
-    const file = e.target.files && e.target.files[0];
-    if (file) onImportBackup(file);
-    e.target.value = "";
-  };
-  const [rotationEnabled, setRotationEnabled] = useState(isRotationEnabled);
-  const [rotationInterval, setRotationInterval] = useState(getRotationIntervalDays);
-  const [equipment, setEquipment] = useState(loadEquipment);
-  const toggleEquip = key => {
-    setEquipment(prev => {
-      const has = prev.includes(key);
-      const next = has ? prev.filter(e => e !== key) : [...prev, key];
-      saveEquipment(next);
-      return next;
-    });
-  };
-  const setEquipPreset = list => {
-    setEquipment(list);
-    saveEquipment(list);
-  };
-  const toggleRotation = () => {
-    const next = !rotationEnabled;
-    setRotationEnabled(next);
-    try {
-      localStorage.setItem(ROTATION_ENABLED_KEY, next ? "on" : "off");
-    } catch (e) {}
-  };
-  const changeInterval = days => {
-    setRotationInterval(days);
-    try {
-      localStorage.setItem(ROTATION_INTERVAL_KEY, String(days));
-    } catch (e) {}
-  };
-  return /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("div", {
-    className: "sess-top"
-  }, /*#__PURE__*/React.createElement("button", {
-    className: "icon-btn",
-    onClick: onBack
-  }, "←"), /*#__PURE__*/React.createElement("div", {
-    className: "sess-day"
-  }, /*#__PURE__*/React.createElement("div", {
-    className: "sess-day-name"
-  }, "Impostazioni"))), /*#__PURE__*/React.createElement("div", {
-    className: "section-lbl"
-  }, "Backup dati"), /*#__PURE__*/React.createElement("div", {
-    className: "card"
-  }, /*#__PURE__*/React.createElement("div", {
-    className: "h-sub",
-    style: {
-      marginBottom: 14
-    }
-  }, "Salva storico, record e impostazioni in un file, o ripristinali — utile se cambi telefono o se l'app viene aggiornata e i dati salvati nel browser si perdono."), /*#__PURE__*/React.createElement("button", {
-    className: "nav-btn",
-    style: {
-      width: "100%",
-      marginBottom: 10
-    },
-    onClick: () => exportBackup(sessionCount)
-  }, "💾 Salva progressi"), /*#__PURE__*/React.createElement("button", {
-    className: "nav-btn",
-    style: {
-      width: "100%"
-    },
-    onClick: handleImportClick
-  }, "📥 Recupera progressi"), /*#__PURE__*/React.createElement("input", {
-    ref: fileInputRef,
+    className: "form-group"
+  }, /*#__PURE__*/React.createElement("label", null, "Immagine"), /*#__PURE__*/React.createElement("div", {
+    className: "image-picker",
+    onClick: () => fileRef.current.click()
+  }, card.image ? /*#__PURE__*/React.createElement("img", {
+    src: card.image,
+    alt: ""
+  }) : /*#__PURE__*/React.createElement("div", {
+    className: "thumb-placeholder large"
+  }, "Carica foto")), /*#__PURE__*/React.createElement("input", {
     type: "file",
-    accept: "application/json",
+    accept: "image/*",
+    ref: fileRef,
     style: {
       display: "none"
     },
-    onChange: handleFileChange
+    onChange: onImageFile
   })), /*#__PURE__*/React.createElement("div", {
-    className: "section-lbl"
-  }, "La tua attrezzatura"), /*#__PURE__*/React.createElement("div", {
-    className: "card",
-    style: {
-      marginBottom: 18
-    }
+    className: "form-group"
+  }, /*#__PURE__*/React.createElement("label", null, "Nome carta"), /*#__PURE__*/React.createElement("input", {
+    className: "text-input",
+    value: card.name,
+    onChange: e => set("name", e.target.value),
+    placeholder: "es. Charizard"
+  })), /*#__PURE__*/React.createElement("div", {
+    className: "form-row"
   }, /*#__PURE__*/React.createElement("div", {
-    className: "h-sub",
-    style: {
-      marginBottom: 14
+    className: "form-group"
+  }, /*#__PURE__*/React.createElement("label", null, "Set"), /*#__PURE__*/React.createElement("input", {
+    className: "text-input",
+    value: card.set,
+    onChange: e => set("set", e.target.value),
+    placeholder: "es. Base Set"
+  })), /*#__PURE__*/React.createElement("div", {
+    className: "form-group"
+  }, /*#__PURE__*/React.createElement("label", null, "Numero"), /*#__PURE__*/React.createElement("input", {
+    className: "text-input",
+    value: card.number,
+    onChange: e => set("number", e.target.value),
+    placeholder: "4/102"
+  }))), /*#__PURE__*/React.createElement("div", {
+    className: "form-row"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "form-group"
+  }, /*#__PURE__*/React.createElement("label", null, "Lingua"), /*#__PURE__*/React.createElement("select", {
+    className: "text-input",
+    value: card.language,
+    onChange: e => set("language", e.target.value)
+  }, /*#__PURE__*/React.createElement("option", {
+    value: "ENG"
+  }, "Inglese"), /*#__PURE__*/React.createElement("option", {
+    value: "ITA"
+  }, "Italiano"), /*#__PURE__*/React.createElement("option", {
+    value: "JAP"
+  }, "Giapponese"))), /*#__PURE__*/React.createElement("div", {
+    className: "form-group"
+  }, /*#__PURE__*/React.createElement("label", null, "Quantità"), /*#__PURE__*/React.createElement("input", {
+    type: "number",
+    min: "1",
+    className: "text-input",
+    value: card.quantity,
+    onChange: e => set("quantity", Number(e.target.value) || 1)
+  }))), /*#__PURE__*/React.createElement("div", {
+    className: "form-group"
+  }, /*#__PURE__*/React.createElement("label", {
+    className: "checkbox-label"
+  }, /*#__PURE__*/React.createElement("input", {
+    type: "checkbox",
+    checked: card.graded,
+    onChange: e => set("graded", e.target.checked)
+  }), "Carta gradata")), card.graded ? /*#__PURE__*/React.createElement("div", {
+    className: "form-row"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "form-group"
+  }, /*#__PURE__*/React.createElement("label", null, "Casa di gradazione"), /*#__PURE__*/React.createElement("input", {
+    className: "text-input",
+    value: card.gradingCompany,
+    onChange: e => set("gradingCompany", e.target.value),
+    placeholder: "PSA / BGS / CGC"
+  })), /*#__PURE__*/React.createElement("div", {
+    className: "form-group"
+  }, /*#__PURE__*/React.createElement("label", null, "Voto"), /*#__PURE__*/React.createElement("input", {
+    className: "text-input",
+    value: card.grade,
+    onChange: e => set("grade", e.target.value),
+    placeholder: "9, 10..."
+  }))) : /*#__PURE__*/React.createElement("div", {
+    className: "form-group"
+  }, /*#__PURE__*/React.createElement("label", null, "Condizione"), /*#__PURE__*/React.createElement("select", {
+    className: "text-input",
+    value: card.condition,
+    onChange: e => set("condition", e.target.value)
+  }, CONDITION_OPTIONS.map(c => /*#__PURE__*/React.createElement("option", {
+    key: c,
+    value: c
+  }, c)))), /*#__PURE__*/React.createElement("div", {
+    className: "form-row"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "form-group"
+  }, /*#__PURE__*/React.createElement("label", null, "Prezzo di acquisto"), /*#__PURE__*/React.createElement("input", {
+    type: "number",
+    step: "0.01",
+    className: "text-input",
+    value: card.purchasePrice,
+    onChange: e => set("purchasePrice", e.target.value),
+    placeholder: "0.00"
+  })), /*#__PURE__*/React.createElement("div", {
+    className: "form-group"
+  }, /*#__PURE__*/React.createElement("label", null, "Data acquisto"), /*#__PURE__*/React.createElement("input", {
+    type: "date",
+    className: "text-input",
+    value: card.purchaseDate,
+    onChange: e => set("purchaseDate", e.target.value)
+  }))), /*#__PURE__*/React.createElement("div", {
+    className: "form-row"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "form-group"
+  }, /*#__PURE__*/React.createElement("label", null, "Provenienza"), /*#__PURE__*/React.createElement("select", {
+    className: "text-input",
+    value: card.source,
+    onChange: e => set("source", e.target.value)
+  }, /*#__PURE__*/React.createElement("option", {
+    value: "Vinted"
+  }, "Vinted"), /*#__PURE__*/React.createElement("option", {
+    value: "Fiera"
+  }, "Fiera"), /*#__PURE__*/React.createElement("option", {
+    value: "Infanzia"
+  }, "Infanzia"), /*#__PURE__*/React.createElement("option", {
+    value: "Altro"
+  }, "Altro"))), /*#__PURE__*/React.createElement("div", {
+    className: "form-group"
+  }, /*#__PURE__*/React.createElement("label", null, "Stato flip"), /*#__PURE__*/React.createElement("select", {
+    className: "text-input",
+    value: card.flipStatus,
+    onChange: e => set("flipStatus", e.target.value)
+  }, FLIP_STATUS_OPTIONS.map(s => /*#__PURE__*/React.createElement("option", {
+    key: s,
+    value: s
+  }, s))))), /*#__PURE__*/React.createElement("div", {
+    className: "form-group"
+  }, /*#__PURE__*/React.createElement("label", null, "Note"), /*#__PURE__*/React.createElement("textarea", {
+    className: "text-input",
+    rows: "2",
+    value: card.notes,
+    onChange: e => set("notes", e.target.value)
+  })), /*#__PURE__*/React.createElement("div", {
+    className: "form-actions"
+  }, /*#__PURE__*/React.createElement("button", {
+    className: "btn-secondary",
+    onClick: onCancel
+  }, "Annulla"), /*#__PURE__*/React.createElement("button", {
+    className: "btn-primary",
+    onClick: () => onSave(card)
+  }, "Salva")));
+}
+function PriceSearchModal({
+  card,
+  onClose,
+  onApply
+}) {
+  const [query, setQuery] = useState(card.name);
+  const [results, setResults] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
+  const [picked, setPicked] = useState(null);
+  async function doSearch() {
+    setLoading(true);
+    setError("");
+    setResults([]);
+    try {
+      const list = await searchTcgdex(query);
+      setResults(list);
+    } catch (e) {
+      setError("Ricerca non riuscita. Controlla la connessione o riprova.");
     }
-  }, "Solo gli esercizi della libreria compatibili con quello che hai selezionato ti verranno proposti (nel cambio slot e nella rotazione automatica). Gli esercizi già presenti nella tua scheda non vengono toccati."), /*#__PURE__*/React.createElement("div", {
+    setLoading(false);
+  }
+  async function pick(r) {
+    setLoading(true);
+    setError("");
+    try {
+      const price = await fetchTcgdexPrice(r.id);
+      if (!price) {
+        setError("Nessun prezzo Cardmarket disponibile per questa carta su tcgdex.");
+      } else {
+        setPicked({
+          ...r,
+          ...price
+        });
+      }
+    } catch (e) {
+      setError("Errore nel recupero del prezzo.");
+    }
+    setLoading(false);
+  }
+  return /*#__PURE__*/React.createElement("div", {
+    className: "modal-overlay",
+    onClick: onClose
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "modal",
+    onClick: e => e.stopPropagation()
+  }, /*#__PURE__*/React.createElement("h3", null, "Cerca prezzo (tcgdex / Cardmarket)"), /*#__PURE__*/React.createElement("p", {
+    className: "hint"
+  }, "Fonte automatica di riferimento, principalmente in inglese. Per giapponesi o verifiche più precise chiedi il controllo su 130point/Cardmarket in chat."), /*#__PURE__*/React.createElement("div", {
+    className: "search-row"
+  }, /*#__PURE__*/React.createElement("input", {
+    className: "text-input",
+    value: query,
+    onChange: e => setQuery(e.target.value),
+    placeholder: "Nome carta in inglese"
+  }), /*#__PURE__*/React.createElement("button", {
+    className: "btn-primary",
+    onClick: doSearch,
+    disabled: loading
+  }, "Cerca")), error && /*#__PURE__*/React.createElement("div", {
+    className: "error-text"
+  }, error), loading && /*#__PURE__*/React.createElement("div", {
+    className: "hint"
+  }, "Caricamento..."), !picked && results.length > 0 && /*#__PURE__*/React.createElement("div", {
+    className: "result-list"
+  }, results.map(r => /*#__PURE__*/React.createElement("div", {
+    key: r.id,
+    className: "result-row",
+    onClick: () => pick(r)
+  }, r.image && /*#__PURE__*/React.createElement("img", {
+    src: r.image + "/low.png",
+    alt: ""
+  }), /*#__PURE__*/React.createElement("div", null, r.name, " ", /*#__PURE__*/React.createElement("span", {
+    className: "hint"
+  }, "(", r.id, ")"))))), picked && /*#__PURE__*/React.createElement("div", {
+    className: "picked-box"
+  }, /*#__PURE__*/React.createElement("div", null, picked.name), /*#__PURE__*/React.createElement("div", {
+    className: "summary-value"
+  }, fmtEUR(picked.value)), /*#__PURE__*/React.createElement("div", {
+    className: "form-actions"
+  }, /*#__PURE__*/React.createElement("button", {
+    className: "btn-secondary",
+    onClick: () => setPicked(null)
+  }, "Indietro"), /*#__PURE__*/React.createElement("button", {
+    className: "btn-primary",
+    onClick: () => onApply(picked.value, "tcgdex")
+  }, "Usa questo prezzo"))), /*#__PURE__*/React.createElement("div", {
+    className: "form-actions"
+  }, /*#__PURE__*/React.createElement("button", {
+    className: "btn-secondary",
+    onClick: onClose
+  }, "Chiudi"))));
+}
+function CardDetail({
+  card,
+  onUpdate,
+  onDelete,
+  onBack
+}) {
+  const [editing, setEditing] = useState(false);
+  const [showPriceSearch, setShowPriceSearch] = useState(false);
+  const [manualPrice, setManualPrice] = useState("");
+  const [saleForm, setSaleForm] = useState(false);
+  const [salePrice, setSalePrice] = useState("");
+  const [saleDate, setSaleDate] = useState(new Date().toISOString().slice(0, 10));
+  const [saleChannel, setSaleChannel] = useState("Vinted");
+  const [newTask, setNewTask] = useState("");
+  function addPricePoint(value, source) {
+    const point = {
+      date: new Date().toISOString(),
+      value: Number(value),
+      source
+    };
+    onUpdate({
+      ...card,
+      priceHistory: [...(card.priceHistory || []), point]
+    });
+  }
+  function applyManualPrice() {
+    if (!manualPrice) return;
+    addPricePoint(manualPrice, "manuale");
+    setManualPrice("");
+  }
+  function markSold() {
+    onUpdate({
+      ...card,
+      sold: {
+        price: Number(salePrice),
+        date: saleDate,
+        channel: saleChannel
+      }
+    });
+    setSaleForm(false);
+  }
+  function toggleRestorationNeeded() {
+    onUpdate({
+      ...card,
+      restoration: {
+        ...card.restoration,
+        needed: !card.restoration.needed
+      }
+    });
+  }
+  function addDefaultTasks() {
+    const existing = (card.restoration.tasks || []).map(t => t.label);
+    const toAdd = DEFAULT_RESTORATION_TASKS.filter(l => !existing.includes(l)).map(l => ({
+      id: uid(),
+      label: l,
+      done: false
+    }));
+    onUpdate({
+      ...card,
+      restoration: {
+        ...card.restoration,
+        needed: true,
+        tasks: [...(card.restoration.tasks || []), ...toAdd]
+      }
+    });
+  }
+  function addCustomTask() {
+    if (!newTask.trim()) return;
+    const t = {
+      id: uid(),
+      label: newTask.trim(),
+      done: false
+    };
+    onUpdate({
+      ...card,
+      restoration: {
+        ...card.restoration,
+        tasks: [...(card.restoration.tasks || []), t]
+      }
+    });
+    setNewTask("");
+  }
+  function toggleTask(id) {
+    const tasks = (card.restoration.tasks || []).map(t => t.id === id ? {
+      ...t,
+      done: !t.done
+    } : t);
+    onUpdate({
+      ...card,
+      restoration: {
+        ...card.restoration,
+        tasks
+      }
+    });
+  }
+  function removeTask(id) {
+    const tasks = (card.restoration.tasks || []).filter(t => t.id !== id);
+    onUpdate({
+      ...card,
+      restoration: {
+        ...card.restoration,
+        tasks
+      }
+    });
+  }
+  if (editing) {
+    return /*#__PURE__*/React.createElement("div", {
+      className: "screen"
+    }, /*#__PURE__*/React.createElement(CardForm, {
+      initial: card,
+      onCancel: () => setEditing(false),
+      onSave: c => {
+        onUpdate(c);
+        setEditing(false);
+      }
+    }));
+  }
+  const dp = deltaPct(card);
+  return /*#__PURE__*/React.createElement("div", {
+    className: "screen"
+  }, /*#__PURE__*/React.createElement("button", {
+    className: "btn-link",
+    onClick: onBack
+  }, "← Indietro"), /*#__PURE__*/React.createElement("div", {
+    className: "detail-header"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "detail-image"
+  }, card.image ? /*#__PURE__*/React.createElement("img", {
+    src: card.image,
+    alt: card.name
+  }) : /*#__PURE__*/React.createElement("div", {
+    className: "thumb-placeholder large"
+  }, "?")), /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("h2", null, card.name), /*#__PURE__*/React.createElement("div", {
+    className: "hint"
+  }, card.set, " ", card.number ? "· " + card.number : "", " · ", card.language), /*#__PURE__*/React.createElement("div", {
+    className: "hint"
+  }, card.graded ? card.gradingCompany + " " + card.grade : "Condizione: " + card.condition), !card.sold && /*#__PURE__*/React.createElement("select", {
+    className: "text-input flip-status-select",
+    value: card.flipStatus,
+    onChange: e => onUpdate({
+      ...card,
+      flipStatus: e.target.value
+    })
+  }, FLIP_STATUS_OPTIONS.map(s => /*#__PURE__*/React.createElement("option", {
+    key: s,
+    value: s
+  }, s))), card.sold && /*#__PURE__*/React.createElement("div", {
+    className: "sold-badge"
+  }, "Venduta il ", fmtDate(card.sold.date), " a ", fmtEUR(card.sold.price), " (", card.sold.channel || "Altro", ")"))), /*#__PURE__*/React.createElement("div", {
+    className: "summary-grid"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "summary-card"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "summary-label"
+  }, "Valore attuale"), /*#__PURE__*/React.createElement("div", {
+    className: "summary-value"
+  }, fmtEUR(currentValue(card))), dp !== null && /*#__PURE__*/React.createElement("div", {
+    className: "value-delta " + (dp >= 0 ? "up" : "down")
+  }, dp >= 0 ? "▲" : "▼", " ", Math.abs(dp).toFixed(1), "%")), /*#__PURE__*/React.createElement("div", {
+    className: "summary-card"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "summary-label"
+  }, "Prezzo acquisto"), /*#__PURE__*/React.createElement("div", {
+    className: "summary-value"
+  }, fmtEUR(card.purchasePrice)), /*#__PURE__*/React.createElement("div", {
+    className: "hint"
+  }, fmtDate(card.purchaseDate), " · ", card.source))), !card.sold && /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("h3", {
+    className: "section-title"
+  }, "Aggiorna prezzo"), /*#__PURE__*/React.createElement("div", {
+    className: "search-row"
+  }, /*#__PURE__*/React.createElement("input", {
+    type: "number",
+    step: "0.01",
+    className: "text-input",
+    placeholder: "Nuovo valore €",
+    value: manualPrice,
+    onChange: e => setManualPrice(e.target.value)
+  }), /*#__PURE__*/React.createElement("button", {
+    className: "btn-secondary",
+    onClick: applyManualPrice
+  }, "Salva")), /*#__PURE__*/React.createElement("button", {
+    className: "btn-primary full-width",
+    onClick: () => setShowPriceSearch(true)
+  }, "Cerca su tcgdex")), card.priceHistory && card.priceHistory.length > 0 && /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("h3", {
+    className: "section-title"
+  }, "Storico prezzo"), /*#__PURE__*/React.createElement("div", {
+    className: "history-list"
+  }, [...card.priceHistory].reverse().map((p, i) => /*#__PURE__*/React.createElement("div", {
+    className: "history-row",
+    key: i
+  }, /*#__PURE__*/React.createElement("span", null, fmtDate(p.date)), /*#__PURE__*/React.createElement("span", {
+    className: "hint"
+  }, p.source), /*#__PURE__*/React.createElement("span", null, fmtEUR(p.value)))))), /*#__PURE__*/React.createElement("h3", {
+    className: "section-title"
+  }, "Restauro"), /*#__PURE__*/React.createElement("label", {
+    className: "checkbox-label"
+  }, /*#__PURE__*/React.createElement("input", {
+    type: "checkbox",
+    checked: card.restoration.needed,
+    onChange: toggleRestorationNeeded
+  }), "Necessita restauro"), card.restoration.needed && /*#__PURE__*/React.createElement("div", {
+    className: "restoration-box"
+  }, (card.restoration.tasks || []).length === 0 && /*#__PURE__*/React.createElement("button", {
+    className: "btn-secondary",
+    onClick: addDefaultTasks
+  }, "Aggiungi attività standard"), (card.restoration.tasks || []).map(t => /*#__PURE__*/React.createElement("div", {
+    className: "task-row",
+    key: t.id
+  }, /*#__PURE__*/React.createElement("label", {
+    className: "checkbox-label"
+  }, /*#__PURE__*/React.createElement("input", {
+    type: "checkbox",
+    checked: t.done,
+    onChange: () => toggleTask(t.id)
+  }), /*#__PURE__*/React.createElement("span", {
+    className: t.done ? "done-text" : ""
+  }, t.label)), /*#__PURE__*/React.createElement("button", {
+    className: "btn-icon",
+    onClick: () => removeTask(t.id)
+  }, "✕"))), /*#__PURE__*/React.createElement("div", {
+    className: "search-row"
+  }, /*#__PURE__*/React.createElement("input", {
+    className: "text-input",
+    placeholder: "Nuova attività...",
+    value: newTask,
+    onChange: e => setNewTask(e.target.value)
+  }), /*#__PURE__*/React.createElement("button", {
+    className: "btn-secondary",
+    onClick: addCustomTask
+  }, "+"))), card.notes && /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("h3", {
+    className: "section-title"
+  }, "Note"), /*#__PURE__*/React.createElement("p", null, card.notes)), /*#__PURE__*/React.createElement("div", {
+    className: "form-actions",
     style: {
-      display: "flex",
-      gap: 8,
-      marginBottom: 14,
-      flexWrap: "wrap"
+      marginTop: 24
     }
   }, /*#__PURE__*/React.createElement("button", {
-    className: "nav-btn",
-    style: {
-      flex: 1
-    },
-    onClick: () => setEquipPreset(["manubri"])
-  }, "Solo manubri"), /*#__PURE__*/React.createElement("button", {
-    className: "nav-btn",
-    style: {
-      flex: 1
-    },
-    onClick: () => setEquipPreset(["manubri", "panca"])
-  }, "Manubri + panca"), /*#__PURE__*/React.createElement("button", {
-    className: "nav-btn",
-    style: {
-      flex: 1
-    },
-    onClick: () => setEquipPreset(ALL_EQUIPMENT.slice())
-  }, "Palestra completa")), ALL_EQUIPMENT.map(key => /*#__PURE__*/React.createElement("div", {
-    key: key,
-    className: "row",
-    style: {
-      marginBottom: 8
-    }
-  }, /*#__PURE__*/React.createElement("span", {
-    className: "row-name"
-  }, EQUIPMENT_LABELS[key]), /*#__PURE__*/React.createElement("button", {
-    className: "nav-btn" + (equipment.includes(key) ? " primary" : ""),
-    style: {
-      padding: "7px 14px"
-    },
-    onClick: () => toggleEquip(key)
-  }, equipment.includes(key) ? "Sì" : "No")))), /*#__PURE__*/React.createElement("div", {
-    className: "section-lbl"
-  }, "Rotazione libreria"), /*#__PURE__*/React.createElement("div", {
-    className: "card",
-    style: {
-      marginBottom: 18
-    }
+    className: "btn-secondary",
+    onClick: () => setEditing(true)
+  }, "Modifica"), !card.sold && /*#__PURE__*/React.createElement("button", {
+    className: "btn-primary",
+    onClick: () => setSaleForm(true)
+  }, "Segna come venduta")), /*#__PURE__*/React.createElement("button", {
+    className: "btn-danger full-width",
+    onClick: onDelete
+  }, "Elimina carta"), saleForm && /*#__PURE__*/React.createElement("div", {
+    className: "modal-overlay",
+    onClick: () => setSaleForm(false)
   }, /*#__PURE__*/React.createElement("div", {
-    className: "h-sub",
-    style: {
-      marginBottom: 14
-    }
-  }, "Ogni tot giorni, un esercizio a caso viene sostituito con uno della libreria dello stesso gruppo muscolare (esclusi quelli segnati 👎 nella Libreria). Puoi disattivarla o cambiare l'intervallo."), /*#__PURE__*/React.createElement("div", {
-    className: "row",
-    style: {
-      marginBottom: rotationEnabled ? 14 : 0
-    }
-  }, /*#__PURE__*/React.createElement("span", {
-    className: "row-name"
-  }, "Rotazione automatica"), /*#__PURE__*/React.createElement("button", {
-    className: "nav-btn" + (rotationEnabled ? " primary" : ""),
-    style: {
-      padding: "8px 16px"
-    },
-    onClick: toggleRotation
-  }, rotationEnabled ? "Attiva" : "Disattivata")), rotationEnabled && /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("div", {
-    className: "field-lbl",
-    style: {
-      marginBottom: 7
-    }
-  }, "Ogni quanti giorni"), /*#__PURE__*/React.createElement("div", {
-    style: {
-      display: "flex",
-      gap: 8
-    }
-  }, [14, 30, 60, 90].map(d => /*#__PURE__*/React.createElement("button", {
-    key: d,
-    className: "nav-btn" + (rotationInterval === d ? " primary" : ""),
-    style: {
-      flex: 1,
-      padding: "9px 4px"
-    },
-    onClick: () => changeInterval(d)
-  }, d, "g"))))), /*#__PURE__*/React.createElement("div", {
-    className: "h-sub",
-    style: {
-      marginBottom: 18
-    }
-  }, "Scegli il colore d'accento dell'app. Cambia subito ovunque."), /*#__PURE__*/React.createElement("div", {
-    className: "section-lbl"
-  }, "Preset veloci"), /*#__PURE__*/React.createElement("div", {
-    className: "swatch-grid"
-  }, ACCENT_PRESETS.map(p => /*#__PURE__*/React.createElement("button", {
-    key: p.hex,
-    className: "swatch" + (p.hex.toLowerCase() === accent.toLowerCase() ? " sel" : ""),
-    style: {
-      background: p.hex
-    },
-    onClick: () => onChange(p.hex),
-    title: p.name
-  }, p.hex.toLowerCase() === accent.toLowerCase() && /*#__PURE__*/React.createElement("span", {
-    className: "swatch-check"
-  }, "✓")))), /*#__PURE__*/React.createElement("div", {
-    className: "section-lbl"
-  }, "Colore custom"), /*#__PURE__*/React.createElement("div", {
-    className: "card",
-    style: {
-      display: "flex",
-      alignItems: "center",
-      gap: 14
-    }
-  }, /*#__PURE__*/React.createElement("input", {
-    type: "color",
-    value: accent,
-    onChange: e => onChange(e.target.value),
-    className: "color-input"
-  }), /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("div", {
-    className: "row-name mono"
-  }, accent.toUpperCase()), /*#__PURE__*/React.createElement("div", {
-    className: "h-sub",
-    style: {
-      marginTop: 2
-    }
-  }, "Tocca il quadrato per aprire la tavolozza"))), /*#__PURE__*/React.createElement("div", {
-    className: "spacer"
-  }), /*#__PURE__*/React.createElement("button", {
-    className: "btn-ghost",
-    onClick: () => onChange(DEFAULT_ACCENT)
-  }, "↺ Ripristina rosso"), /*#__PURE__*/React.createElement("button", {
-    className: "btn-ghost",
-    onClick: onBack
-  }, "← Torna alla home"));
-}
-
-/* =======================================================
-   COMPONENTI GRAFICI
-======================================================= */
-function RestRing({
-  total,
-  remaining
-}) {
-  const size = 224,
-    stroke = 11,
-    r = (size - stroke) / 2,
-    c = 2 * Math.PI * r;
-  const frac = Math.max(0, remaining / total);
-  const offset = c * (1 - frac);
-  const mm = Math.floor(remaining / 60),
-    ss = remaining % 60;
-  return /*#__PURE__*/React.createElement("div", {
-    className: "ring-wrap"
-  }, /*#__PURE__*/React.createElement("svg", {
-    width: size,
-    height: size
-  }, /*#__PURE__*/React.createElement("circle", {
-    cx: size / 2,
-    cy: size / 2,
-    r: r,
-    stroke: "#2a2823",
-    strokeWidth: stroke,
-    fill: "none"
-  }), /*#__PURE__*/React.createElement("circle", {
-    cx: size / 2,
-    cy: size / 2,
-    r: r,
-    strokeWidth: stroke,
-    fill: "none",
-    strokeDasharray: c,
-    strokeDashoffset: offset,
-    strokeLinecap: "round",
-    transform: `rotate(-90 ${size / 2} ${size / 2})`,
-    style: {
-      transition: "stroke-dashoffset 1s linear",
-      stroke: "var(--accent)"
-    }
+    className: "modal",
+    onClick: e => e.stopPropagation()
+  }, /*#__PURE__*/React.createElement("h3", null, "Segna come venduta"), /*#__PURE__*/React.createElement("div", {
+    className: "form-group"
+  }, /*#__PURE__*/React.createElement("label", null, "Prezzo di vendita"), /*#__PURE__*/React.createElement("input", {
+    type: "number",
+    step: "0.01",
+    className: "text-input",
+    value: salePrice,
+    onChange: e => setSalePrice(e.target.value)
   })), /*#__PURE__*/React.createElement("div", {
-    className: "ring-num"
-  }, mm, ":", String(ss).padStart(2, "0")));
-}
-function Sparkline({
-  points
-}) {
-  if (!points || points.length < 2) {
-    return /*#__PURE__*/React.createElement("div", {
-      className: "spark-empty"
-    }, "Serve almeno 2 sedute per il grafico");
-  }
-  const w = 400,
-    h = 60,
-    pad = 6;
-  const kgs = points.map(p => p.kg);
-  const min = Math.min(...kgs),
-    max = Math.max(...kgs);
-  const range = max - min || 1;
-  const stepX = (w - pad * 2) / (points.length - 1);
-  const coords = points.map((p, i) => {
-    const x = pad + i * stepX;
-    const y = h - pad - (p.kg - min) / range * (h - pad * 2);
-    return [x, y];
-  });
-  const path = coords.map((c, i) => (i === 0 ? "M" : "L") + c[0].toFixed(1) + "," + c[1].toFixed(1)).join(" ");
-  const area = path + " L" + coords[coords.length - 1][0].toFixed(1) + "," + (h - pad) + " L" + coords[0][0].toFixed(1) + "," + (h - pad) + " Z";
-  const lastPt = coords[coords.length - 1];
-  return /*#__PURE__*/React.createElement("svg", {
-    viewBox: `0 0 ${w} ${h}`,
-    width: "100%",
-    height: h,
-    preserveAspectRatio: "none",
-    style: {
-      display: "block"
-    }
-  }, /*#__PURE__*/React.createElement("path", {
-    d: area,
-    style: {
-      fill: "var(--a10)"
-    }
-  }), /*#__PURE__*/React.createElement("path", {
-    d: path,
-    fill: "none",
-    strokeWidth: "2.5",
-    strokeLinecap: "round",
-    strokeLinejoin: "round",
-    vectorEffect: "non-scaling-stroke",
-    style: {
-      stroke: "var(--accent)"
-    }
-  }), /*#__PURE__*/React.createElement("circle", {
-    cx: lastPt[0],
-    cy: lastPt[1],
-    r: "3.5",
-    style: {
-      fill: "var(--accent)"
+    className: "form-group"
+  }, /*#__PURE__*/React.createElement("label", null, "Data vendita"), /*#__PURE__*/React.createElement("input", {
+    type: "date",
+    className: "text-input",
+    value: saleDate,
+    onChange: e => setSaleDate(e.target.value)
+  })), /*#__PURE__*/React.createElement("div", {
+    className: "form-group"
+  }, /*#__PURE__*/React.createElement("label", null, "Canale di vendita"), /*#__PURE__*/React.createElement("select", {
+    className: "text-input",
+    value: saleChannel,
+    onChange: e => setSaleChannel(e.target.value)
+  }, SALE_CHANNELS.map(ch => /*#__PURE__*/React.createElement("option", {
+    key: ch,
+    value: ch
+  }, ch)))), /*#__PURE__*/React.createElement("div", {
+    className: "form-actions"
+  }, /*#__PURE__*/React.createElement("button", {
+    className: "btn-secondary",
+    onClick: () => setSaleForm(false)
+  }, "Annulla"), /*#__PURE__*/React.createElement("button", {
+    className: "btn-primary",
+    onClick: markSold
+  }, "Conferma")))), showPriceSearch && /*#__PURE__*/React.createElement(PriceSearchModal, {
+    card: card,
+    onClose: () => setShowPriceSearch(false),
+    onApply: (value, source) => {
+      addPricePoint(value, source);
+      setShowPriceSearch(false);
     }
   }));
 }
-ReactDOM.createRoot(document.getElementById("root")).render(/*#__PURE__*/React.createElement(App, null));
-requestAnimationFrame(() => requestAnimationFrame(() => {
-  const s = document.getElementById("boot-splash");
-  if (s) { s.classList.add("hide"); setTimeout(() => s.remove(), 600); }
-}));
+function SettingsScreen({
+  accent,
+  setAccent,
+  cards,
+  setCards,
+  alertThreshold,
+  setAlertThreshold
+}) {
+  const fileRef = useRef(null);
+  const importRef = useRef(null);
+  const [importText, setImportText] = useState("");
+  const [importMsg, setImportMsg] = useState("");
+  function exportBackup() {
+    const data = {
+      cards,
+      accent,
+      exportedAt: new Date().toISOString()
+    };
+    const blob = new Blob([JSON.stringify(data, null, 2)], {
+      type: "application/json"
+    });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = "pokewallet-backup-" + new Date().toISOString().slice(0, 10) + ".json";
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+  }
+  function onBackupFile(e) {
+    const file = e.target.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = () => {
+      try {
+        const data = JSON.parse(reader.result);
+        if (data.cards) setCards(data.cards);
+        if (data.accent) setAccent(data.accent);
+      } catch (err) {
+        alert("File non valido");
+      }
+    };
+    reader.readAsText(file);
+  }
+  function importPurchases() {
+    try {
+      const arr = JSON.parse(importText);
+      const list = Array.isArray(arr) ? arr : [arr];
+      const newCards = list.map(item => ({
+        ...emptyCard(),
+        name: item.name || "",
+        set: item.set || "",
+        language: item.language || "ENG",
+        quantity: item.quantity || 1,
+        image: item.image || "",
+        source: "Vinted",
+        purchasePrice: item.price || item.purchasePrice || "",
+        purchaseDate: item.date || item.purchaseDate || new Date().toISOString().slice(0, 10),
+        priceHistory: item.price ? [{
+          date: new Date().toISOString(),
+          value: Number(item.price),
+          source: "acquisto"
+        }] : []
+      }));
+      setCards([...cards, ...newCards]);
+      setImportMsg(newCards.length + " carte importate.");
+      setImportText("");
+    } catch (e) {
+      setImportMsg("JSON non valido.");
+    }
+  }
+  return /*#__PURE__*/React.createElement("div", {
+    className: "screen"
+  }, /*#__PURE__*/React.createElement("h3", {
+    className: "section-title"
+  }, "Soglia allerta prezzo"), /*#__PURE__*/React.createElement("p", {
+    className: "hint"
+  }, "Una carta compare nel banner \"Allerta prezzo\" in home solo se il suo valore sale o scende di almeno questa percentuale rispetto all'ultimo controllo. Variazioni più piccole restano visibili solo nella scheda della singola carta, senza avviso."), /*#__PURE__*/React.createElement("div", {
+    className: "search-row"
+  }, /*#__PURE__*/React.createElement("input", {
+    type: "number",
+    min: "1",
+    className: "text-input",
+    value: alertThreshold,
+    onChange: e => setAlertThreshold(Math.max(1, Number(e.target.value) || 1))
+  }), /*#__PURE__*/React.createElement("span", {
+    className: "hint"
+  }, "%")), /*#__PURE__*/React.createElement("h3", {
+    className: "section-title"
+  }, "Colore accento"), /*#__PURE__*/React.createElement("div", {
+    className: "accent-row"
+  }, ACCENT_PRESETS.map(c => /*#__PURE__*/React.createElement("button", {
+    key: c,
+    className: "accent-dot" + (accent === c ? " selected" : ""),
+    style: {
+      background: c
+    },
+    onClick: () => setAccent(c)
+  })), /*#__PURE__*/React.createElement("input", {
+    type: "color",
+    value: accent,
+    onChange: e => setAccent(e.target.value)
+  })), /*#__PURE__*/React.createElement("h3", {
+    className: "section-title"
+  }, "Importa acquisti da Vinted"), /*#__PURE__*/React.createElement("p", {
+    className: "hint"
+  }, "Incolla qui il JSON che ti preparo dopo aver controllato i tuoi ordini Vinted in chat. Formato: [", "{", "\"name\",\"set\",\"language\",\"price\",\"date\",\"image\"", "}", "]"), /*#__PURE__*/React.createElement("textarea", {
+    className: "text-input",
+    rows: "4",
+    value: importText,
+    onChange: e => setImportText(e.target.value),
+    placeholder: "[{\"name\":\"Charizard\",\"set\":\"Base Set\",\"language\":\"ITA\",\"price\":45,\"date\":\"2026-08-06\"}]"
+  }), /*#__PURE__*/React.createElement("button", {
+    className: "btn-primary full-width",
+    onClick: importPurchases
+  }, "Importa"), importMsg && /*#__PURE__*/React.createElement("div", {
+    className: "hint"
+  }, importMsg), /*#__PURE__*/React.createElement("h3", {
+    className: "section-title"
+  }, "Backup"), /*#__PURE__*/React.createElement("button", {
+    className: "btn-primary full-width",
+    onClick: exportBackup
+  }, "💾 Salva progressi"), /*#__PURE__*/React.createElement("button", {
+    className: "btn-secondary full-width",
+    onClick: () => fileRef.current.click()
+  }, "📥 Recupera progressi"), /*#__PURE__*/React.createElement("input", {
+    type: "file",
+    accept: "application/json",
+    ref: fileRef,
+    style: {
+      display: "none"
+    },
+    onChange: onBackupFile
+  }));
+}
+function App() {
+  const [cards, setCardsState] = useState(loadCards);
+  const [accent, setAccentState] = useState(() => localStorage.getItem(LS.accent) || ACCENT_PRESETS[0]);
+  const [alertThreshold, setAlertThresholdState] = useState(() => Number(localStorage.getItem(LS.alertThreshold)) || DEFAULT_ALERT_THRESHOLD);
+  const [screen, setScreen] = useState("home");
+  const [selectedId, setSelectedId] = useState(null);
+  const [adding, setAdding] = useState(false);
+  useEffect(() => saveCards(cards), [cards]);
+  useEffect(() => {
+    localStorage.setItem(LS.accent, accent);
+    document.documentElement.style.setProperty("--accent", accent);
+  }, [accent]);
+  useEffect(() => {
+    localStorage.setItem(LS.alertThreshold, String(alertThreshold));
+  }, [alertThreshold]);
+  function setCards(next) {
+    setCardsState(next);
+  }
+  function updateCard(updated) {
+    setCardsState(prev => prev.map(c => c.id === updated.id ? updated : c));
+  }
+  function deleteCard(id) {
+    setCardsState(prev => prev.filter(c => c.id !== id));
+    setSelectedId(null);
+    setScreen("collection");
+  }
+  function addCard(card) {
+    setCardsState(prev => [...prev, card]);
+    setAdding(false);
+    setScreen("collection");
+  }
+  function openCard(id) {
+    setSelectedId(id);
+    setScreen("detail");
+  }
+  const selected = cards.find(c => c.id === selectedId);
+  let body;
+  if (adding) {
+    body = /*#__PURE__*/React.createElement("div", {
+      className: "screen"
+    }, /*#__PURE__*/React.createElement(CardForm, {
+      initial: emptyCard(),
+      onCancel: () => setAdding(false),
+      onSave: addCard
+    }));
+  } else if (screen === "detail" && selected) {
+    body = /*#__PURE__*/React.createElement(CardDetail, {
+      card: selected,
+      onUpdate: updateCard,
+      onDelete: () => deleteCard(selected.id),
+      onBack: () => setScreen("collection")
+    });
+  } else if (screen === "collection") {
+    body = /*#__PURE__*/React.createElement(CollectionScreen, {
+      cards: cards,
+      openCard: openCard,
+      onAdd: () => setAdding(true)
+    });
+  } else if (screen === "sold") {
+    body = /*#__PURE__*/React.createElement(SoldScreen, {
+      cards: cards,
+      openCard: openCard
+    });
+  } else if (screen === "restoration") {
+    body = /*#__PURE__*/React.createElement(RestorationScreen, {
+      cards: cards,
+      openCard: openCard
+    });
+  } else if (screen === "settings") {
+    body = /*#__PURE__*/React.createElement(SettingsScreen, {
+      accent: accent,
+      setAccent: setAccentState,
+      cards: cards,
+      setCards: setCards,
+      alertThreshold: alertThreshold,
+      setAlertThreshold: setAlertThresholdState
+    });
+  } else {
+    body = /*#__PURE__*/React.createElement(HomeScreen, {
+      cards: cards,
+      openCard: openCard,
+      setScreen: setScreen,
+      alertThreshold: alertThreshold
+    });
+  }
+  return /*#__PURE__*/React.createElement("div", {
+    className: "app-root"
+  }, /*#__PURE__*/React.createElement("header", {
+    className: "app-header"
+  }, /*#__PURE__*/React.createElement("h1", null, "PokéWallet")), /*#__PURE__*/React.createElement("main", {
+    className: "app-main"
+  }, body), /*#__PURE__*/React.createElement(BottomNav, {
+    screen: screen === "detail" ? "collection" : screen,
+    setScreen: s => {
+      setAdding(false);
+      setSelectedId(null);
+      setScreen(s);
+    }
+  }));
+}
+const root = ReactDOM.createRoot(document.getElementById('root'));
+root.render(React.createElement(App));
+setTimeout(() => {
+  const splash = document.getElementById('boot-splash');
+  if (splash) {
+    splash.style.opacity = '0';
+    setTimeout(() => splash.remove(), 400);
+  }
+}, 250);
 </script>
 </body>
 </html>
