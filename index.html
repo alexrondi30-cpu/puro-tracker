@@ -4,9 +4,9 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Steroids</title>
-<link rel="manifest" href="manifest.json?v=1786043548840">
-<link rel="icon" href="icon-192.png?v=1786043548840" type="image/png">
-<link rel="apple-touch-icon" href="apple-touch-icon.png?v=1786043548840">
+<link rel="manifest" href="manifest.json?v=1786143109909">
+<link rel="icon" href="icon-192.png?v=1786143109909" type="image/png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png?v=1786143109909">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Steroids">
@@ -41,7 +41,7 @@
 </head>
 <body>
 <div id="boot-splash">
-  <img src="icon-512.png?v=1786043548840" alt="">
+  <img src="icon-512.png?v=1786143109909" alt="">
   <div class="boot-name">Steroids</div>
   <div class="boot-sub">Training Log</div>
 </div>
@@ -358,24 +358,13 @@ const {
   useCallback
 } = React;
 /* ---------------------------------------------------------
-   DATI SCHEDA — 5 giorni, upper body, multifrequenza
+   DATI SCHEDA — 3 giorni (A/B/C), allenamento a giorni alterni
 --------------------------------------------------------- */
 const DAYS = [{
   id: 1,
-  title: "Petto + Dorso",
+  title: "Spinta (A)",
   exercises: [{
-    id: "d1e1",
-    name: "Rematore con manubri, busto piegato in avanti",
-    sets: 3,
-    reps: "8-10",
-    rest: 120,
-    weight: true,
-    muscle: "Dorso",
-    video: "fgcoj-vxSYw",
-    equip: ["manubri"],
-    desc: "In piedi, ginocchia leggermente piegate, busto piegato in avanti a circa 45° con la schiena dritta (non curva, non a terra). Un manubrio per mano, lascia le braccia pendere, poi tira i gomiti indietro portando i manubri verso i fianchi, scapole che si stringono. Scendi controllato, senza slancio."
-  }, {
-    id: "d1e2",
+    id: "a1",
     name: "Chest press alla macchina",
     sets: 3,
     reps: "8-10",
@@ -386,18 +375,40 @@ const DAYS = [{
     equip: ["macchina"],
     desc: "Seduto sulla panca, schiena contro lo schienale, avambracci sui braccioli imbottiti. Spingi in avanti fino a unire i braccioli davanti al petto, torni controllato."
   }, {
-    id: "d1e3",
-    name: "Lat machine presa larga",
-    sets: 2,
-    reps: "10-12",
+    id: "a2",
+    name: "Panca inclinata con manubri",
+    sets: 3,
+    reps: "8-10",
     rest: 90,
     weight: true,
-    muscle: "Dorso",
-    video: "D39HlngiWac",
-    equip: ["cavo"],
-    desc: "Seduto sotto il cavo alto, ginocchia bloccate sotto l'imbottitura, presa larga sulla barra (più larga delle spalle), braccia tese sopra la testa. Tiri la barra verso il petto alto portando i gomiti in basso e indietro, senza inarcare la schiena. Risali controllato fino a braccia quasi tese."
+    muscle: "Petto",
+    video: "a5JEIxBtjEc",
+    equip: ["manubri", "panca"],
+    desc: "Panca inclinata a 30-45°, un manubrio per mano all'altezza del petto alto, gomiti a circa 45° dal busto. Spingi verso l'alto e leggermente indietro, senza far sbattere i manubri in cima, poi scendi controllato. Lavora di più la parte alta del pettorale rispetto alla panca piana."
   }, {
-    id: "d1e4",
+    id: "a3",
+    name: "Military press con manubri (seduto)",
+    sets: 3,
+    reps: "8-10",
+    rest: 120,
+    weight: true,
+    muscle: "Spalle",
+    video: "TvT9hrqdSIw",
+    equip: ["manubri"],
+    desc: "Seduto, manubri all'altezza delle spalle, palmi in avanti. Spingi verso l'alto fino a braccia quasi tese."
+  }, {
+    id: "a4",
+    name: "Push down tricipiti al cavo alto",
+    sets: 2,
+    reps: "12-15",
+    rest: 60,
+    weight: true,
+    muscle: "Tricipiti",
+    video: "qk_saNmVpR4",
+    equip: ["cavo"],
+    desc: "Maniglia a V o singola, gomiti fermi vicino al busto. Spingi in basso usando solo i tricipiti."
+  }, {
+    id: "a5",
     name: "Crunch al cavo, seduto",
     sets: 3,
     reps: "15-20",
@@ -408,20 +419,116 @@ const DAYS = [{
     video: "exdFR8iFlA8",
     equip: ["cavo"],
     desc: "Seduto sulla panca della macchina, cavo in mano dietro la nuca. Curvi il busto in avanti portando i gomiti verso le ginocchia."
+  }]
+}, {
+  id: 2,
+  title: "Trazione (B)",
+  exercises: [{
+    id: "b1",
+    name: "Lat machine presa larga",
+    sets: 2,
+    reps: "10-12",
+    rest: 120,
+    weight: true,
+    muscle: "Dorso",
+    video: "D39HlngiWac",
+    equip: ["cavo"],
+    desc: "Seduto sotto il cavo alto, ginocchia bloccate sotto l'imbottitura, presa larga sulla barra (più larga delle spalle), braccia tese sopra la testa. Tiri la barra verso il petto alto portando i gomiti in basso e indietro, senza inarcare la schiena. Risali controllato fino a braccia quasi tese."
   }, {
-    id: "d1e5",
-    name: "Crunch con manubrio sul petto",
+    id: "b2",
+    name: "Rematore con manubri, busto piegato in avanti",
     sets: 3,
-    reps: "15-20",
-    rest: 45,
+    reps: "8-10",
+    rest: 120,
+    weight: true,
+    muscle: "Dorso",
+    video: "fgcoj-vxSYw",
+    equip: ["manubri"],
+    desc: "In piedi, ginocchia leggermente piegate, busto piegato in avanti a circa 45° con la schiena dritta (non curva, non a terra). Un manubrio per mano, lascia le braccia pendere, poi tira i gomiti indietro portando i manubri verso i fianchi, scapole che si stringono. Scendi controllato, senza slancio."
+  }, {
+    id: "b3",
+    name: "Curl a martello su panca inclinata",
+    sets: 3,
+    reps: "10-12",
+    rest: 60,
+    weight: true,
+    muscle: "Bicipiti",
+    video: "DRjiCixntEE",
+    equip: ["manubri", "panca"],
+    desc: "Sdraiato su panca inclinata a 45-60°, braccia che pendono lungo i fianchi, presa neutra. Curl con maggiore stiramento iniziale del bicipite."
+  }, {
+    id: "b4",
+    name: "Hammer curl manubri",
+    sets: 2,
+    reps: "12-15",
+    rest: 60,
+    weight: true,
+    muscle: "Bicipiti",
+    video: "zi_OiMHzge8",
+    equip: ["manubri"],
+    desc: "Come il curl normale ma palmi rivolti l'uno verso l'altro (presa neutra) per tutto il movimento."
+  }, {
+    id: "b5",
+    name: "Pallof press al cavo",
+    sets: 3,
+    reps: "10-12/lato",
+    rest: 60,
     weight: true,
     finisher: true,
-    muscle: "Addominali",
-    video: "9RgiWLGSVzc",
+    muscle: "Lombari",
+    video: "qQOsWutOQoM",
+    equip: ["cavo"],
+    desc: "In piedi di fianco alla macchina, cavo all'altezza del petto, piedi ben piantati. Afferri la maniglia con entrambe le mani davanti allo sterno e la spingi dritta in avanti, resistendo alla rotazione del busto verso la macchina (il core e i lombari lavorano per tenerti dritto). Torni indietro controllato senza farti ruotare. Finisci le ripetizioni, poi ti giri dall'altro lato."
+  }]
+}, {
+  id: 3,
+  title: "Ibrido (C)",
+  exercises: [{
+    id: "c1",
+    name: "Floor press manubri, presa stretta",
+    sets: 3,
+    reps: "8-10",
+    rest: 90,
+    weight: true,
+    muscle: "Petto",
+    video: "BOWrMvTNmsM",
     equip: ["manubri"],
-    desc: "Sdraiato a terra, ginocchia piegate, tieni un manubrio con entrambe le mani contro il petto. Esegui il crunch classico, spingendo verso l'alto contro il peso."
+    desc: "Sdraiato a terra, gomiti vicini ai fianchi, manubri all'altezza del petto con presa stretta. Spingi verso l'alto senza aprire i gomiti: lavora molto anche il tricipite."
   }, {
-    id: "d1e6",
+    id: "c2",
+    name: "Pulley basso / rematore al cavo",
+    sets: 3,
+    reps: "10-12",
+    rest: 120,
+    weight: true,
+    muscle: "Dorso",
+    video: "-wVifByDoe4",
+    equip: ["cavo"],
+    desc: "Seduto davanti al cavo basso, piedi in appoggio sulla base, ginocchia leggermente piegate, busto verticale. Tiri la maniglia verso l'addome portando i gomiti indietro vicino ai fianchi, scapole che si stringono, poi torni controllato senza curvare la schiena in avanti."
+  }, {
+    id: "c3",
+    name: "Arnold press con manubri",
+    sets: 3,
+    reps: "10-12",
+    rest: 120,
+    weight: true,
+    muscle: "Spalle",
+    video: "oKh_mZTfsyc",
+    equip: ["manubri"],
+    desc: "Seduto, manubri all'altezza delle spalle con i palmi rivolti verso di te e i gomiti bassi davanti al petto (come a fine di un curl). Mentre spingi verso l'alto, ruota i polsi in modo che i palmi finiscano rivolti in avanti a braccia quasi tese in cima. Torna giù invertendo la rotazione, controllato."
+  }, {
+    id: "c4",
+    name: "French press manubrio sopra la testa",
+    sets: 3,
+    reps: "8-10",
+    rest: 90,
+    weight: true,
+    muscle: "Tricipiti",
+    video: "Ig-wfb-Ps-8",
+    equip: ["manubri"],
+    desc: "Un manubrio con entrambe le mani dietro la nuca, gomiti fermi puntati al soffitto. Distendi le braccia in alto."
+  }, {
+    id: "c5",
     name: "Molla avambracci",
     sets: 3,
     reps: "30 strizzate/mano",
@@ -433,67 +540,7 @@ const DAYS = [{
     equip: ["molla"],
     desc: "Stringi a fondo corsa e rilasci controllato. Resistenza regolabile: registra il livello (kg) per seguirne la progressione."
   }, {
-    id: "d1e7",
-    name: "Curl al polso con manubrio (seduto)",
-    sets: 2,
-    reps: "15-20",
-    rest: 45,
-    weight: true,
-    finisher: true,
-    muscle: "Avambracci",
-    video: "y-x14sVi12o",
-    equip: ["manubri"],
-    desc: "Avambraccio sulla coscia, polso oltre il bordo, palmo su. Muovi solo il polso verso l'alto."
-  }]
-}, {
-  id: 2,
-  title: "Spalle + Bicipiti",
-  exercises: [{
-    id: "d2e1",
-    name: "Military press con manubri (seduto)",
-    sets: 3,
-    reps: "8-10",
-    rest: 120,
-    weight: true,
-    muscle: "Spalle",
-    video: "TvT9hrqdSIw",
-    equip: ["manubri"],
-    desc: "Seduto, manubri all'altezza delle spalle, palmi in avanti. Spingi verso l'alto fino a braccia quasi tese."
-  }, {
-    id: "d2e2",
-    name: "Alzate laterali manubri",
-    sets: 3,
-    reps: "12-15",
-    rest: 60,
-    weight: true,
-    muscle: "Spalle",
-    video: "gCNQ5fQiwNs",
-    equip: ["manubri"],
-    desc: "In piedi, un manubrio per mano lungo i fianchi, gomiti leggermente piegati. Sollevi le braccia lateralmente, guidando con i gomiti, fino all'altezza delle spalle. Se cede l'avambraccio prima delle spalle, scendi di peso."
-  }, {
-    id: "d2e3",
-    name: "Curl manubri in piedi",
-    sets: 3,
-    reps: "8-10",
-    rest: 90,
-    weight: true,
-    muscle: "Bicipiti",
-    video: "QaXCjUMCp90",
-    equip: ["manubri"],
-    desc: "In piedi, manubri lungo i fianchi, palmi in avanti, gomiti fermi vicino al busto. Pieghi i gomiti portando i manubri verso le spalle, busto fermo senza slancio."
-  }, {
-    id: "d2e4",
-    name: "Hammer curl alternato manubri",
-    sets: 2,
-    reps: "12-15",
-    rest: 60,
-    weight: true,
-    muscle: "Bicipiti",
-    video: "HJUmbHvmgx0",
-    equip: ["manubri"],
-    desc: "Come il curl in piedi ma un braccio alla volta, alternando, con presa neutra (palmi l'uno verso l'altro). Lavora anche il brachiale."
-  }, {
-    id: "d2e7",
+    id: "c6",
     name: "Flesso-estensione cervicale con manubrio leggero",
     sets: 2,
     reps: "10-12/direz.",
@@ -504,222 +551,6 @@ const DAYS = [{
     video: "BjtqQjEeeKY",
     equip: ["manubri"],
     desc: "Supino, manubrio leggero (parti da 1-2kg) contro la fronte con entrambe le mani, fletti il collo verso il petto. Poi prono, manubrio contro la nuca, sollevi la testa: estensione. Lento, mai a scatto."
-  }]
-}, {
-  id: 3,
-  title: "Dorso + Tricipiti",
-  exercises: [{
-    id: "d3e1",
-    name: "Lat machine presa stretta",
-    sets: 3,
-    reps: "8-10",
-    rest: 120,
-    weight: true,
-    muscle: "Dorso",
-    video: "6k1SlAqJFak",
-    equip: ["cavo"],
-    desc: "Seduto sotto il cavo alto, ginocchia bloccate sotto l'imbottitura, mani vicine al centro della barra (presa stretta), braccia tese sopra la testa. Tiri la barra verso lo sterno con i gomiti che scendono vicino al busto, poi risali controllato."
-  }, {
-    id: "d3e2",
-    name: "Pulley basso / rematore al cavo",
-    sets: 3,
-    reps: "10-12",
-    rest: 90,
-    weight: true,
-    muscle: "Dorso",
-    video: "-wVifByDoe4",
-    equip: ["cavo"],
-    desc: "Seduto davanti al cavo basso, piedi in appoggio sulla base, ginocchia leggermente piegate, busto verticale. Tiri la maniglia verso l'addome portando i gomiti indietro vicino ai fianchi, scapole che si stringono, poi torni controllato senza curvare la schiena in avanti."
-  }, {
-    id: "d3e3",
-    name: "French press manubrio sopra la testa",
-    sets: 3,
-    reps: "8-10",
-    rest: 90,
-    weight: true,
-    muscle: "Tricipiti",
-    video: "Ig-wfb-Ps-8",
-    equip: ["manubri"],
-    desc: "Un manubrio con entrambe le mani dietro la nuca, gomiti fermi puntati al soffitto. Distendi le braccia in alto."
-  }, {
-    id: "d3e4",
-    name: "Push down tricipiti al cavo alto",
-    sets: 2,
-    reps: "12-15",
-    rest: 60,
-    weight: true,
-    muscle: "Tricipiti",
-    video: "qk_saNmVpR4",
-    equip: ["cavo"],
-    desc: "Maniglia a V o singola, gomiti fermi vicino al busto. Spingi in basso usando solo i tricipiti."
-  }, {
-    id: "d3e5",
-    name: "Superman con manubrio",
-    sets: 3,
-    reps: "12-15",
-    rest: 60,
-    weight: true,
-    finisher: true,
-    muscle: "Lombari",
-    video: "yQK1khXw96c",
-    equip: ["manubri"],
-    desc: "A terra pancia in giù, tieni un manubrio leggero con entrambe le mani contro il petto (o dietro la nuca). Sollevi busto e gambe insieme, tieni un attimo, scendi controllato."
-  }]
-}, {
-  id: 4,
-  title: "Petto + Spalle",
-  exercises: [{
-    id: "d4e1",
-    name: "Chest press alla macchina",
-    sets: 3,
-    reps: "8-10",
-    rest: 120,
-    weight: true,
-    muscle: "Petto",
-    video: "6mWAqa41eKI",
-    equip: ["macchina"],
-    desc: "Seduto sulla panca della macchina, schiena contro lo schienale, avambracci sui braccioli imbottiti. Spingi in avanti fino a unire i braccioli davanti al petto, torni controllato."
-  }, {
-    id: "d4e2",
-    name: "Floor press con manubri, presa stretta",
-    sets: 3,
-    reps: "8-10",
-    rest: 90,
-    weight: true,
-    muscle: "Petto",
-    video: "TGpAt-v7Pzg",
-    equip: ["manubri"],
-    desc: "Sdraiato a terra, ginocchia piegate, gomiti vicini ai fianchi, un manubrio per mano all'altezza del petto con presa stretta. Spingi verso l'alto senza aprire i gomiti, i tricipiti a terra fanno da stop naturale a fine corsa. Torni giù controllato."
-  }, {
-    id: "d4e3",
-    name: "Arnold press con manubri",
-    sets: 3,
-    reps: "10-12",
-    rest: 90,
-    weight: true,
-    muscle: "Spalle",
-    video: "oKh_mZTfsyc",
-    equip: ["manubri"],
-    desc: "Seduto, manubri all'altezza delle spalle con i palmi rivolti verso di te e i gomiti bassi davanti al petto (come a fine di un curl). Mentre spingi verso l'alto, ruota i polsi in modo che i palmi finiscano rivolti in avanti a braccia quasi tese in cima. Torna giù invertendo la rotazione, controllato."
-  }, {
-    id: "d4e4",
-    name: "Alzate posteriori con manubri",
-    sets: 2,
-    reps: "12-15",
-    rest: 60,
-    weight: true,
-    muscle: "Spalle",
-    video: "--CaHn33JMA",
-    equip: ["manubri"],
-    desc: "In piedi (o seduto sul bordo di una panca), busto piegato in avanti a circa 90°, schiena dritta, un manubrio per mano che pende verso il pavimento sotto le spalle, gomiti leggermente piegati e fissi per tutto il movimento. Senza slancio, apri le braccia lateralmente disegnando un arco verso l'alto fino a quando sono parallele al pavimento, stringendo le scapole tra loro in cima. Scendi controllato."
-  }, {
-    id: "d4e5",
-    name: "Crunch al cavo, seduto",
-    sets: 3,
-    reps: "15-20",
-    rest: 45,
-    weight: true,
-    finisher: true,
-    muscle: "Addominali",
-    video: "exdFR8iFlA8",
-    equip: ["cavo"],
-    desc: "Seduto sulla panca della macchina, cavo in mano dietro la nuca. Curvi il busto in avanti portando i gomiti verso le ginocchia, poi torni su controllato senza mollare la tensione sul cavo."
-  }, {
-    id: "d4e6",
-    name: "Flessione laterale cervicale con manubrio leggero",
-    sets: 2,
-    reps: "10-12/lato",
-    rest: 30,
-    weight: true,
-    finisher: true,
-    muscle: "Collo",
-    video: "1EwdU4o3Ksw",
-    equip: ["manubri"],
-    desc: "Sdraiato su un fianco, manubrio leggero contro il lato della testa, sollevi la testa lateralmente verso la spalla. Cambi lato. Lento, mai a scatto."
-  }]
-}, {
-  id: 5,
-  title: "Bicipiti + Tricipiti",
-  exercises: [{
-    id: "d5e1",
-    name: "Curl manubri seduto (panca macchina)",
-    sets: 3,
-    reps: "8-10",
-    rest: 90,
-    weight: true,
-    muscle: "Bicipiti",
-    video: "3eDvOm1d5x0",
-    equip: ["manubri", "panca"],
-    desc: "Seduto, schienale dritto, manubri lungo i fianchi con i palmi in avanti, gomiti fermi. Curl classico portando i manubri verso le spalle, busto fermo senza slancio."
-  }, {
-    id: "d5e2",
-    name: "Hammer curl manubri",
-    sets: 2,
-    reps: "12-15",
-    rest: 60,
-    weight: true,
-    muscle: "Bicipiti",
-    video: "zi_OiMHzge8",
-    equip: ["manubri"],
-    desc: "Come il curl normale ma palmi rivolti l'uno verso l'altro (presa neutra) per tutto il movimento."
-  }, {
-    id: "d5e3",
-    name: "Kickback tricipiti con manubrio",
-    sets: 3,
-    reps: "10-12",
-    rest: 60,
-    weight: true,
-    muscle: "Tricipiti",
-    video: "fY0GtRAcRY4",
-    equip: ["manubri"],
-    desc: "Busto piegato in avanti a circa 90° (puoi appoggiare la mano libera su una sedia o sul ginocchio per stabilità), un manubrio nell'altra mano. Gomito piegato a 90° e fermo, alto e vicino al fianco, braccio superiore parallelo al pavimento. Distendi solo l'avambraccio all'indietro fino a braccio completamente teso, senza muovere il gomito, poi torna controllato."
-  }, {
-    id: "d5e4",
-    name: "Estensione tricipiti a un braccio, sopra la testa",
-    sets: 2,
-    reps: "10-12",
-    rest: 90,
-    weight: true,
-    muscle: "Tricipiti",
-    video: "jhSawAaNeow",
-    equip: ["manubri"],
-    desc: "Seduto o in piedi, un manubrio con un braccio sopra la testa, gomito fermo vicino all'orecchio senza aprirsi lateralmente. Pieghi il gomito portando il peso dietro la nuca, poi distendi tornando su."
-  }, {
-    id: "d5e5",
-    name: "Molla avambracci",
-    sets: 3,
-    reps: "30-40 strizzate/mano",
-    rest: 30,
-    weight: true,
-    finisher: true,
-    muscle: "Avambracci",
-    video: "hrhucObQ-2k",
-    equip: ["molla"],
-    desc: "Stringi a fondo corsa e rilasci controllato. Resistenza regolabile: aumenta il carico (kg) quando le ripetizioni diventano facili, così tieni traccia della progressione."
-  }, {
-    id: "d5e6",
-    name: "Curl al polso, palmo verso il basso (seduto)",
-    sets: 2,
-    reps: "15-20",
-    rest: 30,
-    weight: true,
-    finisher: true,
-    muscle: "Avambracci",
-    video: "shqAI51IP74",
-    equip: ["manubri"],
-    desc: "Come il curl al polso di Giorno 2 ma palmo giù: lavora gli estensori invece dei flessori."
-  }, {
-    id: "d5e7",
-    name: "Superman con manubrio",
-    sets: 3,
-    reps: "12-15",
-    rest: 60,
-    weight: true,
-    finisher: true,
-    muscle: "Lombari",
-    video: "yQK1khXw96c",
-    equip: ["manubri"],
-    desc: "A terra pancia in giù, tieni un manubrio leggero con entrambe le mani contro il petto (o dietro la nuca). Sollevi busto e gambe insieme, tieni un attimo, scendi controllato."
   }]
 }];
 
@@ -1091,20 +922,26 @@ const ALL_EQUIPMENT = ["manubri", "panca", "macchina", "cavo", "molla"];
 const EQUIPMENT_LABELS = {
   manubri: "Manubri",
   panca: "Panca",
-  macchina: "Macchine (chest press, ecc.)",
+  macchina: "Macchina Domyos multiuso (chest press + lat machine + cavo)",
   cavo: "Cavi / lat machine / pulley",
   molla: "Molla avambracci"
 };
+// manubri e molla sono l'attrezzatura minima indispensabile (economica/scontata): sempre disponibili, non si escludono in Impostazioni.
+// la panca invece non è affatto scontata (ci si allena benissimo anche senza), quindi resta un interruttore selezionabile.
+const BASELINE_EQUIPMENT = ["manubri", "molla"];
+function withBaselineEquipment(list) {
+  return Array.from(new Set([...(list || []), ...BASELINE_EQUIPMENT]));
+}
 function loadEquipment() {
   try {
     const raw = localStorage.getItem(EQUIPMENT_KEY);
-    if (raw) return JSON.parse(raw);
+    if (raw) return withBaselineEquipment(JSON.parse(raw));
   } catch (e) {/* prima volta, ok */}
   return ALL_EQUIPMENT.slice(); // default: tutto disponibile
 }
 function saveEquipment(list) {
   try {
-    localStorage.setItem(EQUIPMENT_KEY, JSON.stringify(list));
+    localStorage.setItem(EQUIPMENT_KEY, JSON.stringify(withBaselineEquipment(list)));
   } catch (e) {}
 }
 function exerciseUsable(ex, equipment) {
@@ -1334,12 +1171,19 @@ function getStretchesForDay(day) {
   });
   return list;
 }
+
+/* stretching finale in PNF (contrazione-rilascio): non più statico passivo.
+   ad ogni ciclo: contrai contro resistenza (PNF_CONTRACT_SECONDS), rilasci e ti stiri più a fondo (s.seconds),
+   ripeti PNF_CYCLES volte prima di cambiare lato/esercizio. */
+const PNF_CONTRACT_SECONDS = 7;
+const PNF_CYCLES = 3;
 function advanceStretchSession(prev) {
   const cur = prev.list[prev.idx];
   if (cur.sides === 2 && prev.side === 1) {
     return {
       ...prev,
       side: 2,
+      cycle: 1,
       phase: "prep",
       remaining: cur.seconds,
       endAt: null
@@ -1351,6 +1195,7 @@ function advanceStretchSession(prev) {
       ...prev,
       idx: nextIdx,
       side: 1,
+      cycle: 1,
       phase: "prep",
       remaining: prev.list[nextIdx].seconds,
       endAt: null
@@ -1358,8 +1203,33 @@ function advanceStretchSession(prev) {
   }
   return null;
 }
+
+/* avanza di una fase dentro lo stesso stretch (contract -> hold -> contract -> ... per PNF_CYCLES volte).
+   ritorna null quando i cicli sono finiti, così il chiamante passa al lato/esercizio successivo. */
+function advanceStretchPhase(prev) {
+  const cur = prev.list[prev.idx];
+  if (prev.phase === "contract") {
+    return {
+      ...prev,
+      phase: "hold",
+      endAt: Date.now() + cur.seconds * 1000,
+      remaining: cur.seconds
+    };
+  }
+  if (prev.cycle < PNF_CYCLES) {
+    return {
+      ...prev,
+      cycle: prev.cycle + 1,
+      phase: "contract",
+      endAt: Date.now() + PNF_CONTRACT_SECONDS * 1000,
+      remaining: PNF_CONTRACT_SECONDS
+    };
+  }
+  return null;
+}
 function stretchDurLabel(s) {
-  return `${s.seconds}"${s.sides === 2 ? " per lato" : ""}`;
+  const total = (PNF_CONTRACT_SECONDS + s.seconds) * PNF_CYCLES;
+  return `~${total}"${s.sides === 2 ? " per lato" : ""}`;
 }
 
 /* ---------------------------------------------------------
@@ -1530,6 +1400,40 @@ function parseRepRange(str) {
     top: parseInt(m[2], 10)
   };
 }
+
+/* stallo = nessun progresso (né in kg né in reps a parità di kg) nelle ultime 3 sedute registrate */
+function detectPlateau(log, exercise) {
+  if (!exercise.weight) return false;
+  const entries = log[exercise.id];
+  if (!entries || entries.length < 3) return false;
+  const lastThree = entries.slice(-3);
+  const scores = lastThree.map(session => {
+    const sets = session.sets || (session.kg ? session.kg.map(kg => ({
+      kg,
+      reps: null
+    })) : []);
+    const kgs = sets.map(s => s.kg).filter(k => k != null);
+    const maxKg = kgs.length ? Math.max(...kgs) : 0;
+    const repsAtMaxKg = sets.filter(s => s.kg === maxKg).map(s => s.reps || 0);
+    return {
+      maxKg,
+      maxReps: repsAtMaxKg.length ? Math.max(...repsAtMaxKg) : 0
+    };
+  });
+  const first = scores[0],
+    last = scores[scores.length - 1];
+  const noKgProgress = last.maxKg <= first.maxKg;
+  const noRepsProgress = last.maxKg === first.maxKg && last.maxReps <= first.maxReps;
+  return noKgProgress && (last.maxKg < first.maxKg || noRepsProgress);
+}
+
+/* scarico automatico: 90% dell'ultimo peso, arrotondato al mezzo kg (manubri) o al kg (resto) */
+function computeDeloadKg(lastKgVal, ex) {
+  if (lastKgVal == null) return null;
+  const isDumbbell = ex.equip && ex.equip.includes("manubri");
+  const step = isDumbbell ? 0.5 : 1;
+  return Math.round(lastKgVal * 0.9 / step) * step;
+}
 const EXERCISES_FLAT = [...DAYS.flatMap(d => d.exercises.map(e => ({
   ...e,
   dayId: d.id
@@ -1634,6 +1538,7 @@ function App() {
   const [loaded, setLoaded] = useState(false);
   const [overrides, setOverrides] = useState({});
   const [rotationNote, setRotationNote] = useState(null);
+  const [plateauNote, setPlateauNote] = useState(null);
   const [accent, setAccentState] = useState(DEFAULT_ACCENT);
   const changeAccent = hex => {
     setAccentState(hex);
@@ -1808,9 +1713,9 @@ function App() {
     };
   }, [rest && rest.endAt]); // eslint-disable-line
 
-  /* ---- timer stretching guidato (stessa logica a timestamp) ---- */
+  /* ---- timer stretching guidato PNF (stessa logica a timestamp, ora su due fasi: contract + hold) ---- */
   useEffect(() => {
-    if (!stretchSession || stretchSession.phase !== "hold") return;
+    if (!stretchSession || stretchSession.phase !== "hold" && stretchSession.phase !== "contract") return;
     const endAt = stretchSession.endAt;
     let cancelled = false;
     const tick = () => {
@@ -1825,6 +1730,8 @@ function App() {
         }
         setStretchSession(prev => {
           if (!prev) return prev;
+          const withinCycle = advanceStretchPhase(prev);
+          if (withinCycle) return withinCycle;
           const next = advanceStretchSession(prev);
           if (!next) {
             setScreen("home");
@@ -1858,6 +1765,7 @@ function App() {
       list,
       idx: 0,
       side: 1,
+      cycle: 1,
       phase: "prep",
       remaining: list[0].seconds,
       endAt: null
@@ -1867,12 +1775,11 @@ function App() {
   const readyStretch = () => {
     setStretchSession(prev => {
       if (!prev) return prev;
-      const cur = prev.list[prev.idx];
       return {
         ...prev,
-        phase: "hold",
-        endAt: Date.now() + cur.seconds * 1000,
-        remaining: cur.seconds
+        phase: "contract",
+        endAt: Date.now() + PNF_CONTRACT_SECONDS * 1000,
+        remaining: PNF_CONTRACT_SECONDS
       };
     });
   };
@@ -1937,12 +1844,18 @@ function App() {
 
   /* ---- avvio / chiusura sessione ---- */
   const startSession = () => {
+    const day = resolvedDays[selectedDayIdx];
+    const plateauExs = day.exercises.filter(ex => detectPlateau(log, ex));
+    setPlateauNote(plateauExs.length ? {
+      names: plateauExs.map(ex => ex.name)
+    } : null);
     setSession({
       dayIdx: selectedDayIdx,
       exIndex: 0,
       progress: {},
       loggedSets: [],
-      prs: []
+      prs: [],
+      plateauIds: plateauExs.map(ex => ex.id)
     });
     setOpenDesc(false);
     setScreen("session");
@@ -2333,7 +2246,13 @@ function App() {
     style: {
       cursor: "pointer"
     }
-  }, "🔄 Cambio automatico mensile (Giorno ", rotationNote.dayId, "): ", rotationNote.from, " → ", rotationNote.to), /*#__PURE__*/React.createElement("div", {
+  }, "🔄 Cambio automatico mensile (Giorno ", rotationNote.dayId, "): ", rotationNote.from, " → ", rotationNote.to), plateauNote && /*#__PURE__*/React.createElement("div", {
+    className: "pr-banner",
+    onClick: () => setPlateauNote(null),
+    style: {
+      cursor: "pointer"
+    }
+  }, "⚠️ Stallo su ", plateauNote.names.join(", "), " — il carico non sale da 3 sedute. Oggi scarico automatico: peso ridotto, qualche rep di margine in più."), /*#__PURE__*/React.createElement("div", {
     className: "shell"
   }, screen === "home" && /*#__PURE__*/React.createElement(HomeScreen, {
     days: resolvedDays,
@@ -2520,6 +2439,9 @@ function SessionScreen({
   const last = lastKg(ex.id);
   const suggestUp = readyToProgress(ex);
   const lastSets = getLastSessionSets(ex.id);
+  const isPlateau = !!(session.plateauIds && session.plateauIds.includes(ex.id));
+  const deloadKg = isPlateau ? computeDeloadKg(last, ex) : null;
+  const prefillKg = deloadKg != null ? deloadKg : last;
   const doneExercises = exercises.filter(e => (session.progress[e.id] || 0) >= e.sets).length;
   const pct = Math.round(doneExercises / exercises.length * 100);
   const isLast = idx === exercises.length - 1;
@@ -2602,11 +2524,13 @@ function SessionScreen({
     className: "lastkg"
   }, "Ultima volta: ", /*#__PURE__*/React.createElement("b", null, last, " kg")), suggestUp && !isDone && /*#__PURE__*/React.createElement("div", {
     className: "prog-badge"
-  }, "🔼 Range pieno l'ultima volta — oggi prova ad alzare il peso"), !isDone ? /*#__PURE__*/React.createElement(SetLogger, {
+  }, "🔼 Range pieno l'ultima volta — oggi prova ad alzare il peso"), isPlateau && !isDone && deloadKg != null && /*#__PURE__*/React.createElement("div", {
+    className: "prog-badge"
+  }, "⚠️ Stallo da 3 sedute — oggi scarico automatico: ", /*#__PURE__*/React.createElement("b", null, deloadKg, " kg"), ", fermati qualche rep prima del cedimento"), !isDone ? /*#__PURE__*/React.createElement(SetLogger, {
     ex: ex,
     setsDone: setsDone,
     onComplete: onComplete,
-    last: last,
+    last: prefillKg,
     suggestUp: suggestUp,
     lastSets: lastSets
   }) : /*#__PURE__*/React.createElement("div", {
@@ -2859,7 +2783,7 @@ function SummaryScreen({
     style: {
       marginBottom: 12
     }
-  }, "Statico, niente rimbalzi: tensione leggera e ferma. Solo i gruppi muscolari allenati oggi, ti guido io uno alla volta con il timer."), /*#__PURE__*/React.createElement("button", {
+  }, "Contrazione-rilascio (PNF): ti stiri, contrai il muscolo contro resistenza per ", PNF_CONTRACT_SECONDS, "s, rilasci e vai più in profondità — ", PNF_CYCLES, " cicli per lato. Solo i gruppi muscolari allenati oggi, ti guido io uno alla volta con il timer."), /*#__PURE__*/React.createElement("button", {
     className: "set-btn",
     onClick: () => onStartStretch(day)
   }, "▶ Inizia stretching guidato"), /*#__PURE__*/React.createElement("div", {
@@ -2894,6 +2818,9 @@ function StretchScreen({
   const showSide = cur.sides === 2;
   const isLast = session.idx === session.list.length - 1 && (!showSide || session.side === 2);
   const isPrep = session.phase === "prep";
+  const isContract = session.phase === "contract";
+  const ringTotal = isPrep ? cur.seconds : isContract ? PNF_CONTRACT_SECONDS : cur.seconds;
+  const skipLabel = showSide && session.side === 1 ? "Cambia lato →" : isLast ? "Fine →" : "Prossimo →";
   return /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("div", {
     className: "sess-top"
   }, /*#__PURE__*/React.createElement("button", {
@@ -2940,7 +2867,9 @@ function StretchScreen({
     key: i
   }, s)))), /*#__PURE__*/React.createElement("div", {
     className: "prog-badge"
-  }, cur.feel)), /*#__PURE__*/React.createElement("div", {
+  }, cur.feel), !isPrep && /*#__PURE__*/React.createElement("div", {
+    className: "prog-badge"
+  }, "Ciclo ", session.cycle, "/", PNF_CYCLES, " ", isContract ? "· 🔒 sotto sforzo" : "· rilascia e stisciti più a fondo")), /*#__PURE__*/React.createElement("div", {
     style: {
       display: "flex",
       flexDirection: "column",
@@ -2948,7 +2877,7 @@ function StretchScreen({
       marginTop: 26
     }
   }, /*#__PURE__*/React.createElement(RestRing, {
-    total: cur.seconds,
+    total: ringTotal,
     remaining: isPrep ? cur.seconds : session.remaining
   }), isPrep ? /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("div", {
     className: "h-sub",
@@ -2963,13 +2892,31 @@ function StretchScreen({
       width: 220
     },
     onClick: onReady
-  }, "Pronto, via ⏱")) : /*#__PURE__*/React.createElement("button", {
+  }, "Pronto, via ⏱")) : isContract ? /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("div", {
+    className: "h-sub",
+    style: {
+      marginTop: 14,
+      textAlign: "center"
+    }
+  }, "🔒 Contrai il muscolo stirato (circa 65-70% dello sforzo massimo) spingendo contro una resistenza — mano, muro, o isometricamente contro l'allungamento stesso."), /*#__PURE__*/React.createElement("button", {
     className: "skip-btn",
     style: {
       marginTop: 20
     },
     onClick: onSkip
-  }, showSide && session.side === 1 ? "Cambia lato →" : isLast ? "Fine →" : "Prossimo →")));
+  }, skipLabel)) : /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("div", {
+    className: "h-sub",
+    style: {
+      marginTop: 14,
+      textAlign: "center"
+    }
+  }, "Rilascia la contrazione, respira, e stisciti un po' più in profondità sfruttando il rilassamento."), /*#__PURE__*/React.createElement("button", {
+    className: "skip-btn",
+    style: {
+      marginTop: 20
+    },
+    onClick: onSkip
+  }, skipLabel))));
 }
 
 /* =======================================================
@@ -3342,14 +3289,18 @@ function SettingsScreen({
   const toggleEquip = key => {
     setEquipment(prev => {
       const has = prev.includes(key);
-      const next = has ? prev.filter(e => e !== key) : [...prev, key];
+      let next = has ? prev.filter(e => e !== key) : [...prev, key];
+      // la macchina Domyos multiuso copre sia "macchina" che "cavo": un solo interruttore per entrambi
+      if (key === "macchina") next = has ? next.filter(e => e !== "cavo") : Array.from(new Set([...next, "cavo"]));
+      next = withBaselineEquipment(next);
       saveEquipment(next);
       return next;
     });
   };
   const setEquipPreset = list => {
-    setEquipment(list);
-    saveEquipment(list);
+    const next = withBaselineEquipment(list);
+    setEquipment(next);
+    saveEquipment(next);
   };
   const toggleRotation = () => {
     const next = !rotationEnabled;
@@ -3415,7 +3366,7 @@ function SettingsScreen({
     style: {
       marginBottom: 14
     }
-  }, "Solo gli esercizi della libreria compatibili con quello che hai selezionato ti verranno proposti (nel cambio slot e nella rotazione automatica). Gli esercizi già presenti nella tua scheda non vengono toccati."), /*#__PURE__*/React.createElement("div", {
+  }, "Manubri e molla sono il minimo indispensabile (economici) e sono sempre inclusi. La panca invece non è scontata — seleziona qui solo l'attrezzatura extra che hai a disposizione: solo gli esercizi della libreria compatibili ti verranno proposti (nel cambio slot e nella rotazione automatica). Gli esercizi già presenti nella tua scheda non vengono toccati."), /*#__PURE__*/React.createElement("div", {
     style: {
       display: "flex",
       gap: 8,
@@ -3427,20 +3378,20 @@ function SettingsScreen({
     style: {
       flex: 1
     },
-    onClick: () => setEquipPreset(["manubri"])
+    onClick: () => setEquipPreset([])
   }, "Solo manubri"), /*#__PURE__*/React.createElement("button", {
     className: "nav-btn",
     style: {
       flex: 1
     },
-    onClick: () => setEquipPreset(["manubri", "panca"])
+    onClick: () => setEquipPreset(["panca"])
   }, "Manubri + panca"), /*#__PURE__*/React.createElement("button", {
     className: "nav-btn",
     style: {
       flex: 1
     },
     onClick: () => setEquipPreset(ALL_EQUIPMENT.slice())
-  }, "Palestra completa")), ALL_EQUIPMENT.map(key => /*#__PURE__*/React.createElement("div", {
+  }, "Palestra completa")), ["panca", "macchina"].map(key => /*#__PURE__*/React.createElement("div", {
     key: key,
     className: "row",
     style: {
